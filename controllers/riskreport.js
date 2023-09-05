@@ -1,9 +1,9 @@
-import Chargebacks from '../models/Chargebacks.js';
-import Client from '../models/Client.js';
+import Chargebacks from '../models/chargebacks.js';
+import Client from '../models/client.js';
 import DBA from '../models/DBA.js';
 import Ethoca from '../models/Ethoca.js';
-import Merchant from '../models/Merchant.js';
-import Rdr from '../models/Rdr.js';
+import Merchant from '../models/merchant.js';
+import Rdr from '../models/rdrAlerts.js';
 import tryCatch from './utils/tryCatch.js';
 
 export const getRiskReport = tryCatch(async (req, res) => {
