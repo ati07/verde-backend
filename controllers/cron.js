@@ -1,8 +1,5 @@
-import Chargebacks from "../models/Chargebacks.js";
+import Chargebacks from "../models/chargebacks.js";
 import tryCatch from "./utils/tryCatch.js";
-
-
-
 
 export const updateChargebackStatus = tryCatch(async (req, res) => {
     const chargebacksStatus = await Chargebacks.find({ status: 'Open' }).sort({ _id: -1 });

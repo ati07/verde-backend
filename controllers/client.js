@@ -1,48 +1,47 @@
-import Client from '../models/Client.js';
-import Merchant from '../models/Merchant.js';
+import Client from '../models/client.js';
 import tryCatch from './utils/tryCatch.js';
 
-export const createClient = tryCatch(async (req, res) => {
-    // console.log("req",req.body)
-  const { 
-    merchant,
-    name,
-    phone_number,
-    company,
-    email,
-    } = req.body;
-    // console.log("object",req.body);
-  const newClient = new Client({ 
-    ...req.body.data, 
-    merchant,
-    name,
-    phone_number,
-    email,
-    company });
-  await newClient.save();
-  res.status(201).json({ success: true, result: newClient });
-});
+// create Client
+export const createClient = tryCatch(async(req, res)=>{
+  
+//Todo:  error handling
 
+  let clientPayload = req.body
+  const newClient = new Client(clientPayload);
+  await newClient.save()
+  res.status(200).json({ success: true, message: 'Client added successfully' });
+
+})
+
+// create getClient
 export const getClient = tryCatch(async (req, res) => {
+  //todo: handle deleted data
   const client = await Client.find().sort({ _id: -1 });
-  const merchant = await Merchant.find().sort({ _id: -1 });
-  res.status(200).json({ success: true, result: client, merchants:merchant });
+  
+  res.status(200).json({ success: true, result: client });
 });
 
+//  delete Client
 export const deleteClient = tryCatch(async (req, res) => {
-  const { _id } = await Client.findByIdAndDelete(req.params.ClientId);
-  res.status(200).json({ success: true, result: { _id } });
+  //Todo: handle data for client 
+  const { _id } = await Client.findByIdAndDelete(req.params.clientId);
+
+  res.status(200).json({ success: true, message:'Client deleted successfully' });
 });
+
+
 
 export const updateClient = tryCatch(async (req, res) => {
-  // const updatedClient = await Client.findByIdAndUpdate(
-  //   req.params.ClientId,
-  //   req.body,
-  // );
+//Todo: handle client data for status
   const updatedClient = await Client.updateOne(
-    {_id:req.params.ClientId},
+    {_id:req.params.clientId},
     {
       $set:req.body
     })
-  res.status(200).json({ success: true, result: updatedClient });
+  let message = 'Client edited successfully'
+  if(req.body.isActive){
+    message = 'Client status updated successfully'
+  }
+  res.status(200).json({ success: true, message: message })
 });
+
