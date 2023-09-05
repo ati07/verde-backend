@@ -20,7 +20,7 @@ export const getMerchant = tryCatch(async (req, res) => {
     path:'clientId',
     model:'clients'
   }).sort({ _id: -1 });
-  res.status(200).json({ success: true, result: merchant });
+  res.status(200).json({ success: true, result: merchant, });
 });
 
 export const deleteMerchant = tryCatch(async (req, res) => {
