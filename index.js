@@ -41,15 +41,15 @@ app.use('/user', userRouter);
 
 
 
-app.get('/', (req, res) => res.json({ message: 'Welcome to our API' }));
-// app.get('/sendmail',sendMail)
+app.get('/live', (req, res) => res.json({ message: 'Message from server' }));
+
 app.use((req, res) =>
   res.status(404).json({ success: false, message: 'Not Found' })
 );
 
 const startServer = async () => {
   try {
-    await mongoose.connect(process.env.MONGO_CONNECT).then(()=>console.log("db connected"));
+    await mongoose.connect(process.env.MONGO_CONNECT).then(() => console.log("db connected"));
     app
       .listen(port, () => console.log(`Server is listening on port: ${port}`))
       .on('error', (e) => {

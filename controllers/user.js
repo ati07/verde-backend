@@ -1,4 +1,3 @@
-import bcrypt from 'bcryptjs';
 import User from '../models/user.js';
 import tryCatch from './utils/tryCatch.js';
 
