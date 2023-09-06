@@ -2,9 +2,9 @@ import Client from '../models/client.js';
 import tryCatch from './utils/tryCatch.js';
 
 // create Client
-export const createClient = tryCatch(async(req, res)=>{
-  
-//Todo:  error handling
+export const createClient = tryCatch(async (req, res) => {
+
+  //Todo:  error handling
 
   let clientPayload = req.body
   const newClient = new Client(clientPayload);
@@ -15,9 +15,12 @@ export const createClient = tryCatch(async(req, res)=>{
 
 // create getClient
 export const getClient = tryCatch(async (req, res) => {
-  //todo: handle deleted data
-  const client = await Client.find().sort({ _id: -1 });
-  
+  let findData = {
+    isDelete: false,
+    isActive: true
+  }
+  const client = await Client.find(findData).sort({ _id: -1 });
+
   res.status(200).json({ success: true, result: client });
 });
 
@@ -26,20 +29,20 @@ export const deleteClient = tryCatch(async (req, res) => {
   //Todo: handle data for client 
   const { _id } = await Client.findByIdAndDelete(req.params.clientId);
 
-  res.status(200).json({ success: true, message:'Client deleted successfully' });
+  res.status(200).json({ success: true, message: 'Client deleted successfully' });
 });
 
 
 
 export const updateClient = tryCatch(async (req, res) => {
-//Todo: handle client data for status
+  //Todo: handle client data for status
   const updatedClient = await Client.updateOne(
-    {_id:req.params.clientId},
+    { _id: req.params.clientId },
     {
-      $set:req.body
+      $set: req.body
     })
   let message = 'Client edited successfully'
-  if(req.body.isActive){
+  if (req.body.isActive) {
     message = 'Client status updated successfully'
   }
   res.status(200).json({ success: true, message: message })

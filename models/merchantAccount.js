@@ -19,8 +19,8 @@ const merchantAccountSchema = mongoose.Schema({
     masterCardBin:{ type: String},
     rdrStatus:{ type: String},
     ethocaStatus:{ type: String},
-    isDelete:{ type: Boolean},
-    isActive:{ type: Boolean}
+    isDelete:{ type: Boolean, default: false},
+    isActive:{ type: Boolean, default: false}
 },
 { timestamps: true }
 )

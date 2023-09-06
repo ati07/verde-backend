@@ -7,7 +7,7 @@ const clientSchema = mongoose.Schema({
     phoneNumber:{ type: String },
     addedBy: { type: mongoose.Types.ObjectId },
     isDelete:{ type: Boolean, default: false },
-    isActive:{ type: Boolean, default: true }, 
+    isActive:{ type: Boolean, default: false }, 
 },
 { timestamps: true }
 )

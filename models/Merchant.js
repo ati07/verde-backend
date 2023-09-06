@@ -5,7 +5,7 @@ const merchantSchema = mongoose.Schema({
     merchant: { type: String}, 
     dba:{ type: String},
     email:{ type: String},
-    isDelete:{ type: Boolean}
+    isDelete:{ type: Boolean, default: false}
 },
 { timestamps: true }
 )
