@@ -11,8 +11,7 @@ export const createMerchantAccount = tryCatch(async (req, res) => {
 
 export const getMerchantAccount = tryCatch(async (req, res) => {
   let findData = {
-    isDelete: false,
-    isActive: true
+    isDelete: false
   }
   const merchantAccount = await MerchantAccount.find(findData).sort({ _id: -1 });
   res.status(200).json({ success: true, result: merchantAccount });
