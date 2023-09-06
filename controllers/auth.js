@@ -37,33 +37,6 @@ export const login = tryCatch(async (req, res) => {
   });
 });
 
-export const validateUser = async (data) => {
-  let sendRes = {
-    success: false
-  }
-
-  try {
-    let findUser = {
-      email: data.email
-    }
-    const userData = await User.findOne(findUser);
-  
-    if(!userData) {
-      return {...sendRes, message: 'User not found'}
-    }
-  
-    if(!userData.isActive || !userData.isBlock){
-      return {...sendRes, message: 'User is not allowed to access, contact administrator.'}
-    }
-    return userData;
-    
-  } catch (error) {
-    return {...sendRes, message: "Error in validating user..."}
-  }
-  
-
-}
-
 
 
 // export const blockUser = tryCatch(async (req, res) => {
