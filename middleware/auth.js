@@ -7,7 +7,6 @@ const auth = async (req, res, next) => {
     const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
     const { id, name, photoURL, role } = decodedToken;
     req.user = { id, name, photoURL, role };
-    
     next();
   } catch (error) {
     console.log("errorauth",error);

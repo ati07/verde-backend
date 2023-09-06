@@ -4,7 +4,7 @@ import {
   getUsers,
   login,
   register,
-  updateProfile,
+  editUserDetails,
   updateStatus,
   updateUser,
 } from '../controllers/user.js';
@@ -17,7 +17,7 @@ const userRouter = Router();
 userRouter.get('/',auth, getUsers);
 userRouter.delete('/:userId',auth,deleteUser);
 userRouter.patch('/status/:userId',auth,updateStatus);
-userRouter.patch('/updateProfile', auth, updateProfile);
+userRouter.patch('/edit', auth, editUserDetails);
 // userRouter.put('/:userId',auth,updateUser)
 
 
