@@ -10,10 +10,11 @@ export const login = tryCatch(async (req, res) => {
   
     const emailLowerCase = email.toLowerCase();
     const existedUser = await User.findOne({ email: emailLowerCase });
-    if (!existedUser)
+    if (!existedUser){
       return res
         .status(404)
         .json({ success: false, message: 'User does not exist!' });
+      }
     const correctPassword = await bcrypt.compare(password, existedUser.password);
     if (!correctPassword)
       return res

@@ -20,7 +20,7 @@ const merchantAccountSchema = mongoose.Schema({
     rdrStatus:{ type: String},
     ethocaStatus:{ type: String},
     isDelete:{ type: Boolean},
-    isActive:{ type: Boolean}
+    isActive:{ type: Boolean,default:true}
 },
 { timestamps: true }
 )

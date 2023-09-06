@@ -11,7 +11,8 @@ export const createMerchantAccount= tryCatch(async (req, res) => {
 
 export const getMerchantAccount = tryCatch(async (req, res) => {
  //todo: handle deleted data
-  const merchantAccount = await MerchantAccount.find().sort({ _id: -1 });
+  const merchantAccount = await MerchantAccount.find()
+  .populate([{path:'clientId',model:'clients'},{ path:'merchantId',model:'merchants'}]).sort({ _id: -1 });
   res.status(200).json({ success: true, result: merchantAccount});
 });
 
@@ -38,12 +39,14 @@ export const updateMerchantAccount = tryCatch(async (req, res) => {
 export const filterMerchantAccount = tryCatch(async(req, res)=>{
   let filterMerchantAccountData = {}
 
-  if(!req.body.client.includes('All')) {
-    filterMerchantAccountData['client'] = {$in:req.body.client}
+  if(req.body.clients) {
+    filterMerchantAccountData['clientId'] = {$in:req.body.clients}
   }
-  if(!req.body.merchants.includes('All')) {
-    filterMerchantAccountData['merchant'] = {$in:req.body.merchants}
+  if(req.body.merchants) {
+    filterMerchantAccountData['merchantId'] = {$in:req.body.merchants}
   }
-  const merchantAccount = await MerchantAccount.find(filterMerchantAccountData).sort({ _id: -1 });
+  const merchantAccount = await MerchantAccount.find(filterMerchantAccountData)
+  .populate([{path:'clientId',model:'clients'},{path:'merchantId',model:'merchants'}])
+  .sort({ _id: -1 });
   res.status(200).json({ success: true, result: merchantAccount });
 })

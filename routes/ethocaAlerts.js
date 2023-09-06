@@ -13,7 +13,7 @@ const ethocaAlertsRouter = Router();
 
 ethocaAlertsRouter.post('/', auth, createEthocaAlerts);
 ethocaAlertsRouter.post('/filter/',auth, filterEthocaAlerts);
-ethocaAlertsRouter.get('/', getEthocaAlerts);
+ethocaAlertsRouter.get('/',auth, getEthocaAlerts);
 ethocaAlertsRouter.delete('/:ethocaId', auth, deleteEthocaAlerts);
 ethocaAlertsRouter.put('/:ethocaId', auth, updateEthocaAlerts);
 export default ethocaAlertsRouter;

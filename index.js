@@ -8,6 +8,7 @@ import chargebacksRouter from './routes/chargebacks.js';
 import merchantAccountRouter from './routes/merchantAccount.js';
 import ethocaAlertsRouter from './routes/ethocaAlerts.js';
 import rdrAlertsRouter from './routes/rdrAlerts.js';
+import userRouter from './routes/user.js';
 
 dotenv.config();
 
@@ -31,11 +32,12 @@ app.use((req, res, next) => {
 app.use(express.json({ limit: '10mb' }));
 app.use('/client', clientRouter);
 app.use('/merchant', merchantRouter);
-app.use('/merchantAccount',merchantAccountRouter)
-app.use('/rdrAlerts',rdrAlertsRouter)
-app.use('/ethocaAlerts',ethocaAlertsRouter)
+app.use('/merchant-account',merchantAccountRouter)
+app.use('/rdr-alerts',rdrAlertsRouter)
+app.use('/ethoca-alerts',ethocaAlertsRouter)
 app.use('/chargebacks', chargebacksRouter);
 app.use('/auth', authRouter);
+app.use('/user', userRouter);
 
 
 

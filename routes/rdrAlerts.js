@@ -13,7 +13,7 @@ const rdrAlertsRouter = Router();
 
 rdrAlertsRouter.post('/', auth, createRdrAlerts);
 rdrAlertsRouter.post('/filter/',auth, filterRdrAlerts);
-rdrAlertsRouter.get('/', getRdrAlerts);
+rdrAlertsRouter.get('/',auth, getRdrAlerts);
 rdrAlertsRouter.delete('/:rdrId',auth, deleteRdrAlerts);
 rdrAlertsRouter.put('/:rdrId',auth, updateRdrAlerts);
 
