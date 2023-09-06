@@ -17,7 +17,6 @@ export const createClient = tryCatch(async (req, res) => {
 export const getClient = tryCatch(async (req, res) => {
   let findData = {
     isDelete: false,
-    isActive: true
   }
   const client = await Client.find(findData).sort({ _id: -1 });
 
