@@ -3,23 +3,23 @@ import User from '../models/user.js';
 
 const validateUser = async (data) => {
   let sendRes = {
-    success: false
+    error: true
   }
 
   try {
     let findUser = {
       email: data.email
     }
-    const userData = await User.findOne(findUser);
+    const userDetails = await User.findOne(findUser);
   
-    if(!userData) {
+    if(!userDetails) {
       return {...sendRes, message: 'User not found'}
     }
   
-    if(!userData.isActive || !userData.isBlock){
+    if(!userDetails.isActive || !userDetails.isBlock){
       return {...sendRes, message: 'User is not allowed to access, contact administrator.'}
     }
-    return userData;
+    return {error: false, userDetails};
     
   } catch (error) {
     return {...sendRes, message: "Error in validating user..."}
@@ -56,15 +56,15 @@ const auth = async (req, res, next) => {
 
     let userData = await validateUser(decodedToken, res);
 
-    if (!userData.success) {
-      console.log("Errroooooo....", userData.message);
+    if (userData.error) {
+      console.log("Errroooooo....", userData);
       return res.status(401).json({
         success: false,
         message: "Authentication failed at Lv1!",
       });
     }
 
-    req.auth.user = {...userData}
+    req.auth.user = {...userData.userDetails}
     delete req.auth.user.password
 
     console.log("Authentication successful!");
