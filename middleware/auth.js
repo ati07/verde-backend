@@ -16,7 +16,7 @@ const validateUser = async (data) => {
       return {...sendRes, message: 'User not found'}
     }
   
-    if(!userDetails.isActive || !userDetails.isBlock){
+    if(!userDetails.isActive || userDetails.isBlock){
       return {...sendRes, message: 'User is not allowed to access, contact administrator.'}
     }
     return {error: false, userDetails};
