@@ -1,4 +1,5 @@
 import jwt from 'jsonwebtoken';
+import User from '../models/user.js';
 
 const validateUser = async (data) => {
   let sendRes = {
