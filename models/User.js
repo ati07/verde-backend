@@ -7,9 +7,9 @@ const userSchema = mongoose.Schema({
     role: {type: String},
     password: {type: String},
     image: {type: String},
-    isDelete: {type: Boolean},
-    isBlock: {type: Boolean},
-    isActive: {type: Boolean}
+    isDelete: {type: Boolean, default: false},
+    isBlock: {type: Boolean, default: false},
+    isActive: {type: Boolean, default: true},
 },
 { timestamps: true }
 )
