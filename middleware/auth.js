@@ -10,7 +10,7 @@ export const validateUser = async (data) => {
     let findUser = {
       email: data.email
     }
-    let populate = data.populate ? { path: 'clientId', model: 'clients' } : {}
+    let populate = data.populate ? { path: 'clientId', model: 'clients' } : ""
     const userDetails = await User.findOne(findUser).populate(populate);
 
     if (!userDetails) {
