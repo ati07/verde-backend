@@ -7,17 +7,17 @@ export const login = tryCatch(async (req, res) => {
 
   const { email, password } = req.body;
 
-  let userDetails = await validateUser(req.body);
+  let userData = await validateUser(req.body);
 
-  if (userDetails.error) {
-    console.log("Errroooooo....", userDetails);
+  if (userData.error) {
+    console.log("Errroooooo....", userData);
     return res.status(401).json({
       success: false,
-      message: userDetails.message,
+      message: userData.message,
     });
   }
 
-  userDetails = userData.userDetails
+  let userDetails = userData.userDetails
 
   // const userDetails = await User.findOne({ email: email.toLowerCase() });
 
