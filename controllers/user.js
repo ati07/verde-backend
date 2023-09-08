@@ -1,8 +1,18 @@
 import User from '../models/user.js';
 import tryCatch from './utils/tryCatch.js';
 
+
+export const addUser= tryCatch(async (req, res) => {
+  let userClient = req.body
+  const newUser = new User(userClient);
+  await newUser.save()
+  res.status(200).json({ success: true, message: 'User added successfully' });
+});
+
 export const getUsers = tryCatch(async (req, res) => {
-  const users = await User.find().sort({ _id: -1 });
+
+  const users = await User.find().populate({path:'clientId',model:'clients'}).sort({ _id: -1 });
+  
   res.status(200).json({ success: true, result: users });
 });
 
