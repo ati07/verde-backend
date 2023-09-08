@@ -23,6 +23,7 @@ export const validateUser = async (data) => {
     return { error: false, userDetails };
 
   } catch (error) {
+    console.log("Error in validating user", error)
     return { ...sendRes, message: "Error in validating user..." }
   }
 }
