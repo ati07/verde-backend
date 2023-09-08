@@ -25,7 +25,7 @@ export const login = tryCatch(async (req, res) => {
   const correctPassword = await bcrypt.compare(password, userDetails.password);
 
   if (!correctPassword) {
-    return res.status(400).json({ success: false, message: 'Invalid credentials' });
+    return res.status(401).json({ success: false, message: 'Invalid credentials' });
   }
 
   const { _id: id, name, photoURL, role, isActive, createdAt, clientId, userEmail } = userDetails;
