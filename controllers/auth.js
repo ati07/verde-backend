@@ -17,6 +17,8 @@ export const login = tryCatch(async (req, res) => {
     });
   }
 
+  userDetails = userData.userDetails
+
   // const userDetails = await User.findOne({ email: email.toLowerCase() });
 
   const correctPassword = await bcrypt.compare(password, userDetails.password);
