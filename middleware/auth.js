@@ -10,20 +10,20 @@ export const validateUser = async (data) => {
     let findUser = {
       email: data.email
     }
-    let populate = data.populate ? "clientId" : {}
+    let populate = data.populate ? { path: 'clientId', model: 'clients' } : {}
     const userDetails = await User.findOne(findUser).populate(populate);
-  
-    if(!userDetails) {
-      return {...sendRes, message: 'User not found'}
+
+    if (!userDetails) {
+      return { ...sendRes, message: 'User not found' }
     }
-  
-    if(!userDetails.isActive || userDetails.isBlock){
-      return {...sendRes, message: 'User is not allowed to access, contact administrator.'}
+
+    if (!userDetails.isActive || userDetails.isBlock) {
+      return { ...sendRes, message: 'User is not allowed to access, contact administrator.' }
     }
-    return {error: false, userDetails};
-    
+    return { error: false, userDetails };
+
   } catch (error) {
-    return {...sendRes, message: "Error in validating user..."}
+    return { ...sendRes, message: "Error in validating user..." }
   }
 }
 
@@ -63,7 +63,7 @@ const auth = async (req, res, next) => {
       });
     }
 
-    req.auth.user = {...userData.userDetails}
+    req.auth.user = { ...userData.userDetails }
     delete req.auth.user.password
 
     console.log("Authentication successful!");
