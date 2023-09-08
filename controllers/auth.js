@@ -28,7 +28,7 @@ export const login = tryCatch(async (req, res) => {
     return res.status(400).json({ success: false, message: 'Invalid credentials' });
   }
 
-  const { _id: id, name, photoURL, role, isActive, createdAt, client, userEmail } = userDetails;
+  const { _id: id, name, photoURL, role, isActive, createdAt, clientId, userEmail } = userDetails;
 
   const signOptions = {
     issuer: "Authorization",
@@ -42,7 +42,7 @@ export const login = tryCatch(async (req, res) => {
 
   res.status(200).json({
     success: true,
-    result: { id, name, email: userEmail, photoURL, token, role, isActive, createdAt, client },
+    result: { id, name, email: userEmail, photoURL, token, role, isActive, createdAt, clientId },
   });
 });
 
