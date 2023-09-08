@@ -1,25 +1,31 @@
 import bcrypt from 'bcryptjs';
-import User from '../models/user.js';
 import jwt from 'jsonwebtoken';
 import tryCatch from './utils/tryCatch.js';
+import {validateUser} from '../middleware/auth.js';
 
 export const login = tryCatch(async (req, res) => {
 
   const { email, password } = req.body;
 
-  const existedUser = await User.findOne({ email: email.toLowerCase() });
+  let userDetails = await validateUser(req.body);
 
-  if (!existedUser) {
-    return res.status(404).json({ success: false, message: 'User does not exist!' });
+  if (userDetails.error) {
+    console.log("Errroooooo....", userDetails);
+    return res.status(401).json({
+      success: false,
+      message: userDetails.message,
+    });
   }
 
-  const correctPassword = await bcrypt.compare(password, existedUser.password);
+  // const userDetails = await User.findOne({ email: email.toLowerCase() });
+
+  const correctPassword = await bcrypt.compare(password, userDetails.password);
 
   if (!correctPassword) {
     return res.status(400).json({ success: false, message: 'Invalid credentials' });
   }
 
-  const { _id: id, name, photoURL, role, isActive, createdAt, client, userEmail } = existedUser;
+  const { _id: id, name, photoURL, role, isActive, createdAt, client, userEmail } = userDetails;
 
   const signOptions = {
     issuer: "Authorization",
