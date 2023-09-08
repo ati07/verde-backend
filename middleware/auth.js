@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken';
 import User from '../models/user.js';
 
-const validateUser = async (data) => {
+export const validateUser = async (data) => {
   let sendRes = {
     error: true
   }
@@ -24,8 +24,6 @@ const validateUser = async (data) => {
   } catch (error) {
     return {...sendRes, message: "Error in validating user..."}
   }
-  
-
 }
 
 
@@ -54,7 +52,7 @@ const auth = async (req, res, next) => {
 
     const { id, name, role, email } = decodedToken;
 
-    let userData = await validateUser(decodedToken, res);
+    let userData = await validateUser(decodedToken);
 
     if (userData.error) {
       console.log("Errroooooo....", userData);
