@@ -11,6 +11,7 @@ export const addUser= tryCatch(async (req, res) => {
   res.status(200).json({ success: true, message: 'User added successfully' });
 });
 
+
 export const getUsers = tryCatch(async (req, res) => {
 
   const users = await User.find().populate({path:'clientId',model:'clients'}).sort({ _id: -1 });
