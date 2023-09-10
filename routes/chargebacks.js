@@ -13,7 +13,7 @@ import auth from '../middleware/auth.js';
 const chargebacksRouter = Router();
 chargebacksRouter.post('/', auth,createChargebacks);
 chargebacksRouter.post('/filter/',auth, filterChargebacks);
-chargebacksRouter.get('/', getChargebacks);
+chargebacksRouter.get('/',auth, getChargebacks);
 chargebacksRouter.delete('/:chargebacksId',auth,deleteChargebacks);
 chargebacksRouter.put('/:chargebacksId',auth, updateChargebacks);
 chargebacksRouter.post('/insertmany',auth,insertManyChargebacks)

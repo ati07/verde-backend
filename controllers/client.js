@@ -1,4 +1,6 @@
 import Client from '../models/client.js';
+import Merchant from '../models/merchant.js';
+import MerchantAccount from '../models/merchantAccount.js';
 import tryCatch from './utils/tryCatch.js';
 
 // create Client
@@ -35,14 +37,23 @@ export const deleteClient = tryCatch(async (req, res) => {
 
 export const updateClient = tryCatch(async (req, res) => {
   //Todo: handle client data for status
-  const updatedClient = await Client.updateOne(
-    { _id: req.params.clientId },
-    {
-      $set: req.body
-    })
+  let updateData = {
+    $set: req.body
+  }
+  let findClient={
+    _id: req.params.clientId
+  }
+  const updatedClient = await Client.updateOne(findClient,updateData)
   let message = 'Client edited successfully'
+ 
   if (req.body.isActive) {
-    message = 'Client status updated successfully'
+    let findData = {
+      clientId : req.params.clientId
+    }
+    const updatedMerchant = await Merchant.updateMany(findData,updateData)
+    const updatedMerchantAccount = await MerchantAccount.updateMany(findData,updateData)
+
+    message = "Client status updated successfully and all its data are updated"
   }
   res.status(200).json({ success: true, message: message })
 });

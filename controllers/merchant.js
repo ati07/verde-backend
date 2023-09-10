@@ -17,6 +17,10 @@ export const getMerchant = tryCatch(async (req, res) => {
   if (req.params.clientId) {
     findMerchant.clientId = req.params.clientId
   }
+  if(req.query.clientIds){
+    findMerchant.clientId = {$in:JSON.parse(req.query.clientIds)}
+  }
+  // if()
   const merchant = await Merchant.find(findMerchant).populate({
     path: 'clientId',
     model: 'clients'
