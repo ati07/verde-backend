@@ -9,9 +9,9 @@ import {
 import auth from '../middleware/auth.js';
 
 const merchantRouter = Router();
-merchantRouter.post('/', auth,createMerchant);
 merchantRouter.get('/',auth, getMerchant);
-merchantRouter.get('/:clientId', getMerchant);
+merchantRouter.get('/:clientId', auth, getMerchant);
+merchantRouter.post('/', auth,createMerchant);
 merchantRouter.delete('/:merchantId',auth, deleteMerchant);
 merchantRouter.put('/:merchantId', auth, updateMerchant);
 

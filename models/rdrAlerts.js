@@ -3,6 +3,7 @@ import mongoose from 'mongoose';
 const rdrAlertSchema = mongoose.Schema({
 
     clientId:{type:mongoose.Types.ObjectId},
+    merchantId:{type:mongoose.Types.ObjectId},
     merchantAccountId:{type:mongoose.Types.ObjectId},
     status:{ type: String},
     statusCode:{ type: String},

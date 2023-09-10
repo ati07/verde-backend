@@ -33,14 +33,17 @@ export const updateRdrAlerts = tryCatch(async (req, res) => {
 });
 
 export const filterRdrAlerts = tryCatch(async(req, res)=>{
-  let filterData = {}
+  let filterRdrAlertsData = {}
 
-  if(!req.body.client.includes('All')) {
-    filterData['client'] = {$in:req.body.client}
+  if(req.body.clients && req.body.clients.length > 0 ) {
+    filterRdrAlertsData['clientId'] = {$in:req.body.clients}
   }
-  if(!req.body.merchants.includes('All')) {
-    filterData['merchant'] = {$in:req.body.merchants}
+  if(req.body.merchants && req.body.merchants.length > 0) {
+    filterRdrAlertsData['merchantId'] = {$in:req.body.merchants}
   }
-  const rdr = await RdrAlerts.find(filterData).sort({ _id: -1 });
+  if(req.body.dbas && req.body.dbas.length > 0){
+    filterRdrAlertsData['merchantAccountId'] = {$in:req.body.dbas}
+  }
+  const rdr = await RdrAlerts.find(filterRdrAlertsData).sort({ _id: -1 });
   res.status(200).json({ success: true, result: rdr });
 })

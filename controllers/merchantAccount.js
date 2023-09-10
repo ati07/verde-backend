@@ -27,10 +27,16 @@ export const createMerchantAccount = tryCatch(async (req, res) => {
 });
 
 export const getMerchantAccount = tryCatch(async (req, res) => {
-  let findData = {
+  let findMerchantAccount = {
     isDelete: false
   }
-  const merchantAccount = await MerchantAccount.find(findData)
+  if (req.params.clientId) {
+    findMerchantAccount.clientId = req.params.clientId
+  }
+  if(req.query.clientIds){
+    findMerchantAccount.clientId = {$in:JSON.parse(req.query.clientIds)}
+  }
+  const merchantAccount = await MerchantAccount.find(findMerchantAccount)
   .populate([{path:'clientId',model:'clients'},{ path:'merchantId',model:'merchants'}]).sort({ _id: -1 });
   res.status(200).json({ success: true, result: merchantAccount });
 });
