@@ -13,8 +13,14 @@ export const addUser= tryCatch(async (req, res) => {
 
 
 export const getUsers = tryCatch(async (req, res) => {
+  let findUsers = {
+    isDelete: false
+  }
+  if(req.auth.user._doc.role !=='Admin'){
+    findUsers.clientId = req.auth.user._doc.clientId
+  }
 
-  const users = await User.find().populate({path:'clientId',model:'clients'}).sort({ _id: -1 });
+  const users = await User.find(findUsers).populate({path:'clientId',model:'clients'}).sort({ _id: -1 });
   
   res.status(200).json({ success: true, result: users });
 });

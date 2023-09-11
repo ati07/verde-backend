@@ -36,6 +36,11 @@ export const getMerchantAccount = tryCatch(async (req, res) => {
   if(req.query.clientIds){
     findMerchantAccount.clientId = {$in:JSON.parse(req.query.clientIds)}
   }
+
+  if(req.auth.user._doc.role !=='Admin'){
+    findMerchantAccount.clientId = req.auth.user._doc.clientId
+  }
+
   const merchantAccount = await MerchantAccount.find(findMerchantAccount)
   .populate([{path:'clientId',model:'clients'},{ path:'merchantId',model:'merchants'}]).sort({ _id: -1 });
   res.status(200).json({ success: true, result: merchantAccount });

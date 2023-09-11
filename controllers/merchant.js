@@ -11,14 +11,18 @@ export const createMerchant = tryCatch(async (req, res) => {
 });
 
 export const getMerchant = tryCatch(async (req, res) => {
+  // console.log('req',req.auth.user._doc)
   let findMerchant = {
     isDelete: false
   }
-  if (req.params.clientId) {
+  if (req.params.clientId ) {
     findMerchant.clientId = req.params.clientId
   }
   if(req.query.clientIds){
     findMerchant.clientId = {$in:JSON.parse(req.query.clientIds)}
+  }
+  if(req.auth.user._doc.role !=='Admin'){
+    findMerchant.clientId = req.auth.user._doc.clientId
   }
   // if()
   const merchant = await Merchant.find(findMerchant).populate({
@@ -31,6 +35,8 @@ export const getMerchant = tryCatch(async (req, res) => {
 export const deleteMerchant = tryCatch(async (req, res) => {
   //Todo: handle data for Merchant 
   const { _id } = await Merchant.findByIdAndDelete(req.params.merchantId);
+  // const updatedMerchant = await Merchant.updateOne({ _id: req.params.merchantId },{ isDelete: true })
+
   res.status(200).json({ success: true, message: 'Merchant deleted successfully' });
 });
 

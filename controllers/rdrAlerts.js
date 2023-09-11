@@ -11,7 +11,13 @@ export const createRdrAlerts = tryCatch(async (req, res) => {
 
 export const getRdrAlerts = tryCatch(async (req, res) => {
    //todo: handle deleted data
-  const rdrAlerts = await RdrAlerts.find().sort({ _id: -1 });
+   let findRdrAlerts = {
+    isDelete: false
+  }
+  if(req.auth.user._doc.role !=='Admin'){
+    findRdrAlerts.clientId = req.auth.user._doc.clientId
+  }
+  const rdrAlerts = await RdrAlerts.find(findRdrAlerts).sort({ _id: -1 });
   res.status(200).json({ success: true, result: rdrAlerts });
 });
 

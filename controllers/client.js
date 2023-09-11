@@ -17,6 +17,7 @@ export const createClient = tryCatch(async (req, res) => {
 
 // create getClient
 export const getClient = tryCatch(async (req, res) => {
+
   let findData = {
     isDelete: false
   }
