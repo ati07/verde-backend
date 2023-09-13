@@ -7,19 +7,30 @@ export const createEthocaAlerts = tryCatch(async (req, res) => {
   const ethocaAlertsPayload = req.body;
   const newEthoca = new EthocaAlerts(ethocaAlertsPayload);
   await newEthoca.save();
-  res.status(201).json({ success: true, result: 'Ethoca Alerts added successfully' });
+  res.status(201).json({ success: true, message: 'Ethoca Alerts added successfully' });
 });
 
 export const getEthocaAlerts = tryCatch(async (req, res) => {
   //todo: handle deleted data
-  const ethocaAlerts = await EthocaAlerts.find().sort({ _id: -1 });
+  let findEthocaAlerts = {
+    isDelete: false
+  }
+  if(req.auth.user._doc.role !=='Admin'){
+    findEthocaAlerts.clientId = req.auth.user._doc.clientId
+  }
+  const ethocaAlerts = await EthocaAlerts.find(findEthocaAlerts)
+                                        .populate([
+                                          {path:'clientId',model:'clients'},
+                                          { path:'merchantId',model:'merchants'},
+                                          { path:'merchantAccountId',model:'merchantAccounts'}
+                                        ]).sort({ _id: -1 });
   res.status(200).json({ success: true, result: ethocaAlerts });
 });
 
 export const deleteEthocaAlerts = tryCatch(async (req, res) => {
   //Todo: handle data for EthocaAlerts
   const { _id } = await EthocaAlerts.findByIdAndDelete(req.params.ethocaId);
-  res.status(200).json({ success: true, result: 'Ethoca Alert deleted successfully' });
+  res.status(200).json({ success: true, message: 'Ethoca Alert deleted successfully' });
 });
 
 export const updateEthocaAlerts = tryCatch(async (req, res) => {
@@ -29,18 +40,27 @@ export const updateEthocaAlerts = tryCatch(async (req, res) => {
     {
       $set:req.body
     })
-  res.status(200).json({ success: true, result:'Ethoca Alert edited successfully' });
+  res.status(200).json({ success: true, message:'Ethoca Alert edited successfully' });
 });
 
 export const filterEthocaAlerts = tryCatch(async(req, res)=>{
-  let filterData = {}
+  let filterEthocaAlertsData = {}
 
-  if(!req.body.client.includes('All')) {
-    filterData['client'] = {$in:req.body.client}
+  if(req.body.clients && req.body.clients.length > 0 ) {
+    filterEthocaAlertsData['clientId'] = {$in:req.body.clients}
   }
-  if(!req.body.merchants.includes('All')) {
-    filterData['merchant'] = {$in:req.body.merchants}
+  if(req.body.merchants && req.body.merchants.length > 0) {
+    filterEthocaAlertsData['merchantId'] = {$in:req.body.merchants}
   }
-  const ethocaAlerts = await EthocaAlerts.find(filterData).sort({ _id: -1 });
-  res.status(200).json({ success: true, result: ethocaAlerts });
+  if(req.body.dbas && req.body.dbas.length > 0){
+    filterEthocaAlertsData['merchantAccountId'] = {$in:req.body.dbas}
+  }
+  const EthocaAlerts = await EthocaAlerts.find(filterEthocaAlertsData)
+                              .populate([
+                                {path:'clientId',model:'clients'},
+                                { path:'merchantId',model:'merchants'},
+                                { path:'merchantAccountId',model:'merchantAccounts'}
+                              ]).sort({ _id: -1 });
+                              
+  res.status(200).json({ success: true, result: EthocaAlerts });
 })

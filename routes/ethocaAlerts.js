@@ -16,4 +16,5 @@ ethocaAlertsRouter.post('/filter/',auth, filterEthocaAlerts);
 ethocaAlertsRouter.get('/',auth, getEthocaAlerts);
 ethocaAlertsRouter.delete('/:ethocaId', auth, deleteEthocaAlerts);
 ethocaAlertsRouter.put('/:ethocaId', auth, updateEthocaAlerts);
+
 export default ethocaAlertsRouter;

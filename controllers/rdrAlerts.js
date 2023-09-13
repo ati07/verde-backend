@@ -17,7 +17,13 @@ export const getRdrAlerts = tryCatch(async (req, res) => {
   if(req.auth.user._doc.role !=='Admin'){
     findRdrAlerts.clientId = req.auth.user._doc.clientId
   }
-  const rdrAlerts = await RdrAlerts.find(findRdrAlerts).sort({ _id: -1 });
+  const rdrAlerts = await RdrAlerts.find(findRdrAlerts)
+                                  .populate([
+                                    {path:'clientId',model:'clients'},
+                                    { path:'merchantId',model:'merchants'},
+                                    { path:'merchantAccountId',model:'merchantAccounts'}
+                                  ]).sort({ _id: -1 });;
+  
   res.status(200).json({ success: true, result: rdrAlerts });
 });
 
@@ -50,6 +56,12 @@ export const filterRdrAlerts = tryCatch(async(req, res)=>{
   if(req.body.dbas && req.body.dbas.length > 0){
     filterRdrAlertsData['merchantAccountId'] = {$in:req.body.dbas}
   }
-  const rdr = await RdrAlerts.find(filterRdrAlertsData).sort({ _id: -1 });
+  const rdr = await RdrAlerts.find(filterRdrAlertsData)
+                              .populate([
+                                {path:'clientId',model:'clients'},
+                                { path:'merchantId',model:'merchants'},
+                                { path:'merchantAccountId',model:'merchantAccounts'}
+                              ]).sort({ _id: -1 });
+                              
   res.status(200).json({ success: true, result: rdr });
 })

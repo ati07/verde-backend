@@ -9,6 +9,7 @@ import merchantAccountRouter from './routes/merchantAccount.js';
 import ethocaAlertsRouter from './routes/ethocaAlerts.js';
 import rdrAlertsRouter from './routes/rdrAlerts.js';
 import userRouter from './routes/user.js';
+import dashboardRouter from './routes/dashboard.js';
 
 dotenv.config();
 
@@ -30,6 +31,7 @@ app.use((req, res, next) => {
 });
 
 app.use(express.json({ limit: '10mb' }));
+app.use('/dashboard',dashboardRouter)
 app.use('/client', clientRouter);
 app.use('/merchant', merchantRouter);
 app.use('/merchant-account',merchantAccountRouter)

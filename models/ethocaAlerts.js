@@ -2,10 +2,10 @@ import mongoose from "mongoose";
 
 const ethocaAlertSchema = mongoose.Schema(
     {
-        merchantAccountId: { type: String },
-        merchantId: { type: String },
-        clientId: { type: String },
-        descriptor: { type: String },
+        clientId:{type:mongoose.Types.ObjectId},
+        merchantId:{type:mongoose.Types.ObjectId},
+        merchantAccountId:{type:mongoose.Types.ObjectId},
+        status:{ type: String, default:'Pending' },
         issuer: { type: String },
         created: { type: String },
         transDate: { type: String },
