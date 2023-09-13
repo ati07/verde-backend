@@ -2,9 +2,9 @@ import mongoose from "mongoose";
 
 const chargebackSchema = mongoose.Schema(
     {
-        merchantAccountId: { type: String },
-        merchantId: { type: String },
-        clientId: { type: String },
+        clientId:{type:mongoose.Types.ObjectId},
+        merchantId:{type:mongoose.Types.ObjectId},
+        merchantAccountId:{type:mongoose.Types.ObjectId},
         cardHolder: { type: String },
         fileDate: { type: String },
         mid: { type: String },
@@ -16,7 +16,8 @@ const chargebackSchema = mongoose.Schema(
         cardNumber: { type: String },
         amount: { type: String },
         status: { type: String },
-        country: { type: String }
+        country: { type: String },
+        isDelete: { type: Boolean, default: false},
     },
     { timestamps: true }
 )

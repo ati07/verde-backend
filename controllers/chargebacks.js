@@ -11,7 +11,18 @@ export const createChargebacks = tryCatch(async (req, res) => {
 
 export const getChargebacks = tryCatch(async (req, res) => {
     //todo: handle deleted data
-  const chargebacks = await Chargebacks.find().sort({ _id: -1 });
+    let findChargebacks = {
+      isDelete: false
+    }
+    if(req.auth.user._doc.role !=='Admin'){
+      findChargebacks.clientId = req.auth.user._doc.clientId
+    }
+  const chargebacks = await Chargebacks.find(findChargebacks)
+                                      .populate([
+                                        {path:'clientId',model:'clients'},
+                                        { path:'merchantId',model:'merchants'},
+                                        { path:'merchantAccountId',model:'merchantAccounts'}
+                                      ]).sort({ _id: -1 });
   res.status(200).json({ success: true, result: chargebacks });
 });
 
@@ -36,19 +47,27 @@ export const updateChargebacks = tryCatch(async (req, res) => {
 });
 
 export const filterChargebacks = tryCatch(async (req, res) => {
-  let filterData = {}
+  
+  let filterChargebacksData = {}
 
-  if (!req.body.client.includes('All')) {
-    filterData['client'] = { $in: req.body.client }
+  if(req.body.clients && req.body.clients.length > 0 ) {
+    filterChargebacksData['clientId'] = {$in:req.body.clients}
   }
-  if (!req.body.merchants.includes('All')) {
-    filterData['merchant'] = { $in: req.body.merchants }
+  if(req.body.merchants && req.body.merchants.length > 0) {
+    filterChargebacksData['merchantId'] = {$in:req.body.merchants}
   }
-  if (!req.body.dbas.includes('All')) {
-    filterData['dba'] = { $in: req.body.merchants }
+  if(req.body.dbas && req.body.dbas.length > 0){
+    filterChargebacksData['merchantAccountId'] = {$in:req.body.dbas}
   }
-  const chargebacks = await Chargebacks.find(filterData).sort({ _id: -1 });
+  const chargebacks = await Chargebacks.find(filterChargebacksData)
+                              .populate([
+                                {path:'clientId',model:'clients'},
+                                { path:'merchantId',model:'merchants'},
+                                { path:'merchantAccountId',model:'merchantAccounts'}
+                              ]).sort({ _id: -1 });
+                              
   res.status(200).json({ success: true, result: chargebacks });
+  
 })
 
 export const insertManyChargebacks = tryCatch(async (req, res) => {
