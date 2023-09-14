@@ -6,6 +6,6 @@ import {
 import auth from '../middleware/auth.js';
 
 const riskReportRouter = Router();
-riskReportRouter.post('/',auth, getRiskReport);
+riskReportRouter.get('/',auth, getRiskReport);
 // dashboardRouter.get('/updatestatus',updateChargebackStatus)
 export default riskReportRouter;
