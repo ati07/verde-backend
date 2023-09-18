@@ -16,7 +16,8 @@ let merchantAccounts;
 let expiredEthocaAlerts;
 let refundedEthocaAlerts;
 let pendingEthocaAlerts;
-
+let ethocaAlertsNoFilter;
+let rdrAlertsNoFilter;
 if(req.query.current
    && req.query.clientIds
    && req.query.merchantIds
@@ -81,8 +82,11 @@ if(req.query.current
 
     ethocaAlerts = await EthocaAlert.find(findEthocaAlerts).sort({ _id: -1 });
     rdrAlerts = await RdrAlerts.find(findRdrAlerts).sort({ _id: -1 });
+    ethocaAlertsNoFilter = await EthocaAlert.find().sort({ _id: -1 });
+    rdrAlertsNoFilter = await RdrAlerts.find().sort({ _id: -1 });
     expiredEthocaAlerts = await EthocaAlert.find(findExpiredEthocaAlerts).sort({ _id: -1 });
     refundedEthocaAlerts = await EthocaAlert.find(findRefundedEthocaAlerts).sort({ _id: -1 });
+    let refundedEthocaAlertsNoFilter = await EthocaAlert.find({status:'Refunded'}).sort({ _id: -1 });
     pendingEthocaAlerts = await EthocaAlert.find(findPendingEthocaAlerts).sort({ _id: -1 });
     merchantAccounts = await MerchantAccount.find(findMerchantAccount).sort({ _id: -1 })
     // Calulate Data
@@ -91,11 +95,24 @@ if(req.query.current
     const lostRevenue = expiredEthocaAlerts.length * 35
     const potentialRevenueLoss = pendingEthocaAlerts.length * 35
     const totalclosedDiputes = rdrAlerts.length + refundedEthocaAlerts.length
-    const executedAlertsVsExpired = (rdrAlerts.length+ refundedEthocaAlerts.length) / expiredEthocaAlerts.length
+    const executedAlertsVsExpired = ((rdrAlerts.length + refundedEthocaAlerts.length) / (rdrAlerts.length + ethocaAlerts.length)).toFixed(2)
     const DisputesPerBrand  = getDisputesPerBrand(rdrAlerts,ethocaAlerts) 
-    const projectedSavingsForecast = pendingEthocaAlerts.length * 35
+    // const projectedSavingsForecast = pendingEthocaAlerts.length * 35
     const alertsPerDBA = merchantAccountsWithAlerts(merchantAccounts,rdrAlerts,ethocaAlerts)
+    const avoidedChargebacks = rdrAlerts.length + refundedEthocaAlerts.length
+    const visaFinesAvoided = (rdrAlerts.map((i)=>i.caseAmount).reduce((total, num) => total + parseInt(num===''?0:num), 0)) * 35
+    const MastercardFinesAvoided = (refundedEthocaAlerts.map((i)=>i.amount).reduce((total, num) => total + parseInt(num===''?0:num), 0)) * 35
+    const RevenueSavings = visaFinesAvoided + MastercardFinesAvoided
+    const avoidedFines = visaFinesAvoided + MastercardFinesAvoided
+    const totalSavedRevenue = (rdrAlertsNoFilter.map((i)=>i.caseAmount).reduce((total, num) => total + parseInt(num===''?0:num), 0)) * 35 + (refundedEthocaAlertsNoFilter.map((i)=>i.amount).reduce((total, num) => total + parseInt(num===''?0:num), 0)) * 35
+    
+    // last 7 days data
+    let ethocaAlertsLast7 = await EthocaAlert.find({createdAt: { $gte: new Date((new Date().getTime() - (15 * 24 * 60 * 60 * 1000))) }}).sort({ _id: -1 });
+    let rdrAlertsLast7 = await RdrAlerts.find({createdAt: { $gte: new Date((new Date().getTime() - (15 * 24 * 60 * 60 * 1000))) }}).sort({ _id: -1 });
 
+    const projectedSaving = rdrAlertsLast7.map((i)=>i.caseAmount).reduce((total, num) => total + parseInt(num===''?0:num), 0) + ethocaAlertsLast7.map((i)=>i.amount).reduce((total, num) => total + parseInt(num===''?0:num), 0)
+    const avgProjectedSavingLast7days = (projectedSaving / 7).toFixed(2)
+  
     // find out the all Alerts per marchant account
     res.status(200).json({success: true,result:{
         totalAlerts:totalAlerts,
@@ -104,8 +121,14 @@ if(req.query.current
         potentialRevenueLoss:potentialRevenueLoss,
         totalclosedDiputes:totalclosedDiputes,
         executedAlertsVsExpired:executedAlertsVsExpired,
+        avoidedChargebacks:avoidedChargebacks,
+        visaFinesAvoided:visaFinesAvoided,
+        mastercardFinesAvoided:MastercardFinesAvoided,
         DisputesPerBrand:DisputesPerBrand,
-        projectedSavingsForecast:projectedSavingsForecast,
+        projectedSaving: avgProjectedSavingLast7days,
+        totalSavedRevenue:totalSavedRevenue,
+        avoidedFines:avoidedFines,
+        revenueSavings:RevenueSavings,
         alertsPerDBA:top5(alertsPerDBA)
     }})
   }

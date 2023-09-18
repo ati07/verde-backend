@@ -6,6 +6,7 @@ const ethocaAlertSchema = mongoose.Schema(
         merchantId:{type:mongoose.Types.ObjectId},
         merchantAccountId:{type:mongoose.Types.ObjectId},
         status:{ type: String, default:'Pending' },
+        dueDate:{ type:Date },
         amount: { type: String},
         arn: { type: String},
         cardBrand: { type: String},

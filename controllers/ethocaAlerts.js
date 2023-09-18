@@ -5,6 +5,7 @@ export const createEthocaAlerts = tryCatch(async (req, res) => {
   //todo: error handle
 
   const ethocaAlertsPayload = req.body;
+  ethocaAlertsPayload.dueDate = new Date(new Date(myStringDate).getTime() + 60 * 60 * 24 * 1000)
   const newEthoca = new EthocaAlerts(ethocaAlertsPayload);
   await newEthoca.save();
   res.status(201).json({ success: true, message: 'Ethoca Alerts added successfully' });
