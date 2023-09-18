@@ -5,7 +5,9 @@ export const createEthocaAlerts = tryCatch(async (req, res) => {
   //todo: error handle
 
   const ethocaAlertsPayload = req.body;
-  ethocaAlertsPayload.dueDate = new Date(new Date(myStringDate).getTime() + 60 * 60 * 24 * 1000)
+
+  ethocaAlertsPayload.dueDate = new Date(new Date().getTime() + 60 * 60 * 24 * 1000)
+
   const newEthoca = new EthocaAlerts(ethocaAlertsPayload);
   await newEthoca.save();
   res.status(201).json({ success: true, message: 'Ethoca Alerts added successfully' });
@@ -56,12 +58,12 @@ export const filterEthocaAlerts = tryCatch(async(req, res)=>{
   if(req.body.dbas && req.body.dbas.length > 0){
     filterEthocaAlertsData['merchantAccountId'] = {$in:req.body.dbas}
   }
-  const EthocaAlerts = await EthocaAlerts.find(filterEthocaAlertsData)
+  const ethocaAlerts = await EthocaAlerts.find(filterEthocaAlertsData)
                               .populate([
                                 {path:'clientId',model:'clients'},
                                 { path:'merchantId',model:'merchants'},
                                 { path:'merchantAccountId',model:'merchantAccounts'}
                               ]).sort({ _id: -1 });
                               
-  res.status(200).json({ success: true, result: EthocaAlerts });
+  res.status(200).json({ success: true, result: ethocaAlerts });
 })

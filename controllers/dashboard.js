@@ -1,7 +1,7 @@
 import EthocaAlert from '../models/ethocaAlerts.js';
 import MerchantAccount from '../models/merchantAccount.js';
 import RdrAlerts from '../models/rdrAlerts.js';
-import { getDisputesPerBrand, merchantAccountsWithAlerts, top5 } from './dashboardHelper.js';
+import { getDiffDay, getDisputesPerBrand, merchantAccountsWithAlerts, top5 } from './dashboardHelper.js';
 import tryCatch from './utils/tryCatch.js';
 
 
@@ -113,6 +113,12 @@ if(req.query.current
     const projectedSaving = rdrAlertsLast7.map((i)=>i.caseAmount).reduce((total, num) => total + parseInt(num===''?0:num), 0) + ethocaAlertsLast7.map((i)=>i.amount).reduce((total, num) => total + parseInt(num===''?0:num), 0)
     const avgProjectedSavingLast7days = (projectedSaving / 7).toFixed(2)
   
+
+    // Avg transaction Alerts
+    const avgRdrAlerts = rdrAlerts.map((i)=>i.caseAmount).reduce((total, num) => total + parseInt(num===''?0:num), 0) / getDiffDay(currentDate.start_date,currentDate.end_date)
+    const avgEthocaAlerts = ethocaAlerts.map((i)=>i.amount).reduce((total, num) => total + parseInt(num===''?0:num), 0) / getDiffDay(currentDate.start_date,currentDate.end_date)
+
+    let avgTransactionAlerts =[{name:'RDR Alerts',amount:avgRdrAlerts.toFixed(2)},{name: 'Ethoca Alerts',amount:avgEthocaAlerts.toFixed(2)}]
     // find out the all Alerts per marchant account
     res.status(200).json({success: true,result:{
         totalAlerts:totalAlerts,
@@ -129,6 +135,7 @@ if(req.query.current
         totalSavedRevenue:totalSavedRevenue,
         avoidedFines:avoidedFines,
         revenueSavings:RevenueSavings,
+        avgTransactionAlerts:avgTransactionAlerts,
         alertsPerDBA:top5(alertsPerDBA)
     }})
   }
