@@ -1,7 +1,7 @@
 import EthocaAlert from '../models/ethocaAlerts.js';
 import MerchantAccount from '../models/merchantAccount.js';
 import RdrAlerts from '../models/rdrAlerts.js';
-import { getDiffDay, getDisputesPerBrand, merchantAccountsWithAlerts, top5 } from './dashboardHelper.js';
+import { getDiffDay, getDisputesAmountsPerBrand, getDisputesPerBrand, merchantAccountsWithAlerts, top5 } from './dashboardHelper.js';
 import tryCatch from './utils/tryCatch.js';
 
 
@@ -96,7 +96,8 @@ if(req.query.current
     const potentialRevenueLoss = pendingEthocaAlerts.length * 35
     const totalclosedDiputes = rdrAlerts.length + refundedEthocaAlerts.length
     const executedAlertsVsExpired = ((rdrAlerts.length + refundedEthocaAlerts.length) / (rdrAlerts.length + ethocaAlerts.length)).toFixed(2)
-    const DisputesPerBrand  = getDisputesPerBrand(rdrAlerts,ethocaAlerts) 
+    const DisputesPerBrand  = getDisputesPerBrand(rdrAlerts,ethocaAlerts)
+    const DisputesAmountPerBrand= getDisputesAmountsPerBrand(rdrAlerts,ethocaAlerts) 
     // const projectedSavingsForecast = pendingEthocaAlerts.length * 35
     const alertsPerDBA = merchantAccountsWithAlerts(merchantAccounts,rdrAlerts,ethocaAlerts)
     const avoidedChargebacks = rdrAlerts.length + refundedEthocaAlerts.length
@@ -111,14 +112,14 @@ if(req.query.current
     let rdrAlertsLast7 = await RdrAlerts.find({createdAt: { $gte: new Date((new Date().getTime() - (15 * 24 * 60 * 60 * 1000))) }}).sort({ _id: -1 });
 
     const projectedSaving = rdrAlertsLast7.map((i)=>i.caseAmount).reduce((total, num) => total + parseInt(num===''?0:num), 0) + ethocaAlertsLast7.map((i)=>i.amount).reduce((total, num) => total + parseInt(num===''?0:num), 0)
-    const avgProjectedSavingLast7days = (projectedSaving / 7).toFixed(2)
+    const avgProjectedSavingLast7days = (projectedSaving * 4 / 7).toFixed(2)
   
 
     // Avg transaction Alerts
-    const avgRdrAlerts = rdrAlerts.map((i)=>i.caseAmount).reduce((total, num) => total + parseInt(num===''?0:num), 0) / getDiffDay(currentDate.start_date,currentDate.end_date)
-    const avgEthocaAlerts = ethocaAlerts.map((i)=>i.amount).reduce((total, num) => total + parseInt(num===''?0:num), 0) / getDiffDay(currentDate.start_date,currentDate.end_date)
+    const avgRdrAlerts = (rdrAlerts.map((i)=>i.caseAmount).reduce((total, num) => total + parseInt(num===''?0:num), 0) / getDiffDay(currentDate.start_date,currentDate.end_date)).toFixed(2)
+    const avgEthocaAlerts = (ethocaAlerts.map((i)=>i.amount).reduce((total, num) => total + parseInt(num===''?0:num), 0) / getDiffDay(currentDate.start_date,currentDate.end_date)).toFixed(2)
 
-    let avgTransactionAlerts =[{name:'RDR Alerts',amount:avgRdrAlerts.toFixed(2)},{name: 'Ethoca Alerts',amount:avgEthocaAlerts.toFixed(2)}]
+    // let avgTransactionAlerts =[{name:'RDR Alerts',amount:avgRdrAlerts.toFixed(2)},{name: 'Ethoca Alerts',amount:avgEthocaAlerts.toFixed(2)}]
     // find out the all Alerts per marchant account
     res.status(200).json({success: true,result:{
         totalAlerts:totalAlerts,
@@ -130,12 +131,15 @@ if(req.query.current
         avoidedChargebacks:avoidedChargebacks,
         visaFinesAvoided:visaFinesAvoided,
         mastercardFinesAvoided:MastercardFinesAvoided,
-        DisputesPerBrand:DisputesPerBrand,
+        DisputesPerBrand: DisputesPerBrand,
+        DisputesAmountPerBrand: DisputesAmountPerBrand,
         projectedSaving: avgProjectedSavingLast7days,
         totalSavedRevenue:totalSavedRevenue,
         avoidedFines:avoidedFines,
         revenueSavings:RevenueSavings,
-        avgTransactionAlerts:avgTransactionAlerts,
+        // avgTransactionAlerts:avgTransactionAlerts,
+        avgRdrAlerts:avgRdrAlerts,
+        avgEthocaAlerts:avgEthocaAlerts,
         alertsPerDBA:top5(alertsPerDBA)
     }})
   }
