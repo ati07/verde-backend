@@ -52,7 +52,7 @@ if(req.query.current
         findExpiredEthocaAlerts['clientId'] = {$in: clientIds }
         findRefundedEthocaAlerts['clientId'] = {$in: clientIds }
         findPendingEthocaAlerts['clientId'] = {$in: clientIds }
-        findMerchantAccount['clientId'] = {$in: dbasIds }
+        findMerchantAccount['clientId'] = {$in: clientIds }
     }
     if(merchantIds && merchantIds.length > 0){
         findEthocaAlerts['merchantId'] = {$in: merchantIds }
@@ -60,7 +60,7 @@ if(req.query.current
         findExpiredEthocaAlerts['merchantId'] = {$in: merchantIds }
         findRefundedEthocaAlerts['merchantId'] = {$in: merchantIds }
         findPendingEthocaAlerts['merchantId'] = {$in: merchantIds }
-        findMerchantAccount['merchantId'] = {$in: dbasIds }
+        findMerchantAccount['merchantId'] = {$in: merchantIds }
     }
     if(dbasIds && dbasIds.length > 0){
         findEthocaAlerts['merchantAccountId'] = {$in: dbasIds }
@@ -89,10 +89,10 @@ if(req.query.current
     let refundedEthocaAlertsNoFilter = await EthocaAlert.find({status:'Refunded'}).sort({ _id: -1 });
     pendingEthocaAlerts = await EthocaAlert.find(findPendingEthocaAlerts).sort({ _id: -1 });
     merchantAccounts = await MerchantAccount.find(findMerchantAccount).sort({ _id: -1 })
-    // Calulate Data
-    const totalAlerts = ethocaAlerts.length + rdrAlerts.length
-    const pendingEthocaRefunds = pendingEthocaAlerts.length
-    const lostRevenue = expiredEthocaAlerts.length * 35
+// Calulate Data
+    const totalAlerts = ethocaAlerts.length + rdrAlerts.length // sum of Ethoca Alerts and rdr Alerts
+    const pendingEthocaRefunds = pendingEthocaAlerts.length // sum of pending Ethoca Alerts
+    const lostRevenue = expiredEthocaAlerts.length * 35  // 
     const potentialRevenueLoss = pendingEthocaAlerts.length * 35
     const totalclosedDiputes = rdrAlerts.length + refundedEthocaAlerts.length
     const executedAlertsVsExpired = ((rdrAlerts.length + refundedEthocaAlerts.length) / (rdrAlerts.length + ethocaAlerts.length)).toFixed(2)
@@ -119,9 +119,8 @@ if(req.query.current
     const avgRdrAlerts = (rdrAlerts.map((i)=>i.caseAmount).reduce((total, num) => total + parseInt(num===''?0:num), 0) / getDiffDay(currentDate.start_date,currentDate.end_date)).toFixed(2)
     const avgEthocaAlerts = (ethocaAlerts.map((i)=>i.amount).reduce((total, num) => total + parseInt(num===''?0:num), 0) / getDiffDay(currentDate.start_date,currentDate.end_date)).toFixed(2)
 
-    // let avgTransactionAlerts =[{name:'RDR Alerts',amount:avgRdrAlerts.toFixed(2)},{name: 'Ethoca Alerts',amount:avgEthocaAlerts.toFixed(2)}]
-    // find out the all Alerts per marchant account
-    res.status(200).json({success: true,result:{
+   // find out the all Alerts per marchant account
+  res.status(200).json({success: true,result:{
         totalAlerts:totalAlerts,
         pendingEthocaRefunds:pendingEthocaRefunds,
         lostRevenue:lostRevenue,
@@ -131,8 +130,8 @@ if(req.query.current
         avoidedChargebacks:avoidedChargebacks,
         visaFinesAvoided:visaFinesAvoided,
         mastercardFinesAvoided:MastercardFinesAvoided,
-        DisputesPerBrand: DisputesPerBrand,
-        DisputesAmountPerBrand: DisputesAmountPerBrand,
+        disputesPerBrand: DisputesPerBrand,
+        disputesAmountPerBrand: DisputesAmountPerBrand,
         projectedSaving: avgProjectedSavingLast7days,
         totalSavedRevenue:totalSavedRevenue,
         avoidedFines:avoidedFines,
