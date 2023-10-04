@@ -32,7 +32,13 @@ export const getEthocaAlerts = tryCatch(async (req, res) => {
 
 export const deleteEthocaAlerts = tryCatch(async (req, res) => {
   //Todo: handle data for EthocaAlerts
-  const { _id } = await EthocaAlerts.findByIdAndDelete(req.params.ethocaId);
+  let updateData = {
+    $set: {isDelete:true}
+  }
+  let findEthocaAlerts={
+    _id: req.params.ethocaId
+  }
+  const { _id } = await EthocaAlerts.updateOne(findEthocaAlerts,updateData);
   res.status(200).json({ success: true, message: 'Ethoca Alert deleted successfully' });
 });
 

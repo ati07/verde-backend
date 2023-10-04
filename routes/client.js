@@ -5,7 +5,6 @@ import {
 } from '../controllers/client.js';
 import auth from '../middleware/auth.js';
 
-
 const clientRouter = Router();
 clientRouter.post('/', auth,createClient);
 clientRouter.get('/',auth, getClient);

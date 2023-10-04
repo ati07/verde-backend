@@ -29,7 +29,13 @@ export const getRdrAlerts = tryCatch(async (req, res) => {
 
 export const deleteRdrAlerts = tryCatch(async (req, res) => {
   //Todo: handle data for RdrAlerts
-  const { _id } = await RdrAlerts.findByIdAndDelete(req.params.rdrId);
+  let updateData = {
+    $set: {isDelete:true}
+  }
+  let findRdrAlerts={
+    _id: req.params.rdrId
+  }
+  const { _id } = await RdrAlerts.findByIdAndDelete(findRdrAlerts,updateData);
   res.status(200).json({ success: true, message: 'Rdr deleted successfully' });
 });
 

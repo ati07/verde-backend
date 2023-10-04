@@ -34,7 +34,13 @@ export const getMerchant = tryCatch(async (req, res) => {
 
 export const deleteMerchant = tryCatch(async (req, res) => {
   //Todo: handle data for Merchant 
-  const { _id } = await Merchant.findByIdAndDelete(req.params.merchantId);
+  let updateData = {
+    $set: {isDelete:true}
+  }
+  let findMerchant={
+    _id: req.params.merchantId
+  }
+  const { _id } = await Merchant.updateOne(findMerchant,updateData);
   // const updatedMerchant = await Merchant.updateOne({ _id: req.params.merchantId },{ isDelete: true })
 
   res.status(200).json({ success: true, message: 'Merchant deleted successfully' });

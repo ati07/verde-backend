@@ -26,7 +26,13 @@ export const getUsers = tryCatch(async (req, res) => {
 });
 
 export const deleteUser= tryCatch(async (req, res) => {
-  const { _id } = await User.findByIdAndDelete(req.params.userId);
+  let updateData = {
+    $set: {isDelete:true}
+  }
+  let findUser={
+    _id: req.params.userId
+  }
+  const { _id } = await User.updateOne(findUser,updateData);
   res.status(200).json({ success: true, message: 'User deleted successfully' });
 });
 

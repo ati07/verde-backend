@@ -11,6 +11,8 @@ import rdrAlertsRouter from './routes/rdrAlerts.js';
 import userRouter from './routes/user.js';
 import dashboardRouter from './routes/dashboard.js';
 import riskReportRouter from './routes/riskreport.js';
+import apiRouter from './routes/api.js';
+import invoiceRouter from './routes/invoice.js';
 
 dotenv.config();
 
@@ -42,6 +44,8 @@ app.use('/chargebacks', chargebacksRouter);
 app.use('/risk-report',riskReportRouter)
 app.use('/auth', authRouter);
 app.use('/user', userRouter);
+app.use('/api', apiRouter);
+app.use('/invoice',invoiceRouter)
 
 
 

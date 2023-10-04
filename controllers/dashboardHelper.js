@@ -13,6 +13,20 @@ const month = {
     '12': 'DEC'
 
 }
+const monthInverse = {
+    'JAN':'01',
+    'FEB':'02',
+    'MAR':'03',
+    'APR':'04',
+    'MAY':'05',
+    'JUN':'06',
+    'JUL':'07',
+    'AUG':'08',
+    'SEP':'09',
+    'OCT':'10',
+    'NOV':'11',
+    'DEC':'12'
+}
 // const month = {
 //     '01': 'January',
 //     '02': 'February',
@@ -48,7 +62,7 @@ export const pickHighest = (obj, num = 1) => {
 
 export const getDisputesPerBrand = (rdrAlerts, ethocaAlerts) => {
     let rdrAlertsPerMonth = {}
-
+    let rdrAlertsAmountPerMonth = {}
     rdrAlerts.map((i, j) => {
         let createdAt = new Date(i.createdAt)
         let d = createdAt.getMonth() + 1 < 10
@@ -57,12 +71,17 @@ export const getDisputesPerBrand = (rdrAlerts, ethocaAlerts) => {
 
         if (rdrAlertsPerMonth[month[d]]) {
             rdrAlertsPerMonth[month[d]] += 1
+            rdrAlertsAmountPerMonth[month[d]] += parseFloat(i.caseAmount ===''? 0 : i.caseAmount)
         } else {
             rdrAlertsPerMonth[month[d]] = 1
+            rdrAlertsAmountPerMonth[month[d]] = parseFloat(i.caseAmount ===''? 0 : i.caseAmount)
+
         }
     })
 
     let ethocaAlertsPerMonth = {}
+    let ethocaAlertsAmountPerMonth = {}
+
     ethocaAlerts.map((i, j) => {
         let createdAt = new Date(i.createdAt)
         let d = createdAt.getMonth() + 1 < 10
@@ -71,62 +90,36 @@ export const getDisputesPerBrand = (rdrAlerts, ethocaAlerts) => {
 
         if (ethocaAlertsPerMonth[month[d]]) {
             ethocaAlertsPerMonth[month[d]] += 1
+            ethocaAlertsAmountPerMonth[month[d]] += parseFloat(i.amount ===''? 0 : i.amount)
+            
         } else {
             ethocaAlertsPerMonth[month[d]] = 1
+            ethocaAlertsAmountPerMonth[month[d]] = parseFloat(i.amount ===''? 0 : i.amount)
         }
     })
     let monthlyData = []
-    let inverseMonth = inverse(month)
-    for (let key in inverseMonth) {
-     monthlyData.push({
-      month: key,
-      "Visa Card": rdrAlertsPerMonth[key] ?? 0,
-      "Master Card": ethocaAlertsPerMonth[key] ?? 0
-    })
+    let monthlyAmountsData = []
+    // let inverseMonth = inverse(month)
+    for (let key in monthInverse) {
+        // console.log(key)
+        monthlyData.push({
+            month: key,
+            "Visa Card": rdrAlertsPerMonth[key] ?? 0,
+            "Master Card": ethocaAlertsPerMonth[key] ?? 0
+        })
+        monthlyAmountsData.push({
+            month: key,
+            "Visa Card": rdrAlertsAmountPerMonth[key] ?? 0,
+            "Master Card": ethocaAlertsAmountPerMonth[key] ?? 0
+        })
     }
-    return monthlyData
+    // console.log('monthlyDatamonthlyAmountsData',inverseMonth,month)
+    return {
+            getDisputesPerBrandCount: monthlyData,
+            getDisputesPerBrandAmounts: monthlyAmountsData
+           }
 }
 
-export const getDisputesAmountsPerBrand = (rdrAlerts, ethocaAlerts) => {
-    let rdrAlertsPerMonth = {}
-
-    rdrAlerts.map((i, j) => {
-        let createdAt = new Date(i.createdAt)
-        let d = createdAt.getMonth() + 1 < 10
-            ? '0' + (createdAt.getMonth() + 1).toString()
-            : (createdAt.getMonth() + 1).toString()
-
-        if (rdrAlertsPerMonth[month[d]]) {
-            rdrAlertsPerMonth[month[d]] += parseFloat(i.caseAmount ===''? 0 : i.caseAmount)
-        } else {
-            rdrAlertsPerMonth[month[d]] = parseFloat(i.caseAmount ===''? 0 : i.caseAmount)
-        }
-    })
-
-    let ethocaAlertsPerMonth = {}
-    ethocaAlerts.map((i, j) => {
-        let createdAt = new Date(i.createdAt)
-        let d = createdAt.getMonth() + 1 < 10
-            ? '0' + (createdAt.getMonth() + 1).toString()
-            : (createdAt.getMonth() + 1).toString()
-
-        if (ethocaAlertsPerMonth[month[d]]) {
-            ethocaAlertsPerMonth[month[d]] += parseFloat(i.amount ===''? 0 : i.amount)
-        } else {
-            ethocaAlertsPerMonth[month[d]] = parseFloat(i.amount ===''? 0 : i.amount)
-        }
-    })
-    let monthlyData = []
-    let inverseMonth = inverse(month)
-    for (let key in inverseMonth) {
-     monthlyData.push({
-      month: key,
-      "Visa Card": rdrAlertsPerMonth[key] ?? 0,
-      "Master Card": ethocaAlertsPerMonth[key] ?? 0
-    })
-    }
-    return monthlyData
-}
 
 export const merchantAccountsWithAlerts = (merchantAccounts,rdrAlerts,ethocaAlerts)=>{
     // console.log('Alerts',merchantAccounts, rdrAlerts, ethocaAlerts)
@@ -136,7 +129,14 @@ export const merchantAccountsWithAlerts = (merchantAccounts,rdrAlerts,ethocaAler
 
         merchantAccountsWithAlerts[i.dba] = rdrAlerts.filter((r,j)=>String(r.merchantAccountId) === String(i._id) ).length + ethocaAlerts.filter((r,j)=>String(r.merchantAccountId) === String(i._id) ).length
     })
-    return merchantAccountsWithAlerts
+    const topFiveDBA = pickHighest(merchantAccountsWithAlerts, 5)
+
+    const topFiveDBAData = []
+    for (let key in topFiveDBA) {
+        topFiveDBAData.push({ name: key, Quantities: topFiveDBA[key] ?? 0 })
+    }
+
+    return topFiveDBAData
 }
 
 export const top5 = (DBAData)=>{
@@ -161,10 +161,6 @@ export const getDiffDay = (dateOne,dateTwo)=>{
     var Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24);
       
     //To display the final no. of days (result)
-    // console.log("Total number of days between dates  <br>"
-    //            + date1 + "<br> and <br>" 
-    //            + date2 + " is: <br> " 
-    //            + Difference_In_Days);
     return Difference_In_Days
 }
 
