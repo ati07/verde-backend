@@ -4,6 +4,7 @@ import tryCatch from './utils/tryCatch.js';
 export const createInvoice = tryCatch(async(req, res)=>{
 
   const invoicePayload = req.body;
+  
   const newInvoice = new Invoice(invoicePayload);
   await newInvoice.save();
   res.status(201).json({ success: true, message: 'Invoice added successfully' });
@@ -51,3 +52,4 @@ export const mailInvoice = tryCatch(async(req,res)=>{
     res.status(200).json({ success: true, message: 'Email Send successfully' });
 
 })
+

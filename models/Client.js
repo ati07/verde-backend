@@ -10,7 +10,6 @@ const clientSchema = mongoose.Schema({
     rdrTier1Price: { type: String },
     rdrTier2Price: { type: String },
     rdrTier3Price: { type: String },
-    rdrPrice: { type: String },
     ethocaPrice: { type: String },
     monthlyMinimumFees: { type: String },
     paymentTerms: { type: String },
