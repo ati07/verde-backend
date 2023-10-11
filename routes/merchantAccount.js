@@ -14,7 +14,7 @@ merchantAccountRouter.get('/',auth, getMerchantAccount);
 merchantAccountRouter.get('/:clientId',auth, getMerchantAccount);
 merchantAccountRouter.post('/', auth,createMerchantAccount);
 merchantAccountRouter.post('/filter',auth, filterMerchantAccount);
-merchantAccountRouter.delete('/:merchantAccountId',auth,deleteMerchantAccount);
+merchantAccountRouter.patch('/:merchantAccountId',auth,deleteMerchantAccount);
 merchantAccountRouter.put('/:merchantAccountId',auth,updateMerchantAccount);
 merchantAccountRouter.patch('/status/:merchantAccountId',auth,updateMerchantAccount);
 

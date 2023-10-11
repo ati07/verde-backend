@@ -8,7 +8,7 @@ import auth from '../middleware/auth.js';
 const clientRouter = Router();
 clientRouter.post('/', auth,createClient);
 clientRouter.get('/',auth, getClient);
-clientRouter.delete('/:clientId',auth,deleteClient);
+clientRouter.patch('/:clientId',auth,deleteClient);
 clientRouter.put('/:clientId',auth,updateClient);
 clientRouter.patch('/status/:clientId', auth, updateClient);
 

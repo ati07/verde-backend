@@ -41,7 +41,6 @@ export const deleteMerchant = tryCatch(async (req, res) => {
     _id: req.params.merchantId
   }
   const { _id } = await Merchant.updateOne(findMerchant,updateData);
-  // const updatedMerchant = await Merchant.updateOne({ _id: req.params.merchantId },{ isDelete: true })
 
   res.status(200).json({ success: true, message: 'Merchant deleted successfully' });
 });
