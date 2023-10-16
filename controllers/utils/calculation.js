@@ -37,7 +37,7 @@ export const getRdrAmounts = async(filter,payload)=>{
     amount += (rdrTier1 * parseInt(payload.rdrTier1Price)) + (rdrTier2 * parseInt(payload.rdrTier2Price)) + (rdrTier3 * parseInt(payload.rdrTier3Price))
     // console.log('cal',amount,rdrTier1,payload.rdrTier1Price, payload.allMerchantAccounts)
     let numberOfRdrAlerts = rdr.length
-    return {numberOfRdrAlerts,amount}
+    return {numberOfRdrAlerts,amount,rdrTier1,rdrTier2,rdrTier3}
 }
 
 export const getEthocaAmounts =async(filter,payload)=>{

@@ -29,7 +29,9 @@ export const createInvoice = tryCatch(async (req, res) => {
   // console.log('r,e', rdrAmount, ethocaAlertsAmounts)
 
   invoicePayload.amount = rdrAmount.amount + ethocaAlertsAmounts.amount
-  invoicePayload.numberOfRDR = rdrAmount.numberOfRdrAlerts
+  invoicePayload.numberOfTier1 = rdrAmount.rdrTier1
+  invoicePayload.numberOfTier2 = rdrAmount.rdrTier2
+  invoicePayload.numberOfTier3 = rdrAmount.rdrTier3
   invoicePayload.numberOfEthoca = ethocaAlertsAmounts.numberOfEthocaAlerts
 
   const newInvoice = new Invoice(invoicePayload);
