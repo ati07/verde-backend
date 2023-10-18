@@ -11,7 +11,7 @@ const clientSchema = mongoose.Schema({
     rdrTier2Price: { type: String },
     rdrTier3Price: { type: String },
     ethocaPrice: { type: String },
-    monthlyMinimumFees: { type: String },
+    monthlyMinimumFees: { type: String},
     paymentTerms: { type: String },
     isDelete:{ type: Boolean, default: false },
     isActive:{ type: Boolean, default: false }, 
