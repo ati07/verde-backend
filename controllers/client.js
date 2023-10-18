@@ -1,6 +1,9 @@
 import Client from '../models/client.js';
 import Merchant from '../models/merchant.js';
 import MerchantAccount from '../models/merchantAccount.js';
+import RdrAlerts from '../models/rdrAlerts.js';
+import EthocaAlerts from '../models/ethocaAlerts.js';
+import Users from '../models/user.js';
 import tryCatch from './utils/tryCatch.js';
 
 // create Client
@@ -36,8 +39,15 @@ export const deleteClient = tryCatch(async (req, res) => {
     _id: req.params.clientId
   }
   const { _id } = await Client.updateOne(findClient,updateData);
-
-  res.status(200).json({ success: true, message: 'Client deleted successfully' });
+  let findData={
+    clientId: _id
+  }
+  const M = await Merchant.updateMany(findData,updateData);
+  const mA = await MerchantAccount.updateMany(findData,updateData);
+  const rdr= await RdrAlerts.updateMany(findData,updateData);
+  const e = await EthocaAlerts.updateMany(findData,updateData);
+  const u = await Users.updateMany(findData,updateData);
+  res.status(200).json({ success: true, message: 'Client and all the related data deleted successfully' });
 });
 
 
