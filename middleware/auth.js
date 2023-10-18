@@ -64,8 +64,8 @@ const auth = async (req, res, next) => {
         message: "Authentication failed at Lv1!",
       });
     }
-
-    req.auth.user = { ...userData.userDetails }
+    let userDetails = JSON.parse(JSON.stringify(userData.userDetails));
+    req.auth.user = userDetails
     delete req.auth.user.password
 
     console.log("Authentication successful!");
