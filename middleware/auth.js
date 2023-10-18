@@ -54,6 +54,7 @@ const auth = async (req, res, next) => {
 
     const { id, name, role, email } = decodedToken;
 
+
     let userData = await validateUser(decodedToken);
 
     if (userData.error) {

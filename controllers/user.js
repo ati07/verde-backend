@@ -11,15 +11,28 @@ export const addUser= tryCatch(async (req, res) => {
   res.status(200).json({ success: true, message: 'User added successfully' });
 });
 
-export const getUsers = tryCatch(async (req, res) => {
 
-  const users = await User.find().populate({path:'clientId',model:'clients'}).sort({ _id: -1 });
+export const getUsers = tryCatch(async (req, res) => {
+  let findUsers = {
+    isDelete: false
+  }
+  if(req.auth.user._doc.role !=='Admin'){
+    findUsers.clientId = req.auth.user._doc.clientId
+  }
+
+  const users = await User.find(findUsers).populate({path:'clientId',model:'clients'}).sort({ _id: -1 });
   
   res.status(200).json({ success: true, result: users });
 });
 
 export const deleteUser= tryCatch(async (req, res) => {
-  const { _id } = await User.findByIdAndDelete(req.params.userId);
+  let updateData = {
+    $set: {isDelete:true}
+  }
+  let findUser={
+    _id: req.params.userId
+  }
+  const { _id } = await User.updateOne(findUser,updateData);
   res.status(200).json({ success: true, message: 'User deleted successfully' });
 });
 

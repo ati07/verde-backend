@@ -27,17 +27,34 @@ export const createMerchantAccount = tryCatch(async (req, res) => {
 });
 
 export const getMerchantAccount = tryCatch(async (req, res) => {
-  let findData = {
+  let findMerchantAccount = {
     isDelete: false
   }
-  const merchantAccount = await MerchantAccount.find(findData)
+  if (req.params.clientId) {
+    findMerchantAccount.clientId = req.params.clientId
+  }
+  if(req.query.clientIds){
+    findMerchantAccount.clientId = {$in:JSON.parse(req.query.clientIds)}
+  }
+
+  if(req.auth.user._doc.role !=='Admin'){
+    findMerchantAccount.clientId = req.auth.user._doc.clientId
+  }
+
+  const merchantAccount = await MerchantAccount.find(findMerchantAccount)
   .populate([{path:'clientId',model:'clients'},{ path:'merchantId',model:'merchants'}]).sort({ _id: -1 });
   res.status(200).json({ success: true, result: merchantAccount });
 });
 
 export const deleteMerchantAccount = tryCatch(async (req, res) => {
   //Todo: handle data for merchantAccount
-  const { _id } = await MerchantAccount.findByIdAndDelete(req.params.merchantAccountId);
+  let updateData = {
+    $set: {isDelete:true}
+  }
+  let findMerchantAccount={
+    _id: req.params.merchantAccountId
+  }
+  const { _id } = await MerchantAccount.updateOne(findMerchantAccount,updateData);
   res.status(200).json({ success: true, message: "Merchant Account deleted successfully" });
 });
 

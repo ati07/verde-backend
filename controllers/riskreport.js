@@ -1,101 +1,74 @@
 import Chargebacks from '../models/chargebacks.js';
-import Client from '../models/client.js';
-import DBA from '../models/DBA.js';
-import Ethoca from '../models/ethocaAlerts.js';
-import Merchant from '../models/merchant.js';
-import Rdr from '../models/rdrAlerts.js';
+import EthocaAlert from '../models/ethocaAlerts.js';
+import MerchantAccount from '../models/merchantAccount.js';
+import RdrAlerts from '../models/rdrAlerts.js';
 import tryCatch from './utils/tryCatch.js';
 
 export const getRiskReport = tryCatch(async (req, res) => {
-  const data = JSON.parse(req.body.current)
-  // console.log('chargebacksDarre', new Date(data.end_date))
   let client;
   let merchant;
   let dba;
   let dbas;
   let chargebacks;
-  let wonChargebacks
-  let inProcessChargebacks
-  let openCases;
-  let urgentActionRequired;
-  let closedCases;
-  let expired;
   let ethoca;
   let rdr
-  if (data.start_date
-    && data.end_date
-    && req.body.client
-    && req.body.merchants
-    && req.body.dbas
+  if (req.query.current
+    && req.query.clientIds
+    && req.query.merchantIds
+    && req.query.dbasIds
   ) {
-    client = await Client.find().sort({ _id: -1 });
-    
+    let currentDate = JSON.parse(req.query.current)
+    let endDate = JSON.parse(req.query.previous)
+    let clientIds = JSON.parse(req.query.clientIds)
+    let merchantIds = JSON.parse(req.query.merchantIds)
+    let dbasIds = JSON.parse(req.query.dbasIds)
+
     let findDbaData = {
-      createdAt: { $gte: new Date(data.start_date), $lte: new Date(data.end_date) }
+      createdAt: { $gte: new Date(currentDate.start_date), $lte: new Date(currentDate.end_date) }
     }
-    let findMerchants = {
-      createdAt: { $gte: new Date(data.start_date), $lte: new Date(data.end_date) }
+   
+    if (clientIds && clientIds.length > 0 && req.auth.user._doc.role === 'Admin') {
+      findDbaData['clientId'] = { $in: clientIds }
     }
-    let findDbas = {
-      createdAt: { $gte: new Date(data.start_date), $lte: new Date(data.end_date) }
+    if (merchantIds && merchantIds.length > 0) {
+      findDbaData['merchantId'] = { $in: merchantIds }
     }
-
-    // console.log("object", findDbaData);
-
-    if (!req.body.client.includes('All')) {
-      findDbaData['client'] = { $in: req.body.client }
-      findMerchants['client'] = { $in: req.body.client}
-      findDbas['client'] = { $in: req.body.client}
-    }
-    if (!req.body.merchants.includes('All')) {
-      findDbaData['merchant'] = { $in: req.body.merchants }
-    }
-    if (!req.body.dbas.includes('All')) {
-      findDbaData['dba'] = { $in: req.body.dbas }
+    if (dbasIds && dbasIds.length > 0) {
+      findDbaData['merchantAcoountId'] = { $in: dbasIds }
     }
 
-    merchant = await Merchant.find(findMerchants).sort({ _id: -1 });
-    dbas = await DBA.find(findDbas).sort({ _id: -1 });
-    dba = await DBA.find(findDbaData).sort({ _id: -1 });
+    if(req.auth.user._doc.role !=='Admin'){
+      findDbaData['clientId'] = req.auth.user._doc.clientId
+    }
+
+    dba = await MerchantAccount.find().sort({ _id: -1 });
     chargebacks = await Chargebacks.find(findDbaData).sort({ _id: -1 });
-    ethoca = await Ethoca.find(findDbaData).sort({ _id: -1 });
-    rdr = await Rdr.find(findDbaData).sort({ _id: -1 });
-  }
-  // console.log('dba,allDba', dba)
-  // const allDba = dba.map((i) => i.dba)
-  // const removedDuplicats = [...new Set(allDba)]
-  // console.log('dba,allDba,ethoca,rdr,chargebacks',dba,allDba,ethoca,chargebacks)
-  const dbadata = []
-  for (let i = 0; i < dba.length; i++) {
-    // let d = dba.filter((obj) => obj.dba === allDba[i])
-    // console.log('_id,createdAt',d)
-    dbadata.push({
-      id: dba[i]._id,
-      createdAt: dba[i].createdAt,
-      dba: dba[i].dba,
-      status: dba[i].mid_status,
-      rdralerts: rdr.filter((obj) => obj.dba === dba[i].dba).length,
-      ethocaalerts: ethoca.filter((obj) => obj.dba === dba[i].dba).length,
-      chargebacks: chargebacks.filter((obj) => obj.dba === dba[i].dba).length
+    ethoca = await EthocaAlert.find(findDbaData).sort({ _id: -1 });
+    rdr = await RdrAlerts.find(findDbaData).sort({ _id: -1 });
+
+    // console.log('dba', dba)
+    // console.log('ethoca', ethoca)
+    // console.log('rdr', rdr)
+    
+    const dbadata = []
+    for (let i = 0; i < dba.length; i++) {
+      dbadata.push({
+        id: dba[i]._id,
+        createdAt: dba[i].createdAt,
+        dba: dba[i].dba,
+        status: dba[i].midStatus,
+        rdralerts: rdr.filter((obj) => String(obj.merchantAccountId) === String(dba[i]._id)).length,
+        ethocaalerts: ethoca.filter((obj) => String(obj.merchantAccountId) === String(dba[i]._id)).length,
+        chargebacks: chargebacks.filter((obj) => String(obj.merchantAccountId) === String(dba[i]._id)).length
+      })
+    }
+
+    res.status(200).json({
+      success: true,
+      result: {
+        riskreportData: dbadata
+      }
     })
-    // dbadata.push({
-    //   id: d[0]._id,
-    //   createdAt: d[0].createdAt,
-    //   dba: allDba[i],
-    //   status: d[0].mid_status,
-    //   rdralerts: rdr.filter((obj) => obj.dba === allDba[i]).length,
-    //   ethocaalerts: ethoca.filter((obj) => obj.dba === allDba[i]).length,
-    //   chargebacks: chargebacks.filter((obj) => obj.dba === allDba[i]).length
-    // })
   }
 
-  res.status(200).json({
-    success: true,
-    result: {
-      riskreportData: dbadata,
-      clients: client,
-      merchants: merchant,
-      dbas:dbas
-    }
-  })
 })

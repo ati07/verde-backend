@@ -9,6 +9,10 @@ import merchantAccountRouter from './routes/merchantAccount.js';
 import ethocaAlertsRouter from './routes/ethocaAlerts.js';
 import rdrAlertsRouter from './routes/rdrAlerts.js';
 import userRouter from './routes/user.js';
+import dashboardRouter from './routes/dashboard.js';
+import riskReportRouter from './routes/riskreport.js';
+import apiRouter from './routes/api.js';
+import invoiceRouter from './routes/invoice.js';
 
 dotenv.config();
 
@@ -30,14 +34,18 @@ app.use((req, res, next) => {
 });
 
 app.use(express.json({ limit: '10mb' }));
+app.use('/dashboard',dashboardRouter)
 app.use('/client', clientRouter);
 app.use('/merchant', merchantRouter);
 app.use('/merchant-account',merchantAccountRouter)
 app.use('/rdr-alerts',rdrAlertsRouter)
 app.use('/ethoca-alerts',ethocaAlertsRouter)
 app.use('/chargebacks', chargebacksRouter);
+app.use('/risk-report',riskReportRouter)
 app.use('/auth', authRouter);
 app.use('/user', userRouter);
+app.use('/api', apiRouter);
+app.use('/invoice',invoiceRouter)
 
 
 
