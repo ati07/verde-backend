@@ -8,6 +8,7 @@ const rdrAlertSchema = mongoose.Schema({
     caseID: {type:String},
     caseReceivedDate: {type:String},
     status: {type:String},
+    tier: {type:String},
     statusCode: {type:String},
     caseCurrencyCode: {type:String},
     caseAmount: {type:String},
