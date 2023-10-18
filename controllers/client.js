@@ -37,7 +37,7 @@ export const deleteClient = tryCatch(async (req, res) => {
   }
   const { _id } = await Client.updateOne(findClient,updateData);
 
-  res.status(200).json({ success: true, message: 'Client deleted successfully' });
+  res.status(200).json({ success: true, message: 'Client and all the related data deleted successfully' });
 });
 
 
