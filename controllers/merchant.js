@@ -1,17 +1,23 @@
+import Chargebacks from '../models/chargebacks.js';
 import Client from '../models/client.js';
 import Merchant from '../models/merchant.js';
+import MerchantAccount from '../models/merchantAccount.js';
+import RdrAlerts from '../models/rdrAlerts.js';
+import EthocaAlerts from '../models/ethocaAlerts.js';
 import tryCatch from './utils/tryCatch.js';
+import Users from '../models/user.js';
 
 export const createMerchant = tryCatch(async (req, res) => {
   //todo: error handle
   let merchantPayload = req.body
   const newMerchant = new Merchant(merchantPayload);
   await newMerchant.save();
+  
   res.status(201).json({ success: true, message: 'Merchant added successfully' });
 });
 
 export const getMerchant = tryCatch(async (req, res) => {
-  // console.log('req',req.auth.user._doc)
+  // console.log('req',req.auth.user)
   let findMerchant = {
     isDelete: false
   }
@@ -21,8 +27,8 @@ export const getMerchant = tryCatch(async (req, res) => {
   if(req.query.clientIds){
     findMerchant.clientId = {$in:JSON.parse(req.query.clientIds)}
   }
-  if(req.auth.user._doc.role !=='Admin'){
-    findMerchant.clientId = req.auth.user._doc.clientId
+  if(req.auth.user.role !=='Admin'){
+    findMerchant.clientId = req.auth.user.clientId
   }
   // if()
   const merchant = await Merchant.find(findMerchant).populate({
@@ -33,20 +39,34 @@ export const getMerchant = tryCatch(async (req, res) => {
 });
 
 export const deleteMerchant = tryCatch(async (req, res) => {
-  //Todo: handle data for Merchant 
+   
   let updateData = {
     $set: {isDelete:true}
   }
   let findMerchant={
     _id: req.params.merchantId
   }
-  const { _id } = await Merchant.updateOne(findMerchant,updateData);
+  const m = await Merchant.updateOne(findMerchant,updateData);
+  let findData={
+    merchantId: req.params.merchantId
+  }
+  const mA = await MerchantAccount.updateMany(findData,updateData);
+  // console.log('mA',mA);
 
-  res.status(200).json({ success: true, message: 'Merchant deleted successfully' });
+  const rdr= await RdrAlerts.updateMany(findData,updateData);
+  // console.log('rdr',rdr);
+
+  const e = await EthocaAlerts.updateMany(findData,updateData);
+  // console.log('e',e);
+  
+  const ch = await Chargebacks.updateMany(findData,updateData);
+  // console.log('ch',ch);
+
+  res.status(200).json({ success: true, message: 'Merchant and all the related data deleted successfully' });
 });
 
 export const updateMerchant = tryCatch(async (req, res) => {
-  //Todo: handle client data for status
+  
   const updatedMerchant = await Merchant.updateOne(
     { _id: req.params.merchantId },
     {

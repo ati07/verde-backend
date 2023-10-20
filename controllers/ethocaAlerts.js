@@ -14,12 +14,12 @@ export const createEthocaAlerts = tryCatch(async (req, res) => {
 });
 
 export const getEthocaAlerts = tryCatch(async (req, res) => {
-  //todo: handle deleted data
+  
   let findEthocaAlerts = {
     isDelete: false
   }
-  if(req.auth.user._doc.role !=='Admin'){
-    findEthocaAlerts.clientId = req.auth.user._doc.clientId
+  if(req.auth.user.role !=='Admin'){
+    findEthocaAlerts.clientId = req.auth.user.clientId
   }
   const ethocaAlerts = await EthocaAlerts.find(findEthocaAlerts)
                                         .populate([
@@ -31,7 +31,7 @@ export const getEthocaAlerts = tryCatch(async (req, res) => {
 });
 
 export const deleteEthocaAlerts = tryCatch(async (req, res) => {
-  //Todo: handle data for EthocaAlerts
+  
   let updateData = {
     $set: {isDelete:true}
   }
@@ -43,7 +43,7 @@ export const deleteEthocaAlerts = tryCatch(async (req, res) => {
 });
 
 export const updateEthocaAlerts = tryCatch(async (req, res) => {
-  //Todo: handle EthocaAlerts data for status
+  
   const updatedEthocaAlerts = await EthocaAlerts.updateOne(
     {_id:req.params.ethocaId},
     {

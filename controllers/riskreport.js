@@ -27,7 +27,7 @@ export const getRiskReport = tryCatch(async (req, res) => {
       createdAt: { $gte: new Date(currentDate.start_date), $lte: new Date(currentDate.end_date) }
     }
    
-    if (clientIds && clientIds.length > 0 && req.auth.user._doc.role === 'Admin') {
+    if (clientIds && clientIds.length > 0 && req.auth.user.role === 'Admin') {
       findDbaData['clientId'] = { $in: clientIds }
     }
     if (merchantIds && merchantIds.length > 0) {
@@ -37,8 +37,8 @@ export const getRiskReport = tryCatch(async (req, res) => {
       findDbaData['merchantAcoountId'] = { $in: dbasIds }
     }
 
-    if(req.auth.user._doc.role !=='Admin'){
-      findDbaData['clientId'] = req.auth.user._doc.clientId
+    if(req.auth.user.role !=='Admin'){
+      findDbaData['clientId'] = req.auth.user.clientId
     }
 
     dba = await MerchantAccount.find().sort({ _id: -1 });
