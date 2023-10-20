@@ -1,16 +1,16 @@
-import {jsPDF} from "jspdf";
+import { jsPDF } from "jspdf";
 import 'jspdf-autotable'
-import { convertFormate,dateFormate } from "./helper.js";
+import { convertFormate, dateFormate } from "./helper.js";
 import fs from 'fs'
 
 // let logo = '../assets/images/invoice.png'
-let logo = fs.readFileSync('../assets/images/invoice.png',{encoding: 'base64'})
-let email = fs.readFileSync('../assets/images/email.png',{encoding: 'base64'})
-let tableHeader = fs.readFileSync('../assets/images/tableHeader.png',{encoding: 'base64'})
-let invoiceFooter = fs.readFileSync('../assets/images/invoiceFooter.png',{encoding: 'base64'})
+let logo = fs.readFileSync('../assets/images/invoice.png', { encoding: 'base64' })
+let email = fs.readFileSync('../assets/images/email.png', { encoding: 'base64' })
+let tableHeader = fs.readFileSync('../assets/images/tableHeader.png', { encoding: 'base64' })
+let invoiceFooter = fs.readFileSync('../assets/images/invoiceFooter.png', { encoding: 'base64' })
 
 export const exportInvoicePDF = async (pdfData) => {
-    // console.log('pdf', pdfData)
+    console.log('pdf----------->', pdfData)
     const unit = "px";
     const size = "A4"; // Use A1, A2, A3 or A4
     const orientation = "portrait"; // portrait or landscape
@@ -28,7 +28,7 @@ export const exportInvoicePDF = async (pdfData) => {
     const totalEthocaPrice = parseInt(pdfData.numberOfEthoca) * parseInt(pdfData.ethocaPrice)
 
     const data = [
-        ['MONTHLY MIN','' ,'$' + convertFormate(parseInt(pdfData.clientId.monthlyMinimumFees)), '$' + convertFormate(parseInt(pdfData.clientId.monthlyMinimumFees))],
+        ['MONTHLY MIN', '', '$' + convertFormate(parseInt(pdfData.monthlyMinimumFees)), '$' + convertFormate(parseInt(pdfData.monthlyMinimumFees))],
         ['RDR ALERTS TIER 1', pdfData.numberOfTier1, '$' + convertFormate(pdfData.rdrTier1Price), "$" + convertFormate(totalRdr1Price)],
         ['RDR ALERTS TIER 2', pdfData.numberOfTier2, '$' + convertFormate(pdfData.rdrTier2Price), "$" + convertFormate(totalRdr2Price)],
         ['RDR ALERTS TIER 3', pdfData.numberOfTier3, '$' + convertFormate(pdfData.rdrTier3Price), "$" + convertFormate(totalRdr3Price)],
@@ -103,7 +103,7 @@ export const exportInvoicePDF = async (pdfData) => {
     doc.text("COMPANY:", 50, 125);
     doc.setFont("helvetica", "normal");
     doc.setFontSize(12);
-    doc.text(pdfData.clientId.company, 105, 125);
+    doc.text(pdfData.company, 105, 125);
     doc.setFont("helvetica", 'bold');
     doc.text("ATT:", 50, 145);
     doc.setFont("helvetica", 'normal');
@@ -113,7 +113,8 @@ export const exportInvoicePDF = async (pdfData) => {
     doc.text("Invoice No:", 280, 125);
     doc.setFont("helvetica", "normal");
     doc.setFontSize(12);
-    doc.text(pdfData.invoiceNumber ?? 0, 340, 125);
+    console.log("🚀 ~ file: invoicePDF.js:118 ~ exportInvoicePDF ~ pdfData.invoiceNumber:", pdfData.invoiceNumber, typeof pdfData.invoiceNumber)
+    doc.text(String(pdfData.invoiceNumber), 340, 125);
     doc.setFont("helvetica", "bold");
     doc.setFontSize(12);
     doc.text("Period:", 280, 137);
@@ -131,18 +132,18 @@ export const exportInvoicePDF = async (pdfData) => {
     doc.setFontSize(12);
     doc.text(dateFormate(pdfData.dueDate, 'YYYY-MM-DD') ?? '', 340, 161);
     // table header image
-    doc.addImage(tableHeader, "PNG", 40, 180, 360, 40, '', 'FAST'), 
-    doc.autoTable(content)
+    doc.addImage(tableHeader, "PNG", 40, 180, 360, 40, '', 'FAST'),
+        doc.autoTable(content)
     doc.setFontSize(10);
     doc.setFont("helvetica", "normal");
     doc.text("SUB TOTAL", 280, 350);
-    doc.text("$" + convertFormate(parseInt(pdfData.amount)) + convertFormate(parseInt(pdfData.clientId.monthlyMinimumFees)), 355, 350);
+    doc.text("$" + convertFormate(parseInt(pdfData.amount)) + convertFormate(parseInt(pdfData.monthlyMinimumFees)), 355, 350);
     doc.text("ADJUSTMENTS", 265, 370);
     doc.text("$ 00.00 ", 355, 370);
     doc.setLineWidth(0.3);
     doc.line(250, 380, 395, 380);
     doc.text("TOTAL", 300, 390);
-    doc.text("$" + convertFormate(parseInt(pdfData.amount)) + convertFormate(parseInt(pdfData.clientId.monthlyMinimumFees)), 355, 390);
+    doc.text("$" + convertFormate(parseInt(pdfData.amount)) + convertFormate(parseInt(pdfData.monthlyMinimumFees)), 355, 390);
 
     doc.setFont("helvetica", "bold");
     doc.setFontSize(12);
@@ -187,7 +188,7 @@ export const exportInvoicePDF = async (pdfData) => {
 
     // doc.addPage(); // add new page
     var dataurlstring = doc.output('dataurlstring');
-    console.log("url",dataurlstring);
+    // console.log("url", dataurlstring);
     return dataurlstring
 }
 

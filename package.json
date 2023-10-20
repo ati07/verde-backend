@@ -17,6 +17,7 @@
     "jsonwebtoken": "^8.5.1",
     "jspdf": "^2.5.1",
     "jspdf-autotable": "^3.7.0",
+    "moment": "^2.29.4",
     "mongoose": "^6.3.1",
     "node-cron": "^3.0.2",
     "nodemailer": "^6.9.1",
