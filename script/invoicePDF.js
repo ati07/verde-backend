@@ -1,16 +1,16 @@
-import {jsPDF} from "jspdf";
+import { jsPDF } from "jspdf";
 import 'jspdf-autotable'
-import { convertFormate,dateFormate } from "./helper.js";
+import { convertFormate, dateFormate } from "./helper.js";
 import fs from 'fs'
 
 // let logo = '../assets/images/invoice.png'
-let logo = fs.readFileSync('../assets/images/invoice.png',{encoding: 'base64'})
-let email = fs.readFileSync('../assets/images/email.png',{encoding: 'base64'})
-let tableHeader = fs.readFileSync('../assets/images/tableHeader.png',{encoding: 'base64'})
-let invoiceFooter = fs.readFileSync('../assets/images/invoiceFooter.png',{encoding: 'base64'})
+let logo = fs.readFileSync('../assets/images/invoice.png', { encoding: 'base64' })
+let email = fs.readFileSync('../assets/images/email.png', { encoding: 'base64' })
+let tableHeader = fs.readFileSync('../assets/images/tableHeader.png', { encoding: 'base64' })
+let invoiceFooter = fs.readFileSync('../assets/images/invoiceFooter.png', { encoding: 'base64' })
 
 export const exportInvoicePDF = async (pdfData) => {
-    // console.log('pdf', pdfData)
+    console.log('pdf----------->', pdfData)
     const unit = "px";
     const size = "A4"; // Use A1, A2, A3 or A4
     const orientation = "portrait"; // portrait or landscape
@@ -111,7 +111,7 @@ export const exportInvoicePDF = async (pdfData) => {
     doc.text("COMPANY:", 50, 125);
     doc.setFont("helvetica", "normal");
     doc.setFontSize(12);
-    doc.text(pdfData.clientId.company, 105, 125);
+    doc.text(pdfData.company, 105, 125);
     doc.setFont("helvetica", 'bold');
     doc.text("ATT:", 50, 145);
     doc.setFont("helvetica", 'normal');
@@ -139,8 +139,8 @@ export const exportInvoicePDF = async (pdfData) => {
     doc.setFontSize(12);
     doc.text(dateFormate(pdfData.dueDate, 'YYYY-MM-DD') ?? '', 340, 161);
     // table header image
-    doc.addImage(tableHeader, "PNG", 40, 180, 360, 40, '', 'FAST'), 
-    doc.autoTable(content)
+    doc.addImage(tableHeader, "PNG", 40, 180, 360, 40, '', 'FAST'),
+        doc.autoTable(content)
     doc.setFontSize(10);
     doc.setFont("helvetica", "normal");
     doc.text("SUB TOTAL", 280, 350);
@@ -194,7 +194,7 @@ export const exportInvoicePDF = async (pdfData) => {
 
     // doc.addPage(); // add new page
     var dataurlstring = doc.output('dataurlstring');
-    console.log("url",dataurlstring);
+    // console.log("url", dataurlstring);
     return dataurlstring
 }
 

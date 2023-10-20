@@ -1,9 +1,9 @@
 // const { chromium } = require('playwright');
 import { chromium } from 'playwright';
 import reader from 'xlsx'
-import RdrAlerts from '../../models/rdrAlerts.js';
+import RdrAlerts from '../models/rdrAlerts.js';
 import mongoose from 'mongoose';
-import MerchantAccount from '../../models/merchantAccount.js';
+import MerchantAccount from '../models/merchantAccount.js';
 // const reader = require('xlsx')
 
 export const dateFormate = (date, formate) => {
