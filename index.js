@@ -57,6 +57,7 @@ app.use((req, res) =>
 
 const startServer = async () => {
   try {
+    console.log('Mongo DB conn. string...', process.env.MONGO_CONNECT);
     await mongoose.connect(process.env.MONGO_CONNECT).then(() => console.log("db connected"));
     app
       .listen(port, () => console.log(`Server is listening on port: ${port}`))
