@@ -13,6 +13,7 @@ import dashboardRouter from './routes/dashboard.js';
 import riskReportRouter from './routes/riskreport.js';
 import apiRouter from './routes/api.js';
 import invoiceRouter from './routes/invoice.js';
+import morgan from 'morgan';
 
 dotenv.config();
 
@@ -32,6 +33,7 @@ app.use((req, res, next) => {
   );
   next();
 });
+app.use(morgan('dev'));
 
 app.use(express.json({ limit: '10mb' }));
 app.use('/dashboard',dashboardRouter)
