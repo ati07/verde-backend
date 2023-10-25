@@ -19,7 +19,7 @@ export const getDashboardDataNew = tryCatch(async (req, res) => {
     createdAt: { $gte: new Date(startDate), $lte: new Date(endDate) }
   }
 
-  if (req.query.clientIds && req.auth.user._doc.role === 'Admin') {
+  if (req.query.clientIds && req.auth.user.role === 'Admin') {
     let clientIds = JSON.parse(req.query.clientIds)
     findData['clientId'] = { $in: clientIds }
   }
@@ -31,8 +31,9 @@ export const getDashboardDataNew = tryCatch(async (req, res) => {
     let dbasId = req.query.dbasId
     findData['merchantAccountId'] = dbasId
   }
-  if (req.auth.user._doc.role !== 'Admin') {
-    findData['clientId'] = req.auth.user._doc.clientId
+  // console.log('susus',req.auth.user)
+  if (req.auth.user.role !== 'Admin') {
+    findData['clientId'] = req.auth.user.clientId
   }
   // Find All data accounding to filtered
   if (req.query.rdrAlerts) {
@@ -81,7 +82,7 @@ export const getAlertsAmounts = tryCatch(async (req, res) => {
   if (req.query.past7) {
     findData['createdAt'] = { $gte: new Date((new Date().getTime() - (15 * 24 * 60 * 60 * 1000))) }
   }
-  if (req.query.clientIds && req.auth.user._doc.role === 'Admin') {
+  if (req.query.clientIds && req.auth.user.role === 'Admin') {
     let clientIds = JSON.parse(req.query.clientIds)
     findData['clientId'] = { $in: clientIds }
   }
@@ -93,8 +94,8 @@ export const getAlertsAmounts = tryCatch(async (req, res) => {
     let dbasId = req.query.dbasId
     findData['merchantAccountId'] = dbasId
   }
-  if (req.auth.user._doc.role !== 'Admin') {
-    findData['clientId'] = req.auth.user._doc.clientId
+  if (req.auth.user.role !== 'Admin') {
+    findData['clientId'] = req.auth.user.clientId
   }
 
   if (req.query.rdrAlerts) {
@@ -203,7 +204,7 @@ export const getAlertsAmounts = tryCatch(async (req, res) => {
 //     // let findPendingEthocaAlerts = { status: 'Pending', createdAt: { $gte: new Date(currentDate.start_date), $lte: new Date(currentDate.end_date) } }
 //     let findRefundedEthocaAlerts = { status: 'Refunded', createdAt: { $gte: new Date(currentDate.start_date), $lte: new Date(currentDate.end_date) } }
 
-//     if (clientIds && clientIds.length > 0 && req.auth.user._doc.role === 'Admin') {
+//     if (clientIds && clientIds.length > 0 && req.auth.user.role === 'Admin') {
 //       findEthocaAlerts['clientId'] = { $in: clientIds }
 //       findRdrAlerts['clientId'] = { $in: clientIds }
 //       // findExpiredEthocaAlerts['clientId'] = {$in: clientIds }
@@ -227,13 +228,13 @@ export const getAlertsAmounts = tryCatch(async (req, res) => {
 //       findRefundedEthocaAlerts['merchantAccountId'] = { $in: dbasIds }
 //       findMerchantAccount['merchantAccountId'] = { $in: dbasIds }
 //     }
-//     if (req.auth.user._doc.role !== 'Admin') {
-//       findEthocaAlerts['clientId'] = req.auth.user._doc.clientId
-//       findRdrAlerts['clientId'] = req.auth.user._doc.clientId
-//       // findExpiredEthocaAlerts['clientId'] = req.auth.user._doc.clientId
-//       // findPendingEthocaAlerts['clientId'] = req.auth.user._doc.clientId
-//       findRefundedEthocaAlerts['clientId'] = req.auth.user._doc.clientId
-//       findMerchantAccount['clientId'] = req.auth.user._doc.clientId
+//     if (req.auth.user.role !== 'Admin') {
+//       findEthocaAlerts['clientId'] = req.auth.user.clientId
+//       findRdrAlerts['clientId'] = req.auth.user.clientId
+//       // findExpiredEthocaAlerts['clientId'] = req.auth.user.clientId
+//       // findPendingEthocaAlerts['clientId'] = req.auth.user.clientId
+//       findRefundedEthocaAlerts['clientId'] = req.auth.user.clientId
+//       findMerchantAccount['clientId'] = req.auth.user.clientId
 //     }
 //     // Find All data accounding to filtered
 //     ethocaAlerts = await EthocaAlert.find(findEthocaAlerts).sort({ _id: -1 });
@@ -326,7 +327,7 @@ export const getAlertsAmounts = tryCatch(async (req, res) => {
 
 //     let findExpiredEthocaAlerts = { status: 'Expired', createdAt: { $gte: new Date(currentDate.start_date), $lte: new Date(currentDate.end_date) } }
 
-//     if (clientIds && clientIds.length > 0 && req.auth.user._doc.role === 'Admin') {
+//     if (clientIds && clientIds.length > 0 && req.auth.user.role === 'Admin') {
 //       findExpiredEthocaAlerts['clientId'] = { $in: clientIds }
 //     }
 //     if (merchantIds && merchantIds.length > 0) {
@@ -335,8 +336,8 @@ export const getAlertsAmounts = tryCatch(async (req, res) => {
 //     if (dbasIds && dbasIds.length > 0) {
 //       findExpiredEthocaAlerts['merchantAccountId'] = { $in: dbasIds }
 //     }
-//     if (req.auth.user._doc.role !== 'Admin') {
-//       findExpiredEthocaAlerts['clientId'] = req.auth.user._doc.clientId
+//     if (req.auth.user.role !== 'Admin') {
+//       findExpiredEthocaAlerts['clientId'] = req.auth.user.clientId
 //     }
 
 //     let expiredEthocaAlerts = await EthocaAlert.find(findExpiredEthocaAlerts).sort({ _id: -1 });
@@ -367,7 +368,7 @@ export const getAlertsAmounts = tryCatch(async (req, res) => {
 //     let dbasIds = JSON.parse(req.query.dbasIds)
 //     let findPendingEthocaAlerts = { status: 'Pending', createdAt: { $gte: new Date(currentDate.start_date), $lte: new Date(currentDate.end_date) } }
 
-//     if (clientIds && clientIds.length > 0 && req.auth.user._doc.role === 'Admin') {
+//     if (clientIds && clientIds.length > 0 && req.auth.user.role === 'Admin') {
 //       findPendingEthocaAlerts['clientId'] = { $in: clientIds }
 //     }
 //     if (merchantIds && merchantIds.length > 0) {
@@ -376,8 +377,8 @@ export const getAlertsAmounts = tryCatch(async (req, res) => {
 //     if (dbasIds && dbasIds.length > 0) {
 //       findPendingEthocaAlerts['merchantAccountId'] = { $in: dbasIds }
 //     }
-//     if (req.auth.user._doc.role !== 'Admin') {
-//       findPendingEthocaAlerts['clientId'] = req.auth.user._doc.clientId
+//     if (req.auth.user.role !== 'Admin') {
+//       findPendingEthocaAlerts['clientId'] = req.auth.user.clientId
 //     }
 
 //     let pendingEthocaAlerts = await EthocaAlert.find(findPendingEthocaAlerts).sort({ _id: -1 });

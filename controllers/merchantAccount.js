@@ -1,5 +1,9 @@
 import MerchantAccount from '../models/merchantAccount.js';
+import RdrAlerts from '../models/rdrAlerts.js';
+import EthocaAlerts from '../models/ethocaAlerts.js';
 import tryCatch from './utils/tryCatch.js';
+import Chargebacks from '../models/chargebacks.js';
+import Users from '../models/user.js';
 
 export const createMerchantAccount = tryCatch(async (req, res) => {
   //todo: error handle
@@ -37,8 +41,8 @@ export const getMerchantAccount = tryCatch(async (req, res) => {
     findMerchantAccount.clientId = {$in:JSON.parse(req.query.clientIds)}
   }
 
-  if(req.auth.user._doc.role !=='Admin'){
-    findMerchantAccount.clientId = req.auth.user._doc.clientId
+  if(req.auth.user.role !=='Admin'){
+    findMerchantAccount.clientId = req.auth.user.clientId
   }
 
   const merchantAccount = await MerchantAccount.find(findMerchantAccount)
@@ -47,15 +51,29 @@ export const getMerchantAccount = tryCatch(async (req, res) => {
 });
 
 export const deleteMerchantAccount = tryCatch(async (req, res) => {
-  //Todo: handle data for merchantAccount
+  
   let updateData = {
     $set: {isDelete:true}
   }
   let findMerchantAccount={
     _id: req.params.merchantAccountId
   }
-  const { _id } = await MerchantAccount.updateOne(findMerchantAccount,updateData);
-  res.status(200).json({ success: true, message: "Merchant Account deleted successfully" });
+  const ma= await MerchantAccount.updateOne(findMerchantAccount,updateData);
+  let findData={
+    merchantAccountId: req.params.merchantAccountId
+  }
+  // console.log('mA',mA);
+
+  const rdr= await RdrAlerts.updateMany(findData,updateData);
+  // console.log('rdr',rdr);
+
+  const e = await EthocaAlerts.updateMany(findData,updateData);
+  // console.log('e',e);
+  
+  const ch = await Chargebacks.updateMany(findData,updateData);
+  // console.log('ch',ch);
+
+  res.status(200).json({ success: true, message: "Merchant Account and all the related data deleted successfully" });
 });
 
 export const updateMerchantAccount = tryCatch(async (req, res) => {
