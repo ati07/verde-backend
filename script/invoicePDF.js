@@ -26,15 +26,23 @@ export const exportInvoicePDF = async (pdfData) => {
     const totalRdr2Price = parseInt(pdfData.numberOfTier2) * parseInt(pdfData.rdrTier2Price)
     const totalRdr3Price = parseInt(pdfData.numberOfTier3) * parseInt(pdfData.rdrTier3Price)
     const totalEthocaPrice = parseInt(pdfData.numberOfEthoca) * parseInt(pdfData.ethocaPrice)
-
+    const subTotal = convertFormate(parseFloat(pdfData.amount) + parseFloat(pdfData.clientId.monthlyMinimumFees))
     const data = [
-        ['MONTHLY MIN', '', '$' + convertFormate(parseInt(pdfData.monthlyMinimumFees)), '$' + convertFormate(parseInt(pdfData.monthlyMinimumFees))],
-        ['RDR ALERTS TIER 1', pdfData.numberOfTier1, '$' + convertFormate(pdfData.rdrTier1Price), "$" + convertFormate(totalRdr1Price)],
-        ['RDR ALERTS TIER 2', pdfData.numberOfTier2, '$' + convertFormate(pdfData.rdrTier2Price), "$" + convertFormate(totalRdr2Price)],
-        ['RDR ALERTS TIER 3', pdfData.numberOfTier3, '$' + convertFormate(pdfData.rdrTier3Price), "$" + convertFormate(totalRdr3Price)],
-        ['ETHOCA ALERTS', pdfData.numberOfEthoca, '$' + convertFormate(pdfData.ethocaPrice), "$" + convertFormate(totalEthocaPrice)],
-
+        ['MONTHLY MIN','' ,'$' + convertFormate(parseInt(pdfData.clientId.monthlyMinimumFees)), '$' + convertFormate(parseInt(pdfData.clientId.monthlyMinimumFees))],
+        
     ]
+    if (pdfData.numberOfTier1) {
+        data.push(['RDR ALERTS TIER 1', pdfData.numberOfTier1, '$' + convertFormate(pdfData.rdrTier1Price), "$" + convertFormate(totalRdr1Price)])
+    }
+    if(pdfData.numberOfTier2){
+        data.push(['RDR ALERTS TIER 2', pdfData.numberOfTier2, '$' + convertFormate(pdfData.rdrTier2Price), "$" + convertFormate(totalRdr2Price)])
+    }
+    if(pdfData.numberOfTier3){
+        data.push(['RDR ALERTS TIER 3', pdfData.numberOfTier3, '$' + convertFormate(pdfData.rdrTier3Price ?? 0 ), "$" + convertFormate(totalRdr3Price ?? 0)])
+    }
+    if(pdfData.numberOfEthoca){
+        data.push(['ETHOCA ALERTS', pdfData.numberOfEthoca, '$' + convertFormate(pdfData.ethocaPrice ?? 0), "$" + convertFormate(totalEthocaPrice)])
+    }
     let content = {
         startY: 220,
         head: headers,
@@ -113,8 +121,7 @@ export const exportInvoicePDF = async (pdfData) => {
     doc.text("Invoice No:", 280, 125);
     doc.setFont("helvetica", "normal");
     doc.setFontSize(12);
-    console.log("🚀 ~ file: invoicePDF.js:118 ~ exportInvoicePDF ~ pdfData.invoiceNumber:", pdfData.invoiceNumber, typeof pdfData.invoiceNumber)
-    doc.text(String(pdfData.invoiceNumber), 340, 125);
+    doc.text(pdfData.invoiceNumber, 340, 125);
     doc.setFont("helvetica", "bold");
     doc.setFontSize(12);
     doc.text("Period:", 280, 137);
@@ -137,14 +144,13 @@ export const exportInvoicePDF = async (pdfData) => {
     doc.setFontSize(10);
     doc.setFont("helvetica", "normal");
     doc.text("SUB TOTAL", 280, 350);
-    doc.text("$" + convertFormate(parseInt(pdfData.amount)) + convertFormate(parseInt(pdfData.monthlyMinimumFees)), 355, 350);
+    doc.text("$" + subTotal, 355, 350);
     doc.text("ADJUSTMENTS", 265, 370);
     doc.text("$ 00.00 ", 355, 370);
     doc.setLineWidth(0.3);
     doc.line(250, 380, 395, 380);
     doc.text("TOTAL", 300, 390);
-    doc.text("$" + convertFormate(parseInt(pdfData.amount)) + convertFormate(parseInt(pdfData.monthlyMinimumFees)), 355, 390);
-
+    doc.text("$" + subTotal, 355, 390);
     doc.setFont("helvetica", "bold");
     doc.setFontSize(12);
     doc.text("Payment Method:", 50, 410);

@@ -10,12 +10,12 @@ export const createRdrAlerts = tryCatch(async (req, res) => {
 });
 
 export const getRdrAlerts = tryCatch(async (req, res) => {
-   //todo: handle deleted data
+   
    let findRdrAlerts = {
     isDelete: false
   }
-  if(req.auth.user._doc.role !=='Admin'){
-    findRdrAlerts.clientId = req.auth.user._doc.clientId
+  if(req.auth.user.role !=='Admin'){
+    findRdrAlerts.clientId = req.auth.user.clientId
   }
   const rdrAlerts = await RdrAlerts.find(findRdrAlerts)
                                   .populate([
@@ -28,20 +28,19 @@ export const getRdrAlerts = tryCatch(async (req, res) => {
 });
 
 export const deleteRdrAlerts = tryCatch(async (req, res) => {
-  //Todo: handle data for RdrAlerts
+  
   let updateData = {
     $set: {isDelete:true}
   }
   let findRdrAlerts={
     _id: req.params.rdrId
   }
-  const { _id } = await RdrAlerts.findByIdAndDelete(findRdrAlerts,updateData);
+  const { _id } = await RdrAlerts.updateOne(findRdrAlerts,updateData);
   res.status(200).json({ success: true, message: 'Rdr deleted successfully' });
 });
 
 export const updateRdrAlerts = tryCatch(async (req, res) => {
-  //Todo: handle RdrAlerts data for status
-
+  
   const updatedrdr = await RdrAlerts.updateOne(
     {_id:req.params.rdrId},
     {

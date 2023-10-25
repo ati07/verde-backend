@@ -43,8 +43,8 @@ export const getInvoice = tryCatch(async (req, res) => {
   let findInvoice = {
     isDelete: false
   }
-  if (req.auth.user._doc.role !== 'Admin') {
-    findInvoice.clientId = req.auth.user._doc.clientId
+  if (req.auth.user.role !== 'Admin') {
+    findInvoice.clientId = req.auth.user.clientId
   }
   const invoice = await Invoice.find(findInvoice)
     .populate([
@@ -66,7 +66,7 @@ export const getPartialAmounts = tryCatch(async (req, res) => {
 })
 
 export const deleteInvoice = tryCatch(async (req, res) => {
-  //Todo: handle data for Invoice
+  
   // console.log('dal',req.params)
   let updateData = {
     $set: { isDelete: true }

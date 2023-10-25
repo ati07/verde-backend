@@ -10,12 +10,12 @@ export const createChargebacks = tryCatch(async (req, res) => {
 });
 
 export const getChargebacks = tryCatch(async (req, res) => {
-  //todo: handle deleted data
+  
   let findChargebacks = {
     isDelete: false
   }
-  if (req.auth.user._doc.role !== 'Admin') {
-    findChargebacks.clientId = req.auth.user._doc.clientId
+  if (req.auth.user.role !== 'Admin') {
+    findChargebacks.clientId = req.auth.user.clientId
   }
   const chargebacks = await Chargebacks.find(findChargebacks)
     .populate([
@@ -27,7 +27,7 @@ export const getChargebacks = tryCatch(async (req, res) => {
 });
 
 export const deleteChargebacks = tryCatch(async (req, res) => {
-  //Todo: handle data for Chargebacks
+  
   let updateData = {
     $set: { isDelete: true }
   }
@@ -39,7 +39,7 @@ export const deleteChargebacks = tryCatch(async (req, res) => {
 });
 
 export const updateChargebacks = tryCatch(async (req, res) => {
-  //Todo: handle Chargebacks data for status
+  
   const updatedChargebacks = await Chargebacks.updateOne(
     { _id: req.params.chargebacksId },
     {

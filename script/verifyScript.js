@@ -120,6 +120,7 @@ export async function verifyScript() {
                             caseAmount: data?.[i]?.['Case Amount'],
                             descriptorContact: data?.[i]?.['Descriptor Contact'],
                             caseAge: data?.[i]?.['Case Age'],
+                            tier:'rdrTier' + merchantAccountDetail?.[0]?.rdrTier
                         })
                     }
                 }
