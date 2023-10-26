@@ -5,10 +5,13 @@ import MerchantAccount from "../../models/merchantAccount.js"
 
 export const getRdrAmounts = async(filter,payload)=>{
     
-    let amount=0
+    let amount = 0
     if(filter.merchantAccountId){
       const numberOfRdrAlerts = await RdrAlerts.count(filter)
+      
       amount += (numberOfRdrAlerts * (payload[`rdrTier1Price`] || payload[`rdrTier2Price`] || payload[`rdrTier3Price`]))
+      
+      console.log('numberOfRdrAlerts,amount',numberOfRdrAlerts,amount)
       
       return {numberOfRdrAlerts,amount}
     }

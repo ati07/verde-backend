@@ -8,12 +8,13 @@ export const createInvoice = tryCatch(async (req, res) => {
 
   let filterData = {
     createdAt: { $gte: new Date(invoicePayload.startDate), $lte: new Date(invoicePayload.endDate) },
-    clientId: invoicePayload.clientId
+    clientId: invoicePayload.clientId,
+    isDelete: false
   }
 
   // filterData.startDate = invoicePayload.startDate
   // filterData.endDate = invoicePayload.endDate
-
+  
   if (invoicePayload.merchantAccountId) {
     filterData.merchantAccountId = invoicePayload.merchantAccountId
   }
@@ -35,12 +36,9 @@ export const createInvoice = tryCatch(async (req, res) => {
   invoicePayload.numberOfEthoca = ethocaAlertsAmounts.numberOfEthocaAlerts
 
   let invoice = await Invoice.findOne({ isDelete: false }).sort({ invoiceNumber: -1 })
-  console.log("🚀 ~ file: invoice.js:38 ~ createInvoice ~ invoice:", invoice)
   let currentInvoiceNumber = invoice ? invoice.invoiceNumber : 999
-  console.log("🚀 ~ file: invoice.js:40 ~ createInvoice ~ currentInvoiceNumber:", currentInvoiceNumber)
   invoicePayload.invoiceNumber = currentInvoiceNumber + 1
-  console.log("🚀 ~ file: invoice.js:42 ~ createInvoice ~ invoicePayload:", invoicePayload)
-  
+    
   const newInvoice = new Invoice(invoicePayload);
   await newInvoice.save();
   res.status(201).json({ success: true, message: 'Invoice added successfully' });

@@ -105,19 +105,7 @@ export const getAlertsAmounts = tryCatch(async (req, res) => {
     
     rdrAlerts = await RdrAlerts.find(findRdrAlerts, { _id: 1, createdAt: 1,merchantAccountId:1, caseAmount: 1 }).sort({ _id: -1 });
     rdrAmounts = (rdrAlerts.map((i) => i.caseAmount).reduce((total, num) => total + parseInt(num === '' ? 0 : num), 0))
-    // rdrAlerts = await RdrAlerts.aggregate([{ $match: findRdrAlerts },
-    // {
-    //   $group: {
-    //     _id: null,
-    //     totalAmount: {
-    //       $sum: {
-    //         $toDouble: "$caseAmount"
-    //       }
-    //     }
-    //   }
-    // }
-    // ]).sort({ _id: -1 });
-
+   
   }
 
   if (req.query.ethocaAlerts) {

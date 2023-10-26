@@ -11,7 +11,7 @@ export const login = tryCatch(async (req, res) => {
   let userData = await validateUser(payload);
 
   if (userData.error) {
-    console.log("Errroooooo....", userData);
+    console.log("Errroooooologin....", userData);
     return res.status(401).json({
       success: false,
       message: userData.message,

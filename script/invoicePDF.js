@@ -129,11 +129,13 @@ export const exportInvoicePDF = async (pdfData) => {
     doc.setFont("helvetica", "normal");
     doc.text(pdfData.paymentTerms, 340, 137);
     doc.setFont("helvetica", "bold");
+    doc.setFontSize(10);
     doc.text("Invoice Date:", 280, 149);
     doc.setFont("helvetica", "normal");
     doc.setFontSize(10);
     doc.text(dateFormate(pdfData.createdAt, 'YYYY-MM-DD') ?? "", 340, 149);
     doc.setFont("helvetica", "bold");
+    doc.setFontSize(10);
     doc.text("Due Date:", 280, 161);
     doc.setFont("helvetica", "normal");
     doc.setFontSize(10);

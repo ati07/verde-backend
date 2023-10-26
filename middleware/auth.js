@@ -58,7 +58,7 @@ const auth = async (req, res, next) => {
     let userData = await validateUser(decodedToken);
 
     if (userData.error) {
-      console.log("Errroooooo....", userData);
+      console.log("Errroooooomid....", userData);
       return res.status(401).json({
         success: false,
         message: "Authentication failed at Lv1!",
