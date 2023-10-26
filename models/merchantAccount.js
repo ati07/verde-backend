@@ -7,8 +7,6 @@ const merchantAccountSchema = mongoose.Schema({
     dba:{ type: String},
     mid:{ type: String},
     mcc:{ type: String},
-    midLive:{ type: Date},
-    midStatus:{ type: String},
     rdrActivation:{ type: String},
     rdrARN:{ type: String},
     rdrCAID:{ type: String},

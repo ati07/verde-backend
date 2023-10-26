@@ -7,8 +7,8 @@ import Users from '../models/user.js';
 
 export const createMerchantAccount = tryCatch(async (req, res) => {
   //todo: error handle
-  let {clientId,merchantId,dba,mcc,mid,midStatus,midLive,rdrActivation,ethocaActivation} = req.body
-  let merchantAccountPayload= {clientId,merchantId,dba,mcc,mid,midStatus,midLive,rdrActivation,ethocaActivation}
+  let {clientId,merchantId,dba,mcc,mid,ethocaStatus,rdrStatus,rdrActivation,ethocaActivation,domainWebPage} = req.body
+  let merchantAccountPayload= {clientId,merchantId,dba,mcc,mid,ethocaStatus,rdrStatus,rdrActivation,ethocaActivation,domainWebPage}
   if(rdrActivation==='Yes'){
     if(req.body.rdrCAID){
         merchantAccountPayload['rdrCAID'] = req.body.rdrCAID
