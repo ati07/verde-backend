@@ -17,24 +17,29 @@ export const createMerchant = tryCatch(async (req, res) => {
 });
 
 export const getMerchant = tryCatch(async (req, res) => {
-  // console.log('req',req.auth.user)
+
   let findMerchant = {
     isDelete: false
   }
+
   if (req.params.clientId ) {
     findMerchant.clientId = req.params.clientId
   }
+
   if(req.query.clientIds){
     findMerchant.clientId = {$in:JSON.parse(req.query.clientIds)}
   }
+
   if(req.auth.user.role !=='Admin'){
     findMerchant.clientId = req.auth.user.clientId
   }
-  // if()
-  const merchant = await Merchant.find(findMerchant).populate({
+
+  let populateMerchant = {
     path: 'clientId',
     model: 'clients'
-  }).sort({ _id: -1 });
+  }
+  const merchant = await Merchant.find(findMerchant).populate(populateMerchant).sort({ _id: -1 });
+  
   res.status(200).json({ success: true, result: merchant, });
 });
 
