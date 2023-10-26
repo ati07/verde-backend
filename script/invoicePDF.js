@@ -107,36 +107,36 @@ export const exportInvoicePDF = async (pdfData) => {
     // doc.setLineWidth(0.3);
     // doc.line(55, 75, 395, 75);helvetica
     doc.setFont("helvetica", 'bold');
-    doc.setFontSize(12);
+    doc.setFontSize(10);
     doc.text("COMPANY:", 50, 125);
     doc.setFont("helvetica", "normal");
-    doc.setFontSize(12);
+    doc.setFontSize(10);
     doc.text(pdfData.company, 105, 125);
     doc.setFont("helvetica", 'bold');
     doc.text("ATT:", 50, 145);
     doc.setFont("helvetica", 'normal');
     doc.text("", 105, 145);
     doc.setFont("helvetica", "bold");
-    doc.setFontSize(12);
+    doc.setFontSize(10);
     doc.text("Invoice No:", 280, 125);
     doc.setFont("helvetica", "normal");
-    doc.setFontSize(12);
+    doc.setFontSize(10);
     doc.text(pdfData.invoiceNumber, 340, 125);
     doc.setFont("helvetica", "bold");
-    doc.setFontSize(12);
+    doc.setFontSize(10);
     doc.text("Period:", 280, 137);
-    doc.setFontSize(12);
+    doc.setFontSize(10);
     doc.setFont("helvetica", "normal");
     doc.text(pdfData.paymentTerms, 340, 137);
     doc.setFont("helvetica", "bold");
     doc.text("Invoice Date:", 280, 149);
     doc.setFont("helvetica", "normal");
-    doc.setFontSize(12);
+    doc.setFontSize(10);
     doc.text(dateFormate(pdfData.createdAt, 'YYYY-MM-DD') ?? "", 340, 149);
     doc.setFont("helvetica", "bold");
     doc.text("Due Date:", 280, 161);
     doc.setFont("helvetica", "normal");
-    doc.setFontSize(12);
+    doc.setFontSize(10);
     doc.text(dateFormate(pdfData.dueDate, 'YYYY-MM-DD') ?? '', 340, 161);
     // table header image
     doc.addImage(tableHeader, "PNG", 40, 180, 360, 40, '', 'FAST'),
