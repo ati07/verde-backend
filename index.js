@@ -13,6 +13,7 @@ import dashboardRouter from './routes/dashboard.js';
 import riskReportRouter from './routes/riskreport.js';
 import apiRouter from './routes/api.js';
 import invoiceRouter from './routes/invoice.js';
+import morgan from 'morgan';
 
 dotenv.config();
 
@@ -32,6 +33,7 @@ app.use((req, res, next) => {
   );
   next();
 });
+app.use(morgan('dev'));
 
 app.use(express.json({ limit: '10mb' }));
 app.use('/dashboard',dashboardRouter)
@@ -57,6 +59,7 @@ app.use((req, res) =>
 
 const startServer = async () => {
   try {
+    console.log('Mongo DB conn. string...', process.env.MONGO_CONNECT);
     await mongoose.connect(process.env.MONGO_CONNECT).then(() => console.log("db connected"));
     app
       .listen(port, () => console.log(`Server is listening on port: ${port}`))

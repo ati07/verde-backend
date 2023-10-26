@@ -121,7 +121,7 @@ export const exportInvoicePDF = async (pdfData) => {
     doc.text("Invoice No:", 280, 125);
     doc.setFont("helvetica", "normal");
     doc.setFontSize(10);
-    doc.text(`${pdfData.invoiceNumber}`, 340, 125);
+    doc.text(pdfData.invoiceNumber, 340, 125);
     doc.setFont("helvetica", "bold");
     doc.setFontSize(10);
     doc.text("Period:", 280, 137);
