@@ -16,7 +16,7 @@ const invoiceSchema = mongoose.Schema(
         numberOfTier1: { type: Number },
         numberOfTier2: { type: Number },
         numberOfTier3: { type: Number },
-        numberOfEthoca: { type: String },
+        numberOfEthoca: { type: Number },
         rdrTier1Price: { type: String },
         rdrTier2Price: { type: String },
         rdrTier3Price: { type: String },
