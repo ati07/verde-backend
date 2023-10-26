@@ -35,8 +35,11 @@ export const createInvoice = tryCatch(async (req, res) => {
   invoicePayload.numberOfEthoca = ethocaAlertsAmounts.numberOfEthocaAlerts
 
   let invoice = await Invoice.findOne({ isDelete: false }).sort({ invoiceNumber: -1 })
+  console.log("🚀 ~ file: invoice.js:38 ~ createInvoice ~ invoice:", invoice)
   let currentInvoiceNumber = invoice ? invoice.invoiceNumber : 999
+  console.log("🚀 ~ file: invoice.js:40 ~ createInvoice ~ currentInvoiceNumber:", currentInvoiceNumber)
   invoicePayload.invoiceNumber = currentInvoiceNumber + 1
+  console.log("🚀 ~ file: invoice.js:42 ~ createInvoice ~ invoicePayload:", invoicePayload)
   
   const newInvoice = new Invoice(invoicePayload);
   await newInvoice.save();
