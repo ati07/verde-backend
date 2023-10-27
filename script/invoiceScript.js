@@ -7,8 +7,8 @@ import Invoice from '../models/invoice.js';
 import { exportInvoicePDF } from './invoicePDF.js';
 import { pdfMail } from '../helper/pdfMailer.js';
 const today = moment();
-const startOfMonday = today.clone().subtract(6, 'days').startOf('day').toDate();
-const endOfSunday = today.clone().endOf('day').toDate();
+const startOfMonday = today.clone().subtract(7, 'days').startOf('day').toDate();
+const endOfSunday = today.clone().subtract(-1, 'days').endOf('day').toDate();
 const main = async function () {
     try {
         console.log('Starting');
@@ -33,19 +33,18 @@ const main = async function () {
                 email: clients[i].invoiceEmail
             }
             let rdrDetails = await getRdrDetails(clients[i]);
-            // insertInvoice = { ...rdrDetails }
             let ethocaDetails = await getEthocaDetails(clients[i]);
             insertInvoice = { ...rdrDetails, ...ethocaDetails }
             console.log("🚀 ~ file: invoiceScript.js:45 ~ main ~ insertInvoice:", insertInvoice)
-            insertInvoice["amount"] = 0
-            if(rdrDetails["totalRdrPrice"]){
+            insertInvoice["amount"] = clients[i].monthlyMinimumFees ? clients[i].monthlyMinimumFees : 0
+            if (rdrDetails["totalRdrPrice"]) {
                 insertInvoice["amount"] += rdrDetails["totalRdrPrice"]
             }
-            if(ethocaDetails["totalEthocaPrice"]){
+            if (ethocaDetails["totalEthocaPrice"]) {
                 insertInvoice["amount"] += ethocaDetails["totalEthocaPrice"]
             }
             console.log("🚀 ~ file: invoiceScript.js:47 ~ main ~ insertInvoicemount", insertInvoice["amount"])
-            if(insertInvoice["amount"]){
+            if (insertInvoice["amount"]) {
                 insertInvoice["clientId"] = clients[i]._id
                 insertInvoice["paymentTerms"] = clients[i].paymentTerms
                 insertInvoice["dueDate"] = await getDueDate(clients[i].paymentTerms)
@@ -110,9 +109,9 @@ const getEthocaDetails = async function (clientDetail) {
     }
     let ethocaCount = await EthocaAlert.count(findEthoca);
     let sendRes = {}
-    if(ethocaCount > 0) {
+    if (ethocaCount > 0) {
         sendRes.totalEthocaPrice = (ethocaCount * parseInt(clientDetail["ethocaPrice"])),
-        sendRes.numberOfEthoca = ethocaCount
+            sendRes.numberOfEthoca = ethocaCount
         sendRes.ethocaPrice = clientDetail["ethocaPrice"]
     }
     return sendRes;
@@ -126,13 +125,16 @@ const getDueDate = async function (paymentTerms) {
     let dueDate = new Date()
     switch (paymentTerms.toLowerCase()) {
         case 'weekly net 1':
-            dueDate = today.clone().add(2, 'days').endOf('day').format('YYYY-MM-DD');
+            dueDate = today.clone().add(1, 'days').endOf('day').format('YYYY-MM-DD');
             break;
         case 'weekly net 3':
-            dueDate = today.clone().add(4, 'days').endOf('day').format('YYYY-MM-DD');
+            dueDate = today.clone().add(3, 'days').endOf('day').format('YYYY-MM-DD');
             break;
         case 'weekly net 5':
-            dueDate = today.clone().add(6, 'days').endOf('day').format('YYYY-MM-DD');
+            dueDate = today.clone().add(5, 'days').endOf('day').format('YYYY-MM-DD');
+            break;
+        case 'monthly net 3':
+            dueDate = today.clone().add(3, 'days').endOf('day').format('YYYY-MM-DD');
             break;
         default:
             dueDate = null;
