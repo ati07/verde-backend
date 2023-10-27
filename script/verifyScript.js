@@ -109,7 +109,6 @@ export async function verifyScript() {
                     // console.log("mad", merchantAccountDetail)
                     if (merchantAccountDetail.length > 0) {
                         mappedData.push({
-                            createdAt: new Date(data?.[i]?.['Case Received Date']),
                             clientId: merchantAccountDetail?.[0]?.clientId,
                             merchantId: merchantAccountDetail?.[0]?.merchantId,
                             merchantAccountId: merchantAccountDetail[0]._id,
