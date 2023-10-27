@@ -23,11 +23,17 @@ export const createMerchantAccount = tryCatch(async (req, res) => {
   if (ethocaActivation === 'Yes') {
     merchantAccountPayload['masterCardBin'] = req.body.masterCardBin
     merchantAccountPayload['ethocaARN'] = req.body.ethocaARN
-
   }
+
+  const existingMerchant = MerchantAccount.find({ dba });
+
+  if (existingMerchant.length) {
+    res.status(400).json({ success: true, message: `Merchant Account created with this DBA: ${dba}` });
+  }
+
   const newMerchantAccount = new MerchantAccount(merchantAccountPayload);
   await newMerchantAccount.save();
-  res.status(201).json({ success: true, message: "Merchant Account added successfully" });
+  res.status(200).json({ success: true, message: "Merchant Account added successfully" });
 });
 
 export const getMerchantAccount = tryCatch(async (req, res) => {
@@ -77,11 +83,11 @@ export const deleteMerchantAccount = tryCatch(async (req, res) => {
 });
 
 export const updateMerchantAccount = tryCatch(async (req, res) => {
-  
-  let findData = { 
-    _id: req.params.merchantAccountId 
+
+  let findData = {
+    _id: req.params.merchantAccountId
   }
-  
+
   let updateData = {
     $set: req.body
   }
