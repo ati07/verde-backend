@@ -111,7 +111,7 @@ export async function verifyScript() {
                         mappedData.push({
                             clientId: merchantAccountDetail?.[0]?.clientId,
                             merchantId: merchantAccountDetail?.[0]?.merchantId,
-                            merchantAccountId: merchantAccountDetail[0]._id,
+                            merchantAccountId: merchantAccountDetail?.[0]._id,
                             caseID: data?.[i]?.['Case ID'],
                             caseReceivedDate: data?.[i]?.['Case Received Date'],
                             status: data?.[i]?.['Status'],

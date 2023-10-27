@@ -74,7 +74,7 @@ export async function verifyScript() {
         await pageOne.click('#custom-list-item-0-5');
         await pageOne.waitForSelector("//html/body/div[1]/div[2]/div/div[2]/main/div[2]/div[1]/div[1]/div/div/div/div[2]/div[3]/div/fieldset/div/div[2]/div/div/div[1]/div/div[1]/div/div/div/div/input");
 
-        await pageOne.fill('//html/body/div[1]/div[2]/div/div[2]/main/div[2]/div[1]/div[1]/div/div/div/div[2]/div[3]/div/fieldset/div/div[2]/div/div/div[1]/div/div[1]/div/div/div/div/input', dateFormate(new Date('10/25/2022'), 'MM/DD/YYYY'))
+        await pageOne.fill('//html/body/div[1]/div[2]/div/div[2]/main/div[2]/div[1]/div[1]/div/div/div/div[2]/div[3]/div/fieldset/div/div[2]/div/div/div[1]/div/div[1]/div/div/div/div/input', dateFormate(new Date('10/27/2022'), 'MM/DD/YYYY'))
         await pageOne.dblclick('#main > div:nth-child(3) > div:nth-child(1) > div.css-6x9632-CSS-CSS > div > div > div > div.css-zn1cdn-structPadding-structPadding-structPadding > div > div > button.vds-btn-text--primary.css-118k6bc-smallViewportStyles-highContrastStyles-highContrastStyles-structMargin-structMargin')
 
         await pageOne.waitForSelector('//*[@id="template-main"]/div/div[1]/div[2]/div/button');
@@ -111,7 +111,7 @@ export async function verifyScript() {
                         mappedData.push({
                             clientId: merchantAccountDetail?.[0]?.clientId,
                             merchantId: merchantAccountDetail?.[0]?.merchantId,
-                            merchantAccountId: merchantAccountDetail[0]._id,
+                            merchantAccountId: merchantAccountDetail?.[0]._id,
                             caseID: data?.[i]?.['Case ID'],
                             caseReceivedDate: data?.[i]?.['Case Received Date'],
                             status: data?.[i]?.['Status'],
