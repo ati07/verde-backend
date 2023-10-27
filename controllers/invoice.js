@@ -11,25 +11,16 @@ export const createInvoice = tryCatch(async (req, res) => {
     clientId: invoicePayload.clientId,
     isDelete: false
   }
-
-  // filterData.startDate = invoicePayload.startDate
-  // filterData.endDate = invoicePayload.endDate
   
   if (invoicePayload.merchantAccountId) {
     filterData.merchantAccountId = invoicePayload.merchantAccountId
   }
-  let allMerchantAccounts = await MerchantAccount.find(filterData)
-
-  invoicePayload.allMerchantAccounts = allMerchantAccounts
-
+  
   let rdrAmount = await getRdrAmounts(filterData, invoicePayload)
   let ethocaAlertsAmounts = await getEthocaAmounts(filterData, invoicePayload)
-  // if(invoicePayload.clientId){
+  
 
-  // }
-  // console.log('r,e', rdrAmount, ethocaAlertsAmounts)
-
-  invoicePayload.amount = rdrAmount.amount + ethocaAlertsAmounts.amount
+  invoicePayload.amount = rdrAmount.amount + ethocaAlertsAmounts.amount + parseFloat(invoicePayload.monthlyMinimumFees)
   invoicePayload.numberOfTier1 = rdrAmount.rdrTier1
   invoicePayload.numberOfTier2 = rdrAmount.rdrTier2
   invoicePayload.numberOfTier3 = rdrAmount.rdrTier3

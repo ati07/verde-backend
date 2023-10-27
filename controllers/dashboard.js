@@ -11,12 +11,17 @@ export const getDashboardDataNew = tryCatch(async (req, res) => {
 
   let ethocaAlerts;
   let rdrAlerts;
-  let merchantAccounts;
-  let refundedEthocaAlerts;
-  let startDate = req.query.startDate
-  let endDate = req.query.endDate
+  // let merchantAccounts;
+  // let refundedEthocaAlerts;
+  // let startDate = req.query.startDate
+  // let endDate = req.query.endDate
   let findData = {
-    createdAt: { $gte: new Date(startDate), $lte: new Date(endDate) }
+    // createdAt: { $gte: new Date(startDate), $lte: new Date(endDate) }
+  }
+  if (req.query.startDate && req.query.endDate) {
+    let startDate = req.query.startDate
+    let endDate = req.query.endDate
+    findData['createdAt'] = { $gte: new Date(startDate), $lte: new Date(endDate) }
   }
 
   if (req.query.clientIds && req.auth.user.role === 'Admin') {
