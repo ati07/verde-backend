@@ -25,7 +25,7 @@ export const createMerchantAccount = tryCatch(async (req, res) => {
     merchantAccountPayload['ethocaARN'] = req.body.ethocaARN
   }
 
-  const existingMerchant = MerchantAccount.find({ dba });
+  const existingMerchant = await MerchantAccount.find({ dba });
   console.log("🚀 ~ file: merchantAccount.js:29 ~ createMerchantAccount ~ existingMerchant:", dba, existingMerchant)
 
   if (existingMerchant.length) {
