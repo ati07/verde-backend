@@ -50,7 +50,9 @@ export const updateRdrAlerts = tryCatch(async (req, res) => {
 });
 
 export const filterRdrAlerts = tryCatch(async(req, res)=>{
-  let filterRdrAlertsData = {}
+  let filterRdrAlertsData = {
+    isDelete: false
+  }
 
   if(req.body.clients && req.body.clients.length > 0 ) {
     filterRdrAlertsData['clientId'] = {$in:req.body.clients}

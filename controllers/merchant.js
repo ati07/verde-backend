@@ -19,7 +19,8 @@ export const createMerchant = tryCatch(async (req, res) => {
 export const getMerchant = tryCatch(async (req, res) => {
 
   let findMerchant = {
-    isDelete: false
+    isDelete: false,
+    isActive: true
   }
 
   if (req.params.clientId ) {

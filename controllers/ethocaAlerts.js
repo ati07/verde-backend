@@ -28,7 +28,7 @@ export const getEthocaAlerts = tryCatch(async (req, res) => {
                                           { path:'merchantAccountId',model:'merchantAccounts'}
                                         ]).sort({ _id: -1 });
   res.status(200).json({ success: true, result: ethocaAlerts });
-});
+}); 
 
 export const deleteEthocaAlerts = tryCatch(async (req, res) => {
   
@@ -53,7 +53,9 @@ export const updateEthocaAlerts = tryCatch(async (req, res) => {
 });
 
 export const filterEthocaAlerts = tryCatch(async(req, res)=>{
-  let filterEthocaAlertsData = {}
+  let filterEthocaAlertsData = {
+    isDelete:false
+  }
 
   if(req.body.clients && req.body.clients.length > 0 ) {
     filterEthocaAlertsData['clientId'] = {$in:req.body.clients}

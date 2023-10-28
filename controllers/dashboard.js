@@ -8,16 +8,13 @@ import tryCatch from './utils/tryCatch.js';
 export const getDashboardDataNew = tryCatch(async (req, res) => {
   // console.log('reqDas', req.query)
   //   req.query.clientIds
-
   let ethocaAlerts;
   let rdrAlerts;
-  // let merchantAccounts;
-  // let refundedEthocaAlerts;
-  // let startDate = req.query.startDate
-  // let endDate = req.query.endDate
+
   let findData = {
-    // createdAt: { $gte: new Date(startDate), $lte: new Date(endDate) }
+    isDeleted:false
   }
+
   if (req.query.startDate && req.query.endDate) {
     let startDate = req.query.startDate
     let endDate = req.query.endDate
@@ -32,9 +29,9 @@ export const getDashboardDataNew = tryCatch(async (req, res) => {
     let merchantIds = JSON.parse(req.query.merchantIds)
     findData['merchantId'] = { $in: merchantIds }
   }
-  if (req.query.dbasId) {
-    let dbasId = req.query.dbasId
-    findData['merchantAccountId'] = dbasId
+  if (req.query.dbasIds) {
+    let dbasIds = JSON.parse(req.query.dbasIds)
+    findData['merchantAccountId'] = { $in: dbasIds }
   }
   // console.log('susus',req.auth.user)
   if (req.auth.user.role !== 'Admin') {
@@ -77,7 +74,9 @@ export const getAlertsAmounts = tryCatch(async (req, res) => {
   let rdrAmounts;
   let ethocaAlertsAmounts;
 
-  let findData = {}
+  let findData = {
+    isDeleted:false
+  }
 
   if (req.query.startDate && req.query.endDate) {
     let startDate = req.query.startDate
@@ -95,9 +94,9 @@ export const getAlertsAmounts = tryCatch(async (req, res) => {
     let merchantIds = JSON.parse(req.query.merchantIds)
     findData['merchantId'] = { $in: merchantIds }
   }
-  if (req.query.dbasId) {
-    let dbasId = req.query.dbasId
-    findData['merchantAccountId'] = dbasId
+  if (req.query.dbasIds) {
+    let dbasIds = JSON.parse(req.query.dbasIds)
+    findData['merchantAccountId'] ={ $in: dbasIds}
   }
   if (req.auth.user.role !== 'Admin') {
     findData['clientId'] = req.auth.user.clientId

@@ -9,6 +9,6 @@ invoiceRouter.get('/',auth,getInvoice);
 invoiceRouter.get('/partial-amount',auth,getPartialAmounts)
 invoiceRouter.get('/email/:invoiceId',auth,mailInvoice);
 invoiceRouter.patch('/:invoiceId',auth, deleteInvoice);
-invoiceRouter.put('/update-status/:invoiceId',auth,updateInvoice)
+invoiceRouter.put('/:invoiceId',auth,updateInvoice)
 
 export default invoiceRouter;

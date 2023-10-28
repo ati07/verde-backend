@@ -16,6 +16,5 @@ merchantAccountRouter.post('/', auth,createMerchantAccount);
 merchantAccountRouter.post('/filter',auth, filterMerchantAccount);
 merchantAccountRouter.patch('/:merchantAccountId',auth,deleteMerchantAccount);
 merchantAccountRouter.put('/:merchantAccountId',auth,updateMerchantAccount);
-merchantAccountRouter.patch('/status/:merchantAccountId',auth,updateMerchantAccount);
 
 export default merchantAccountRouter;

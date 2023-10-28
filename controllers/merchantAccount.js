@@ -7,8 +7,8 @@ import Users from '../models/user.js';
 
 export const createMerchantAccount = tryCatch(async (req, res) => {
   //todo: error handle
-  let { clientId, merchantId, dba, mcc, mid, midStatus, midLive, rdrActivation, ethocaActivation } = req.body
-  let merchantAccountPayload = { clientId, merchantId, dba, mcc, mid, midStatus, midLive, rdrActivation, ethocaActivation }
+  let { clientId, merchantId, dba, mcc, mid, rdrStatus, ethocaStatus, rdrActivation, ethocaActivation } = req.body
+  let merchantAccountPayload = { clientId, merchantId, dba, mcc, mid, rdrStatus, ethocaStatus, rdrActivation, ethocaActivation }
   if (rdrActivation === 'Yes') {
     if (req.body.rdrCAID) {
       merchantAccountPayload['rdrCAID'] = req.body.rdrCAID
@@ -32,13 +32,18 @@ export const createMerchantAccount = tryCatch(async (req, res) => {
 
 export const getMerchantAccount = tryCatch(async (req, res) => {
   let findMerchantAccount = {
-    isDelete: false
+    isDelete: false,
+    isActive: true
   }
   if (req.params.clientId) {
     findMerchantAccount.clientId = req.params.clientId
   }
+  
   if (req.query.clientIds) {
     findMerchantAccount.clientId = { $in: JSON.parse(req.query.clientIds) }
+  }
+  if (req.query.merchantIds) {
+    findMerchantAccount.merchantId = { $in: JSON.parse(req.query.merchantIds) }
   }
 
   if (req.auth.user.role !== 'Admin') {

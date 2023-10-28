@@ -26,11 +26,12 @@ export const exportInvoicePDF = async (pdfData) => {
     const totalRdr2Price = parseInt(pdfData.numberOfTier2) * parseInt(pdfData.rdrTier2Price)
     const totalRdr3Price = parseInt(pdfData.numberOfTier3) * parseInt(pdfData.rdrTier3Price)
     const totalEthocaPrice = parseInt(pdfData.numberOfEthoca) * parseInt(pdfData.ethocaPrice)
-    const subTotal = convertFormate(parseFloat(pdfData.amount) + parseFloat(pdfData.clientId.monthlyMinimumFees))
-    const data = [
-        ['MONTHLY MIN','' ,'$' + convertFormate(parseInt(pdfData.clientId.monthlyMinimumFees)), '$' + convertFormate(parseInt(pdfData.clientId.monthlyMinimumFees))],
-        
-    ]
+    const subTotal = convertFormate(parseFloat(pdfData.amount))
+    const data = []
+
+    if(pdfData.clientId.monthlyMinimumFees){
+        data.push(['MONTHLY MIN', '', '$' + convertFormate(parseInt(pdfData.clientId.monthlyMinimumFees)), '$' + convertFormate(parseInt(pdfData.clientId.monthlyMinimumFees))])
+    }
     if (pdfData.numberOfTier1) {
         data.push(['RDR ALERTS TIER 1', pdfData.numberOfTier1, '$' + convertFormate(pdfData.rdrTier1Price), "$" + convertFormate(totalRdr1Price)])
     }

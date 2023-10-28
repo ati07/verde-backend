@@ -18,9 +18,14 @@ export const createInvoice = tryCatch(async (req, res) => {
   
   let rdrAmount = await getRdrAmounts(filterData, invoicePayload)
   let ethocaAlertsAmounts = await getEthocaAmounts(filterData, invoicePayload)
-  
+  let totalA = rdrAmount.amount + ethocaAlertsAmounts.amount
 
-  invoicePayload.amount = rdrAmount.amount + ethocaAlertsAmounts.amount + parseFloat(invoicePayload.monthlyMinimumFees)
+  if(totalA <= parseFloat(invoicePayload.monthlyMinimumFees)){
+     invoicePayload.amount =  parseFloat(invoicePayload.monthlyMinimumFees)
+  }else{
+    invoicePayload.amount = totalA +  parseFloat(invoicePayload.monthlyMinimumFees)
+  }
+  
   invoicePayload.numberOfTier1 = rdrAmount.rdrTier1
   invoicePayload.numberOfTier2 = rdrAmount.rdrTier2
   invoicePayload.numberOfTier3 = rdrAmount.rdrTier3

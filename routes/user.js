@@ -8,7 +8,7 @@ userRouter.post('/',auth, addUser)
 userRouter.get('/', auth, getUsers);
 userRouter.patch('/:userId', auth, deleteUser);
 userRouter.put('/:userId', auth, editUserDetails);
-userRouter.patch('/status/:userId', auth, editUserDetails);
+// userRouter.patch('/status/:userId', auth, editUserDetails);
 
 
 export default userRouter;
