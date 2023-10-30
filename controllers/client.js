@@ -77,13 +77,13 @@ export const updateClient = tryCatch(async (req, res) => {
   const updatedClient = await Client.updateOne(findClient,updateData)
   let message = 'Client edited successfully'
  
-  if (req.body.isActive) {
+  if (req.body.isActive ===false || req.body.isActive ===true) {
     let findData = {
       clientId : req.params.clientId
     }
     const updatedMerchant = await Merchant.updateMany(findData,updateData)
     const updatedMerchantAccount = await MerchantAccount.updateMany(findData,updateData)
-
+    console.log('req.body.isActive',req.body.isActive)
     message = "Client status updated successfully and all its data are updated"
   }
   res.status(200).json({ success: true, message: message })

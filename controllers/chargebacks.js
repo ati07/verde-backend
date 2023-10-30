@@ -54,8 +54,10 @@ export const updateChargebacks = tryCatch(async (req, res) => {
 
 export const filterChargebacks = tryCatch(async (req, res) => {
 
-  let filterChargebacksData = {}
-
+  let filterChargebacksData = {
+    isDelete:false
+  }
+  // console.log('req.body',req.body)
   if (req.body.clients && req.body.clients.length > 0) {
     filterChargebacksData['clientId'] = { $in: req.body.clients }
   }
@@ -77,7 +79,7 @@ export const filterChargebacks = tryCatch(async (req, res) => {
 })
 
 export const insertManyChargebacks = tryCatch(async (req, res) => {
-  console.log('reqb', typeof req.body, req.body)
+  // console.log('reqb', typeof req.body, req.body)
   await Chargebacks.insertMany(req.body).then(function (respo) {
     res.status(200).json({ success: true, result: "Data Imported" });
     console.log("Data inserted", respo)  // Success

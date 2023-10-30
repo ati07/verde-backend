@@ -10,6 +10,5 @@ clientRouter.post('/', auth,createClient);
 clientRouter.get('/',auth, getClient);
 clientRouter.patch('/:clientId',auth,deleteClient);
 clientRouter.put('/:clientId',auth,updateClient);
-clientRouter.patch('/status/:clientId', auth, updateClient);
 
 export default clientRouter;

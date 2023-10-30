@@ -24,7 +24,8 @@ export const getRiskReport = tryCatch(async (req, res) => {
     let dbasIds = JSON.parse(req.query.dbasIds)
 
     let findDbaData = {
-      createdAt: { $gte: new Date(currentDate.start_date), $lte: new Date(currentDate.end_date) }
+      createdAt: { $gte: new Date(currentDate.start_date), $lte: new Date(currentDate.end_date) },
+      isDelete:false
     }
    
     if (clientIds && clientIds.length > 0 && req.auth.user.role === 'Admin') {
@@ -37,13 +38,13 @@ export const getRiskReport = tryCatch(async (req, res) => {
       ...findDbaData
     }
     if(dbasIds && dbasIds.length > 0){
-      merchantAccountData['_id']= dbasIds[0]
+      merchantAccountData['_id']= { $in: dbasIds }
     }
 
     dba = await MerchantAccount.find(merchantAccountData).sort({ _id: -1 });
 
     if (dbasIds && dbasIds.length > 0) {
-      findDbaData['merchantAcoountId'] = dbasIds[0]
+      findDbaData['merchantAcoountId'] = { $in: dbasIds }
     }
 
     if(req.auth.user.role !=='Admin'){
@@ -65,8 +66,8 @@ export const getRiskReport = tryCatch(async (req, res) => {
         id: dba[i]._id,
         createdAt: dba[i].createdAt,
         dba: dba[i].dba,
-        rdrStatus: dba[i]?.rdrActivation === 'Yes'?'Enabled':"Disabled",
-        ethocaStatus: dba[i]?.ethocaActivation ==='Yes'?'Enabled':"Disabled",
+        rdrStatus: dba[i]?.rdrStatus,
+        ethocaStatus: dba[i]?.ethocaStatus,
         rdrAlerts: rdr.filter((obj) => String(obj.merchantAccountId) === String(dba[i]._id)).length,
         ethocaAlerts: ethoca.filter((obj) => String(obj.merchantAccountId) === String(dba[i]._id)).length,
         chargebacks: chargebacks.filter((obj) => String(obj.merchantAccountId) === String(dba[i]._id)).length

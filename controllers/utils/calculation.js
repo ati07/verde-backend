@@ -4,7 +4,7 @@ import EthocaAlerts from "../../models/ethocaAlerts.js"
 import MerchantAccount from "../../models/merchantAccount.js"
 
 export const getRdrAmounts = async(filter,payload)=>{
-    console.log('filter',filter)
+    // console.log('filter',filter)
     console.log('payload',payload)
     let amount = 0
     let rdrTier1 = 0
@@ -23,7 +23,7 @@ export const getRdrAmounts = async(filter,payload)=>{
             rdrTier3 += 1
         }
     })
-    console.log('rdrTier1 * parseInt(payload.rdrTier1Price',amount,rdrTier1 , parseInt(payload.rdrTier1Price))
+    // console.log('rdrTier1 * parseInt(payload.rdrTier1Price',amount,rdrTier1 , parseInt(payload.rdrTier1Price))
 
     // amount = amount + ((rdrTier1 * parseInt(payload.rdrTier1Price)) + (rdrTier2 * parseInt(payload.rdrTier2Price)) + (rdrTier3 * parseInt(payload.rdrTier3Price)))
     let rdr1p = payload.rdrTier1Price ? rdrTier1 * parseInt(payload.rdrTier1Price):0
