@@ -6,9 +6,9 @@ import Chargebacks from '../models/chargebacks.js';
 import Users from '../models/user.js';
 
 export const createMerchantAccount = tryCatch(async (req, res) => {
-  //todo: error handle domainWebPagerdrStatus, ethocaStatus,
-  let { clientId, merchantId, dba, mcc, mid, rdrActivation, ethocaActivation, domainWebPage} = req.body
-  let merchantAccountPayload = { clientId, merchantId, dba, mcc, mid,  rdrActivation,ethocaActivation,domainWebPage }
+  //todo: error handle domainWebPagerdrStatus, ethocaStatus,domainWebPage
+  let { clientId, merchantId, dba, mcc, mid, rdrActivation, ethocaActivation, } = req.body
+  let merchantAccountPayload = { clientId, merchantId, dba, mcc, mid,  rdrActivation,ethocaActivation }
   if (rdrActivation === 'Yes') {
     if (req.body.rdrCAID) {
       merchantAccountPayload['rdrCAID'] = req.body.rdrCAID
