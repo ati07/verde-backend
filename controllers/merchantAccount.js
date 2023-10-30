@@ -6,9 +6,9 @@ import Chargebacks from '../models/chargebacks.js';
 import Users from '../models/user.js';
 
 export const createMerchantAccount = tryCatch(async (req, res) => {
-  //todo: error handle domainWebPagerdrStatus, ethocaStatus,domainWebPage
-  let { clientId, merchantId, dba, mcc, mid, rdrActivation, ethocaActivation, } = req.body
-  let merchantAccountPayload = { clientId, merchantId, dba, mcc, mid,  rdrActivation,ethocaActivation,domainWebPage }
+  //todo: error handle
+  let { clientId, merchantId, dba, mcc, mid, midStatus, rdrStatus, ethocaStatus, midLive, rdrActivation, ethocaActivation, domainWebPage } = req.body
+  let merchantAccountPayload = { clientId, merchantId, dba, mcc, mid, rdrStatus, ethocaStatus, midStatus, midLive, rdrActivation, ethocaActivation, domainWebPage }
   if (rdrActivation === 'Yes') {
     if (req.body.rdrCAID) {
       merchantAccountPayload['rdrCAID'] = req.body.rdrCAID
@@ -23,11 +23,18 @@ export const createMerchantAccount = tryCatch(async (req, res) => {
   if (ethocaActivation === 'Yes') {
     merchantAccountPayload['masterCardBin'] = req.body.masterCardBin
     merchantAccountPayload['ethocaARN'] = req.body.ethocaARN
-
   }
+
+  const existingMerchant = await MerchantAccount.find({ dba });
+  console.log("🚀 ~ file: merchantAccount.js:29 ~ createMerchantAccount ~ existingMerchant:", dba, existingMerchant)
+
+  if (existingMerchant.length) {
+    return res.status(400).json({ success: true, message: `Merchant Account created with this DBA: ${dba}` });
+  }
+
   const newMerchantAccount = new MerchantAccount(merchantAccountPayload);
   await newMerchantAccount.save();
-  res.status(201).json({ success: true, message: "Merchant Account added successfully" });
+  res.status(200).json({ success: true, message: "Merchant Account added successfully" });
 });
 
 export const getMerchantAccount = tryCatch(async (req, res) => {
@@ -82,11 +89,11 @@ export const deleteMerchantAccount = tryCatch(async (req, res) => {
 });
 
 export const updateMerchantAccount = tryCatch(async (req, res) => {
-  
-  let findData = { 
-    _id: req.params.merchantAccountId 
+
+  let findData = {
+    _id: req.params.merchantAccountId
   }
-  
+
   let updateData = {
     $set: req.body
   }
