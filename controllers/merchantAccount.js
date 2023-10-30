@@ -42,8 +42,13 @@ export const getMerchantAccount = tryCatch(async (req, res) => {
     isDelete: false,
     isActive: true
   }
-  if (req.params.clientId) {
-    findMerchantAccount.clientId = req.params.clientId
+  if (req.query.clientId) {
+    findMerchantAccount.clientId = req.query.clientId
+  }
+  // console.log('req.params',req.params)
+
+  if (req.query.merchantId) {
+    findMerchantAccount.merchantId = req.query.merchantId
   }
   
   if (req.query.clientIds) {
@@ -52,7 +57,7 @@ export const getMerchantAccount = tryCatch(async (req, res) => {
   if (req.query.merchantIds) {
     findMerchantAccount.merchantId = { $in: JSON.parse(req.query.merchantIds) }
   }
-
+  
   if (req.auth.user.role !== 'Admin') {
     findMerchantAccount.clientId = req.auth.user.clientId
   }
@@ -113,7 +118,8 @@ export const updateMerchantAccount = tryCatch(async (req, res) => {
 export const filterMerchantAccount = tryCatch(async (req, res) => {
 
   let filterMerchantAccountData = {
-    isDelete: false
+    isDelete: false,
+    isActive:true
   }
 
   if (req.body.clients && req.body.clients.length > 0) {

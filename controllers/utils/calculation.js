@@ -4,14 +4,14 @@ import EthocaAlerts from "../../models/ethocaAlerts.js"
 import MerchantAccount from "../../models/merchantAccount.js"
 
 export const getRdrAmounts = async(filter,payload)=>{
-    // console.log('filter',filter)
+    console.log('filter',filter)
     console.log('payload',payload)
     let amount = 0
     let rdrTier1 = 0
     let rdrTier2 = 0
     let rdrTier3 = 0
     const rdr = await RdrAlerts.find(filter)
-    // console.log('rdr',rdr)
+    console.log('rdr',rdr)
     rdr.forEach((r,k)=>{
         if(r.tier ==='rdrTier1'){
             rdrTier1 += 1

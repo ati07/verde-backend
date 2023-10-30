@@ -10,6 +10,14 @@ import Users from '../models/user.js';
 export const createMerchant = tryCatch(async (req, res) => {
   //todo: error handle
   let merchantPayload = req.body
+  let verifyM = req.body.merchant
+
+  const existingMerchant = await Merchant.find({ merchant: verifyM });
+  // console.log('existingMerchant',existingMerchant)
+  if (existingMerchant.length) {
+    return res.status(400).json({ success: true, message: `Merchant already created : ${verifyM}` });
+  }
+
   const newMerchant = new Merchant(merchantPayload);
   await newMerchant.save();
   
