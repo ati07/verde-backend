@@ -125,7 +125,9 @@ export const getAlertsAmounts = tryCatch(async (req, res) => {
   }
   if (req.query.merchantAccount) {
     let findMerchantAccount = {
-      ...findData
+      ...findData,
+      isDeleted:false,
+      isActive: true
     }
     merchantAccounts = await MerchantAccount.find(findMerchantAccount, { _id: 1,dba:1 }).sort({ _id: -1 });
     const top5 = merchantAccountsWithAlerts(merchantAccounts, rdrAlerts, ethocaAlerts)

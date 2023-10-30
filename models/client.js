@@ -14,7 +14,7 @@ const clientSchema = mongoose.Schema({
     monthlyMinimumFees: { type: Number, default: 0 },
     paymentTerms: { type: String },
     isDelete:{ type: Boolean, default: false },
-    isActive:{ type: Boolean, default: false }, 
+    isActive:{ type: Boolean, default: true }, 
 },
 { timestamps: true }
 )

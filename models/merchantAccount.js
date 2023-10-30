@@ -21,7 +21,7 @@ const merchantAccountSchema = mongoose.Schema({
     ethocaStatus: { type: String },
     domainWebPage: { type: String },
     isDelete: { type: Boolean, default: false },
-    isActive: { type: Boolean, default: false }
+    isActive: { type: Boolean, default: true }
 },
     { timestamps: true }
 )
