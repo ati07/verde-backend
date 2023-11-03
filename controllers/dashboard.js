@@ -12,7 +12,7 @@ export const getDashboardDataNew = tryCatch(async (req, res) => {
   let rdrAlerts;
 
   let findData = {
-    isDeleted:false
+    isDelete:false
   }
 
   if (req.query.startDate && req.query.endDate) {
@@ -75,7 +75,7 @@ export const getAlertsAmounts = tryCatch(async (req, res) => {
   let ethocaAlertsAmounts;
 
   let findData = {
-    isDeleted:false
+    isDelete:false
   }
 
   if (req.query.startDate && req.query.endDate) {
@@ -108,7 +108,7 @@ export const getAlertsAmounts = tryCatch(async (req, res) => {
     }
     
     rdrAlerts = await RdrAlerts.find(findRdrAlerts, { _id: 1, createdAt: 1,merchantAccountId:1, caseAmount: 1 }).sort({ _id: -1 });
-    rdrAmounts = (rdrAlerts.map((i) => i.caseAmount).reduce((total, num) => total + parseInt(num === '' ? 0 : num), 0))
+    rdrAmounts = (rdrAlerts.map((i) => i.caseAmount).reduce((total, num) => total + parseFloat(num === '' ? 0 : num), 0))
    
   }
 
@@ -121,7 +121,7 @@ export const getAlertsAmounts = tryCatch(async (req, res) => {
     }
 
     ethocaAlerts = await EthocaAlert.find(findEthocaAlerts, { _id: 1, status: 1, createdAt: 1,merchantAccountId:1, amount: 1 }).sort({ _id: -1 });
-    ethocaAlertsAmounts = (ethocaAlerts.map((i) => i.amount).reduce((total, num) => total + parseInt(num === '' ? 0 : num), 0))
+    ethocaAlertsAmounts = (ethocaAlerts.map((i) => i.amount).reduce((total, num) => total + parseFloat(num === '' ? 0 : num), 0))
   }
   if (req.query.merchantAccount) {
     let findMerchantAccount = {

@@ -29,7 +29,7 @@ export const createMerchantAccount = tryCatch(async (req, res) => {
   console.log("🚀 ~ file: merchantAccount.js:29 ~ createMerchantAccount ~ existingMerchant:", dba, existingMerchant)
 
   if (existingMerchant.length) {
-    return res.status(400).json({ success: true, message: `Merchant Account created with this DBA: ${dba}` });
+    return res.status(400).json({ success: true, message: `Merchant Account created with this Descriptor: ${dba}` });
   }
 
   const newMerchantAccount = new MerchantAccount(merchantAccountPayload);
