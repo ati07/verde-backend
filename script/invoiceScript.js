@@ -36,7 +36,7 @@ const main = async function () {
             let ethocaDetails = await getEthocaDetails(clients[i]);
             insertInvoice = { ...rdrDetails, ...ethocaDetails }
             console.log("🚀 ~ file: invoiceScript.js:45 ~ main ~ insertInvoice:", insertInvoice)
-            insertInvoice["amount"] = clients[i].monthlyMinimumFees ? clients[i].monthlyMinimumFees : 0
+            insertInvoice["amount"] = 0
             if (rdrDetails["totalRdrPrice"]) {
                 insertInvoice["amount"] += rdrDetails["totalRdrPrice"]
             }
@@ -45,6 +45,7 @@ const main = async function () {
             }
             console.log("🚀 ~ file: invoiceScript.js:47 ~ main ~ insertInvoicemount", insertInvoice["amount"])
             if (insertInvoice["amount"]) {
+                insertInvoice["amount"] = (insertInvoice["amount"] <= clients[i].monthlyMinimumFees) ? clients[i].monthlyMinimumFees : insertInvoice["amount"]
                 insertInvoice["clientId"] = clients[i]._id
                 insertInvoice["paymentTerms"] = clients[i].paymentTerms
                 insertInvoice["dueDate"] = await getDueDate(clients[i].paymentTerms)
