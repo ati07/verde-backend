@@ -11,7 +11,6 @@ import auth from '../middleware/auth.js';
 
 const merchantAccountRouter = Router();
 merchantAccountRouter.get('/',auth, getMerchantAccount);
-merchantAccountRouter.get('/:clientId',auth, getMerchantAccount);
 merchantAccountRouter.post('/', auth,createMerchantAccount);
 merchantAccountRouter.post('/filter',auth, filterMerchantAccount);
 merchantAccountRouter.patch('/:merchantAccountId',auth,deleteMerchantAccount);

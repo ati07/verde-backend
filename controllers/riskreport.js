@@ -25,7 +25,8 @@ export const getRiskReport = tryCatch(async (req, res) => {
 
     let findDbaData = {
       createdAt: { $gte: new Date(currentDate.start_date), $lte: new Date(currentDate.end_date) },
-      isDelete:false
+      isDelete:false,
+      
     }
    
     if (clientIds && clientIds.length > 0 && req.auth.user.role === 'Admin') {
@@ -35,7 +36,8 @@ export const getRiskReport = tryCatch(async (req, res) => {
       findDbaData['merchantId'] = { $in: merchantIds }
     }
     let merchantAccountData={ 
-      ...findDbaData
+      ...findDbaData,
+      isActive: true
     }
     if(dbasIds && dbasIds.length > 0){
       merchantAccountData['_id']= { $in: dbasIds }

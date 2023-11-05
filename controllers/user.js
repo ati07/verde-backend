@@ -4,6 +4,13 @@ import bcrypt from 'bcryptjs';
 
 export const addUser= tryCatch(async (req, res) => {
   let userClient = req.body
+
+  const existingEmail = await User.find({ email: req.body.email });
+  // console.log('existingMerchant',existingMerchant)
+  if (existingEmail.length) {
+    return res.status(400).json({ success: true, message: `Email is alrady existed` });
+  }
+
   const hashedPassword = await bcrypt.hash(userClient.password, 12);
   userClient.password = hashedPassword
   const newUser = new User(userClient);
@@ -16,6 +23,8 @@ export const getUsers = tryCatch(async (req, res) => {
   let findUsers = {
     isDelete: false
   }
+  
+
   if(req.auth.user.role !=='Admin'){
     findUsers.clientId = req.auth.user.clientId
   }
