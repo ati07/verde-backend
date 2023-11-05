@@ -4,6 +4,9 @@ import tryCatch from './utils/tryCatch.js';
 export const createRdrAlerts = tryCatch(async (req, res) => {
   //todo: error handle
   const rdrAlertsPayload = req.body;
+
+  rdrAlertsPayload.createdAt = new Date(req.body.caseReceivedDate)
+
   const newrdr = new RdrAlerts(rdrAlertsPayload);
   await newrdr.save();
   res.status(200).json({ success: true, message: 'Rdr added successfully' });
