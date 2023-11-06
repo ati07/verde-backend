@@ -74,7 +74,7 @@ export async function verifyScript() {
         await pageOne.click('#custom-list-item-0-5');
         await pageOne.waitForSelector("//html/body/div[1]/div[2]/div/div[2]/main/div[2]/div[1]/div[1]/div/div/div/div[2]/div[3]/div/fieldset/div/div[2]/div/div/div[1]/div/div[1]/div/div/div/div/input");
 
-        await pageOne.fill('//html/body/div[1]/div[2]/div/div[2]/main/div[2]/div[1]/div[1]/div/div/div/div[2]/div[3]/div/fieldset/div/div[2]/div/div/div[1]/div/div[1]/div/div/div/div/input', dateFormate(new Date('10/27/2022'), 'MM/DD/YYYY'))
+        await pageOne.fill('//html/body/div[1]/div[2]/div/div[2]/main/div[2]/div[1]/div[1]/div/div/div/div[2]/div[3]/div/fieldset/div/div[2]/div/div/div[1]/div/div[1]/div/div/div/div/input', dateFormate(new Date('01/09/2022'), 'MM/DD/YYYY'))
         await pageOne.dblclick('#main > div:nth-child(3) > div:nth-child(1) > div.css-6x9632-CSS-CSS > div > div > div > div.css-zn1cdn-structPadding-structPadding-structPadding > div > div > button.vds-btn-text--primary.css-118k6bc-smallViewportStyles-highContrastStyles-highContrastStyles-structMargin-structMargin')
 
         await pageOne.waitForSelector('//*[@id="template-main"]/div/div[1]/div[2]/div/button');
@@ -102,10 +102,13 @@ export async function verifyScript() {
                 // Printing data
                 // console.log("data", data)
                 let mappedData = []
-                await mongoose.connect('mongodb+srv://testUser:test123@cluster0.bq15jz4.mongodb.net/?retryWrites=true&w=majority').then(() => console.log("db connected"));
+                await mongoose.connect('mongodb://127.0.0.1/cbpro-db').then(() => console.log("db connected"));
 
                 for(let i = 0;i < data.length;i++){
-                    const merchantAccountDetail = await MerchantAccount.find({ dba: data?.[i]?.['Descriptor/SE Number'] })
+                    let desc = new RegExp(`^${data?.[i]?.['Descriptor/SE Number']}`, 'i');
+                    let findMerchantAccount = { dba: desc }
+                    const merchantAccountDetail = await MerchantAccount.find(findMerchantAccount)
+                    console.log("🚀 ~ file: verifyScript.js:111 ~ download.path ~ findMerchantAccount:", findMerchantAccount)
                     // console.log("mad", merchantAccountDetail)
                     if (merchantAccountDetail.length > 0) {
                         mappedData.push({
