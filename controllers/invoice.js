@@ -70,7 +70,7 @@ export const getPartialAmounts = tryCatch(async (req, res) => {
   let sum = 0
 
   totalPartialAmounts.map((i, j) => {
-    sum += parseInt(i.dueAmount)
+    sum += parseFloat(i.dueAmount)
   })
 
   res.status(200).json({ success: true, result: sum });
@@ -103,8 +103,8 @@ export const updateInvoice = tryCatch(async (req, res) => {
   }
 
   if (req.body.partialPaidAmount) {
-    updateData.$set['partialPaidAmount'] = req.body.partialPaidAmount
-    updateData.$set['dueAmount'] = req.body.dueAmount
+    updateData.$set['partialPaidAmount'] = parseFloat(req.body.partialPaidAmount)
+    updateData.$set['dueAmount'] = parseFloat(req.body.dueAmount)
   }
 
   if (req.body.status === 'Paid') {

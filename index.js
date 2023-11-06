@@ -46,7 +46,7 @@ app.use('/chargebacks', chargebacksRouter);
 app.use('/risk-report',riskReportRouter)
 app.use('/auth', authRouter);
 app.use('/user', userRouter);
-// app.use('/api', apiRouter);
+app.use('/api', apiRouter);
 app.use('/invoice',invoiceRouter)
 
 
