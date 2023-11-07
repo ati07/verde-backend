@@ -85,9 +85,9 @@ const getRdrDetails = async function (clientDetail) {
         console.log("🚀 ~ file: invoiceScript.js:80 ~ getRdrDetails ~ rdrDetails:", rdrDetails[i])
         if (['rdrTier1', 'rdrTier2', 'rdrTier3'].includes(rdrDetails[i]._id)) {
             console.log("🚀 ~ file: invoiceScript.js:85670 ~ getRdrDetails ~ rdrDetails:", rdrDetails[i])
-            sendRes[`${rdrDetails[i]._id}Price`] = parseInt(clientDetail[`${rdrDetails[i]._id}Price`])
+            sendRes[`${rdrDetails[i]._id}Price`] = parseFloat(clientDetail[`${rdrDetails[i]._id}Price`])
             sendRes[`numberOfTier${rdrDetails[i]._id.replace('rdrTier', '')}`] = rdrDetails[i].totalRdr
-            sendRes["totalRdrPrice"] += (rdrDetails[i].totalRdr * parseInt(clientDetail[`${rdrDetails[i]._id}Price`]))
+            sendRes["totalRdrPrice"] += (rdrDetails[i].totalRdr * parseFloat(clientDetail[`${rdrDetails[i]._id}Price`]))
         }
     }
     console.log("🚀 ~ file: invoiceScript.js:85 ~ getRdrDetails ~ sendRes:", sendRes)
@@ -111,7 +111,7 @@ const getEthocaDetails = async function (clientDetail) {
     let ethocaCount = await EthocaAlert.count(findEthoca);
     let sendRes = {}
     if (ethocaCount > 0) {
-        sendRes.totalEthocaPrice = (ethocaCount * parseInt(clientDetail["ethocaPrice"])),
+        sendRes.totalEthocaPrice = (ethocaCount * parseFloat(clientDetail["ethocaPrice"])),
             sendRes.numberOfEthoca = ethocaCount
         sendRes.ethocaPrice = clientDetail["ethocaPrice"]
     }
@@ -143,6 +143,7 @@ const getDueDate = async function (paymentTerms) {
     return dueDate
 }
 const generateInvoiceSendAndUpdateInDB = async function (clientMapping, invoices) {
+    // todo: handle Email service and send to client
     console.log('Generating invoice send and update...........');
     let sentInvoiceIds = [];
     for (let i in invoices) {

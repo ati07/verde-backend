@@ -2,7 +2,7 @@ import { jsPDF } from "jspdf";
 import 'jspdf-autotable'
 import { convertFormate, dateFormate } from "./helper.js";
 import fs from 'fs'
-
+import moment from "moment"
 // let logo = '../assets/images/invoice.png'
 let logo = fs.readFileSync('../assets/images/invoice.png', { encoding: 'base64' })
 let email = fs.readFileSync('../assets/images/email.png', { encoding: 'base64' })
@@ -22,15 +22,15 @@ export const exportInvoicePDF = async (pdfData) => {
 
     const title = "Chargeback Pro Latam";
     const headers = [["ITEM DESCRIPTION", "QTY", "PRICE", "TOTAL"]];
-    const totalRdr1Price = parseInt(pdfData.numberOfTier1) * parseInt(pdfData.rdrTier1Price)
-    const totalRdr2Price = parseInt(pdfData.numberOfTier2) * parseInt(pdfData.rdrTier2Price)
-    const totalRdr3Price = parseInt(pdfData.numberOfTier3) * parseInt(pdfData.rdrTier3Price)
-    const totalEthocaPrice = parseInt(pdfData.numberOfEthoca) * parseInt(pdfData.ethocaPrice)
+    const totalRdr1Price = parseInt(pdfData.numberOfTier1) * parseFloat(pdfData.rdrTier1Price)
+    const totalRdr2Price = parseInt(pdfData.numberOfTier2) * parseFloat(pdfData.rdrTier2Price)
+    const totalRdr3Price = parseInt(pdfData.numberOfTier3) * parseFloat(pdfData.rdrTier3Price)
+    const totalEthocaPrice = parseInt(pdfData.numberOfEthoca) * parseFloat(pdfData.ethocaPrice)
     const subTotal = convertFormate(parseFloat(pdfData.amount))
     const data = []
 
     if(pdfData.clientId.monthlyMinimumFees){
-        data.push(['MONTHLY MIN', '', '$' + convertFormate(parseInt(pdfData.clientId.monthlyMinimumFees)), '$' + convertFormate(parseInt(pdfData.clientId.monthlyMinimumFees))])
+        data.push(['MONTHLY MIN', '', '$' + convertFormate(parseFloat(pdfData.clientId.monthlyMinimumFees)), '$' + convertFormate(parseFloat(pdfData.clientId.monthlyMinimumFees))])
     }
     if (pdfData.numberOfTier1) {
         data.push(['RDR ALERTS TIER 1', pdfData.numberOfTier1, '$' + convertFormate(pdfData.rdrTier1Price), "$" + convertFormate(totalRdr1Price)])
@@ -128,7 +128,7 @@ export const exportInvoicePDF = async (pdfData) => {
     doc.text("Period:", 280, 137);
     doc.setFontSize(10);
     doc.setFont("helvetica", "normal");
-    doc.text(pdfData.paymentTerms, 340, 137);
+    doc.text(`${moment(pdfData.from).format('MMM DD YYYY')+" "+ '-' +" "+ moment(pdfData.to).format('MMM DD YYYY')}`, 340, 137);
     doc.setFont("helvetica", "bold");
     doc.setFontSize(10);
     doc.text("Invoice Date:", 280, 149);

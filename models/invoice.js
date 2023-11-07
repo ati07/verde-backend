@@ -12,6 +12,8 @@ const invoiceSchema = mongoose.Schema(
         partialPaidAmount: { type: String },
         monthlyMinimumFees: { type: String },
         dueAmount: { type: String, default: '0' },
+        from: { type: Date },
+        to: { type: Date },
         dueDate: { type: Date },
         numberOfTier1: { type: Number },
         numberOfTier2: { type: Number },

@@ -19,7 +19,7 @@ const merchantAccountSchema = mongoose.Schema({
     masterCardBin: { type: String },
     rdrStatus: { type: String },
     ethocaStatus: { type: String },
-    domainWebPage: { type: String },
+    currency: { type: String },
     isDelete: { type: Boolean, default: false },
     isActive: { type: Boolean, default: true }
 },

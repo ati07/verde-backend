@@ -4,6 +4,7 @@ import { getEthocaAmounts, getRdrAmounts } from './utils/calculation.js';
 import tryCatch from './utils/tryCatch.js';
 
 export const createInvoice = tryCatch(async (req, res) => {
+  //todo: email to client
   const invoicePayload = req.body;
 
   let filterData = {
@@ -30,6 +31,12 @@ export const createInvoice = tryCatch(async (req, res) => {
   invoicePayload.numberOfTier2 = rdrAmount.rdrTier2
   invoicePayload.numberOfTier3 = rdrAmount.rdrTier3
   invoicePayload.numberOfEthoca = ethocaAlertsAmounts.numberOfEthocaAlerts
+  invoicePayload.from = new Date(invoicePayload.startDate)
+  
+  let d = new Date(invoicePayload.endDate)
+  d.setDate(d.getDate() - 1);
+
+  invoicePayload.to = new Date(d)
 
   let invoice = await Invoice.findOne({ isDelete: false }).sort({ invoiceNumber: -1 })
   let currentInvoiceNumber = invoice ? invoice.invoiceNumber : 999
