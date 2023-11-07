@@ -28,6 +28,10 @@ export const getRiskReport = tryCatch(async (req, res) => {
       isDelete:false,
       
     }
+
+    if (req.auth.user.role !== 'Admin') {
+      findDbaData['clientId'] = req.auth.user.clientId
+    }
    
     if (clientIds && clientIds.length > 0 && req.auth.user.role === 'Admin') {
       findDbaData['clientId'] = { $in: clientIds }
@@ -49,9 +53,6 @@ export const getRiskReport = tryCatch(async (req, res) => {
       findDbaData['merchantAcoountId'] = { $in: dbasIds }
     }
 
-    if(req.auth.user.role !=='Admin'){
-      findDbaData['clientId'] = req.auth.user.clientId
-    }
     // console.log('rrfd',findDbaData)
     
     chargebacks = await Chargebacks.find(findDbaData).sort({ _id: -1 });
