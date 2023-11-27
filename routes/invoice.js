@@ -6,7 +6,7 @@ const invoiceRouter = Router();
 
 invoiceRouter.post('/',auth,createInvoice);
 invoiceRouter.get('/',auth,getInvoice);
-invoiceRouter.get('/partial-amount',auth,getPartialAmounts)
+invoiceRouter.get('/amount',auth,getPartialAmounts)
 invoiceRouter.get('/email/:invoiceId',auth,mailInvoice);
 invoiceRouter.patch('/:invoiceId',auth, deleteInvoice);
 invoiceRouter.put('/:invoiceId',auth,updateInvoice)
