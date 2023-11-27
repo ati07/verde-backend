@@ -12,36 +12,35 @@ export const createInvoice = tryCatch(async (req, res) => {
     clientId: invoicePayload.clientId,
     isDelete: false
   }
-  
+
   if (invoicePayload.merchantAccountId) {
     filterData.merchantAccountId = invoicePayload.merchantAccountId
   }
-  
+
   let rdrAmount = await getRdrAmounts(filterData, invoicePayload)
   let ethocaAlertsAmounts = await getEthocaAmounts(filterData, invoicePayload)
   let totalA = rdrAmount.amount + ethocaAlertsAmounts.amount
 
-  if(totalA <= parseFloat(invoicePayload.monthlyMinimumFees)){
-     invoicePayload.amount =  parseFloat(invoicePayload.monthlyMinimumFees)
-  }else{
-    invoicePayload.amount = totalA +  parseFloat(invoicePayload.monthlyMinimumFees)
+  if (totalA <= parseFloat(invoicePayload.monthlyMinimumFees)) {
+    invoicePayload.amount = parseFloat(invoicePayload.monthlyMinimumFees)
+    invoicePayload.dueAmount = parseFloat(invoicePayload.monthlyMinimumFees)
+  } else {
+    invoicePayload.amount = totalA + parseFloat(invoicePayload.monthlyMinimumFees)
+    invoicePayload.dueAmount = totalA + parseFloat(invoicePayload.monthlyMinimumFees)
   }
-  
+
   invoicePayload.numberOfTier1 = rdrAmount.rdrTier1
   invoicePayload.numberOfTier2 = rdrAmount.rdrTier2
   invoicePayload.numberOfTier3 = rdrAmount.rdrTier3
   invoicePayload.numberOfEthoca = ethocaAlertsAmounts.numberOfEthocaAlerts
-  invoicePayload.from = new Date(invoicePayload.startDate)
   
-  let d = new Date(invoicePayload.endDate)
-  d.setDate(d.getDate() - 1);
-
-  invoicePayload.to = new Date(d)
+  invoicePayload.from = new Date(invoicePayload.startDate)
+  invoicePayload.to = new Date(invoicePayload.endDate)
 
   let invoice = await Invoice.findOne({ isDelete: false }).sort({ invoiceNumber: -1 })
   let currentInvoiceNumber = invoice ? invoice.invoiceNumber : 999
   invoicePayload.invoiceNumber = currentInvoiceNumber + 1
-    
+
   const newInvoice = new Invoice(invoicePayload);
   await newInvoice.save();
   res.status(201).json({ success: true, message: 'Invoice added successfully' });
@@ -70,14 +69,44 @@ export const getInvoice = tryCatch(async (req, res) => {
 
 export const getPartialAmounts = tryCatch(async (req, res) => {
 
-  let findInvoice = { status: 'Partial Payment', isDelete: false }
+  let status = req.query.status
 
+  let findInvoice = {
+    isDelete: false
+  }
+  if (status === 'open') {
+    findInvoice.status = 'Due'
+  }
+  if (status === 'overdue') {
+    findInvoice.status = 'Overdue'
+  }
+  if (status === 'paid') {
+    findInvoice.status = 'Paid'
+    findInvoice.partialPaidAmount = { $gt: 0 }
+
+    const totalPartialAmounts = await Invoice.find(findInvoice).sort({ _id: -1 });
+
+    let sum = 0
+    // console.log('totalPartialAmounts',totalPartialAmounts)
+
+    totalPartialAmounts.map((i, j) => {
+
+      if (i.status === 'Paid') {
+        sum += parseFloat(i.amount)
+      } else {
+        sum += parseFloat(i.partialPaidAmount)
+      }
+    })
+    console.log('totalPartialAmounts,sum',totalPartialAmounts,sum)
+    return res.status(200).json({ success: true, result: sum });
+
+  }
   const totalPartialAmounts = await Invoice.find(findInvoice).sort({ _id: -1 });
 
   let sum = 0
 
   totalPartialAmounts.map((i, j) => {
-    sum += parseFloat(i.dueAmount)
+    sum += parseFloat(i.amount)
   })
 
   res.status(200).json({ success: true, result: sum });
@@ -102,8 +131,9 @@ export const deleteInvoice = tryCatch(async (req, res) => {
 export const updateInvoice = tryCatch(async (req, res) => {
 
   let updateData = {
-    $set: { status: req.body.status }
+    $set: { status: req.body.status === 'Partial Payment' ? parseFloat(req.body.dueAmount) == 0 ? 'Paid' : 'Due' : req.body.status }
   }
+
 
   let findInvoice = {
     _id: req.params.invoiceId
