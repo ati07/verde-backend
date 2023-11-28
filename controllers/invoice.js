@@ -1,5 +1,4 @@
 import Invoice from '../models/invoice.js';
-import MerchantAccount from '../models/merchantAccount.js';
 import { getEthocaAmounts, getRdrAmounts } from './utils/calculation.js';
 import tryCatch from './utils/tryCatch.js';
 

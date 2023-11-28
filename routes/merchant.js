@@ -1,11 +1,6 @@
 import { Router } from 'express';
 
-import {
-  createMerchant,
-  deleteMerchant,
-  getMerchant,
-  updateMerchant,
-} from '../controllers/merchant.js';
+import { createMerchant, deleteMerchant, getMerchant, updateMerchant } from '../controllers/merchant.js';
 import auth from '../middleware/auth.js';
 
 const merchantRouter = Router();

@@ -104,7 +104,7 @@ export async function verifyScript() {
                 let mappedData = []
                 await mongoose.connect('mongodb://127.0.0.1/cbpro-db').then(() => console.log("db connected"));
 
-                for(let i = 0;i < data.length;i++){
+                for (let i = 0; i < data.length; i++) {
                     let desc = new RegExp(`^${data?.[i]?.['Descriptor/SE Number']}`, 'i');
                     let findMerchantAccount = { dba: desc }
                     const merchantAccountDetail = await MerchantAccount.find(findMerchantAccount)
@@ -123,7 +123,7 @@ export async function verifyScript() {
                             caseAmount: data?.[i]?.['Case Amount'],
                             descriptorContact: data?.[i]?.['Descriptor Contact'],
                             caseAge: data?.[i]?.['Case Age'],
-                            tier:'rdrTier' + merchantAccountDetail?.[0]?.rdrTier,
+                            tier: 'rdrTier' + merchantAccountDetail?.[0]?.rdrTier,
                             createdAt: new Date(data?.[i]?.['Case Received Date'])
                         })
                     }

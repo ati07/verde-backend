@@ -1,8 +1,6 @@
 import { Router } from 'express';
 
-import {
-    getAlertsAmounts, getDashboardDataNew
-} from '../controllers/dashboard.js';
+import { getAlertsAmounts, getDashboardDataNew } from '../controllers/dashboard.js';
 import auth from '../middleware/auth.js';
 
 

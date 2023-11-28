@@ -1,12 +1,6 @@
 import { Router } from 'express';
 
-import {
-  createRdrAlerts,
-  deleteRdrAlerts,
-  filterRdrAlerts,
-  getRdrAlerts,
-  updateRdrAlerts,
-} from '../controllers/rdrAlerts.js';
+import { createRdrAlerts, deleteRdrAlerts, filterRdrAlerts, getRdrAlerts, updateRdrAlerts } from '../controllers/rdrAlerts.js';
 import auth from '../middleware/auth.js';
 
 const rdrAlertsRouter = Router();

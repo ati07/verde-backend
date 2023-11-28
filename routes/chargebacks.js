@@ -1,13 +1,6 @@
 import { Router } from 'express';
 
-import {
-  createChargebacks,
-  deleteChargebacks,
-  filterChargebacks,
-  getChargebacks,
-  insertManyChargebacks,
-  updateChargebacks,
-} from '../controllers/chargebacks.js';
+import { createChargebacks, deleteChargebacks, filterChargebacks, getChargebacks, insertManyChargebacks, updateChargebacks } from '../controllers/chargebacks.js';
 import auth from '../middleware/auth.js';
 
 const chargebacksRouter = Router();

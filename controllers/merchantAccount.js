@@ -3,7 +3,6 @@ import RdrAlerts from '../models/rdrAlerts.js';
 import EthocaAlerts from '../models/ethocaAlerts.js';
 import tryCatch from './utils/tryCatch.js';
 import Chargebacks from '../models/chargebacks.js';
-import Users from '../models/user.js';
 
 export const createMerchantAccount = tryCatch(async (req, res) => {
   //todo: error handle

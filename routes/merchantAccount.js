@@ -1,12 +1,6 @@
 import { Router } from 'express';
 
-import {
-  createMerchantAccount,
-  deleteMerchantAccount,
-  filterMerchantAccount,
-  getMerchantAccount,
-  updateMerchantAccount,
-} from '../controllers/merchantAccount.js';
+import { createMerchantAccount, deleteMerchantAccount, filterMerchantAccount, getMerchantAccount, updateMerchantAccount } from '../controllers/merchantAccount.js';
 import auth from '../middleware/auth.js';
 
 const merchantAccountRouter = Router();

@@ -1,11 +1,9 @@
 import Chargebacks from '../models/chargebacks.js';
-import Client from '../models/client.js';
 import Merchant from '../models/merchant.js';
 import MerchantAccount from '../models/merchantAccount.js';
 import RdrAlerts from '../models/rdrAlerts.js';
 import EthocaAlerts from '../models/ethocaAlerts.js';
 import tryCatch from './utils/tryCatch.js';
-import Users from '../models/user.js';
 
 export const createMerchant = tryCatch(async (req, res) => {
   //todo: error handle

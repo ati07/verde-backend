@@ -5,10 +5,7 @@ import RdrAlerts from '../models/rdrAlerts.js';
 import tryCatch from './utils/tryCatch.js';
 
 export const getRiskReport = tryCatch(async (req, res) => {
-  let client;
-  let merchant;
   let dba;
-  let dbas;
   let chargebacks;
   let ethoca;
   let rdr
@@ -18,7 +15,6 @@ export const getRiskReport = tryCatch(async (req, res) => {
     && req.query.dbasIds
   ) {
     let currentDate = JSON.parse(req.query.current)
-    let endDate = JSON.parse(req.query.previous)
     let clientIds = JSON.parse(req.query.clientIds)
     let merchantIds = JSON.parse(req.query.merchantIds)
     let dbasIds = JSON.parse(req.query.dbasIds)

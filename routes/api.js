@@ -1,5 +1,4 @@
 import { Router } from 'express';
-import auth from '../middleware/auth.js';
 import { midgatorApi } from '../API Integration/Midigator Integration/midigatorApi.js';
 
 
