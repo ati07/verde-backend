@@ -5,6 +5,6 @@ import { midgatorApi } from '../API Integration/Midigator Integration/midigatorA
 
 const apiRouter = Router();
 
-apiRouter.post('/midigator-ethoca-alerts',midgatorApi);
+apiRouter.post('/midigator-ethoca-alerts', midgatorApi);
 
 export default apiRouter;

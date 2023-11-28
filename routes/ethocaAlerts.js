@@ -12,8 +12,8 @@ import auth from '../middleware/auth.js';
 const ethocaAlertsRouter = Router();
 
 ethocaAlertsRouter.post('/', auth, createEthocaAlerts);
-ethocaAlertsRouter.post('/filter/',auth, filterEthocaAlerts);
-ethocaAlertsRouter.get('/',auth, getEthocaAlerts);
+ethocaAlertsRouter.post('/filter/', auth, filterEthocaAlerts);
+ethocaAlertsRouter.get('/', auth, getEthocaAlerts);
 ethocaAlertsRouter.patch('/:ethocaId', auth, deleteEthocaAlerts);
 ethocaAlertsRouter.put('/:ethocaId', auth, updateEthocaAlerts);
 

@@ -11,11 +11,11 @@ import {
 import auth from '../middleware/auth.js';
 
 const chargebacksRouter = Router();
-chargebacksRouter.post('/', auth,createChargebacks);
-chargebacksRouter.post('/filter/',auth, filterChargebacks);
-chargebacksRouter.get('/',auth, getChargebacks);
-chargebacksRouter.patch('/:chargebacksId',auth,deleteChargebacks);
-chargebacksRouter.put('/:chargebacksId',auth, updateChargebacks);
-chargebacksRouter.post('/insertmany',auth,insertManyChargebacks)
+chargebacksRouter.post('/', auth, createChargebacks);
+chargebacksRouter.post('/filter/', auth, filterChargebacks);
+chargebacksRouter.get('/', auth, getChargebacks);
+chargebacksRouter.patch('/:chargebacksId', auth, deleteChargebacks);
+chargebacksRouter.put('/:chargebacksId', auth, updateChargebacks);
+chargebacksRouter.post('/insertmany', auth, insertManyChargebacks)
 
 export default chargebacksRouter;

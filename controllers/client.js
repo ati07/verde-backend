@@ -13,7 +13,14 @@ export const createClient = tryCatch(async (req, res) => {
   //Todo:  error handling
 
   let clientPayload = req.body
+  
+  if(req.auth.user.role == 'Partner' ){
+    clientPayload.partnerId = req.auth.user._id
+  }
+  clientPayload.addedBy = req.auth.user._id
+
   const newClient = new Client(clientPayload);
+
   await newClient.save()
   res.status(200).json({ success: true, message: 'Client added successfully' });
 
@@ -25,6 +32,11 @@ export const getClient = tryCatch(async (req, res) => {
   let findData = {
     isDelete: false
   }
+
+  if(req.auth.user.role == 'Partner' ){
+    findData.partnerId = req.auth.user._id
+  }
+
   const client = await Client.find(findData).sort({ _id: -1 });
 
   res.status(200).json({ success: true, result: client });

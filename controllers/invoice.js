@@ -33,7 +33,7 @@ export const createInvoice = tryCatch(async (req, res) => {
   invoicePayload.numberOfTier2 = rdrAmount.rdrTier2
   invoicePayload.numberOfTier3 = rdrAmount.rdrTier3
   invoicePayload.numberOfEthoca = ethocaAlertsAmounts.numberOfEthocaAlerts
-  
+
   invoicePayload.from = new Date(invoicePayload.startDate)
   invoicePayload.to = new Date(invoicePayload.endDate)
 
@@ -97,7 +97,7 @@ export const getPartialAmounts = tryCatch(async (req, res) => {
         sum += parseFloat(i.partialPaidAmount)
       }
     })
-    console.log('totalPartialAmounts,sum',totalPartialAmounts,sum)
+    console.log('totalPartialAmounts,sum', totalPartialAmounts, sum)
     return res.status(200).json({ success: true, result: sum });
 
   }
