@@ -6,6 +6,7 @@ import moment from "moment"
 // let logo = '../assets/images/invoice.png'
 let logo = fs.readFileSync('../assets/images/invoice.png', { encoding: 'base64' })
 let email = fs.readFileSync('../assets/images/email.png', { encoding: 'base64' })
+let world = fs.readFileSync('../assets/images/world.png', { encoding: 'base64' })
 let tableHeader = fs.readFileSync('../assets/images/tableHeader.png', { encoding: 'base64' })
 let invoiceFooter = fs.readFileSync('../assets/images/invoiceFooter.png', { encoding: 'base64' })
 
@@ -103,146 +104,97 @@ export const exportInvoicePDF = async (pdfData) => {
         }
         //   html: '#my-table' 
     };
-    // doc.text(title, marginLeft, 30);
-    doc.addImage(logo, "PNG", 0, 0, 450, 100, '', 'FAST');
-    // doc.setLineWidth(0.3);
-    // doc.line(55, 75, 395, 75);helvetica
-    doc.setFont("helvetica", 'bold');
-    doc.setFontSize(10);
-    doc.text("COMPANY:", 50, 125);
-    doc.setFont("helvetica", "normal");
-    doc.setFontSize(10);
-    doc.text(pdfData.company, 105, 125);
-    doc.setFont("helvetica", 'bold');
-    doc.text("ATT:", 50, 145);
-    doc.setFont("helvetica", 'normal');
-    doc.text("", 105, 145);
-    doc.setFont("helvetica", "bold");
-    doc.setFontSize(10);
-    doc.text("Invoice No:", 280, 125);
-    doc.setFont("helvetica", "normal");
-    doc.setFontSize(10);
-    doc.text(pdfData.invoiceNumber, 340, 125);
-    doc.setFont("helvetica", "bold");
-    doc.setFontSize(10);
-    doc.text("Period:", 280, 137);
-    doc.setFontSize(10);
-    doc.setFont("helvetica", "normal");
-    doc.text(`${moment(pdfData.from).format('MMM DD YYYY')+" "+ '-' +" "+ moment(pdfData.to).format('MMM DD YYYY')}`, 340, 137);
-    doc.setFont("helvetica", "bold");
-    doc.setFontSize(10);
-    doc.text("Invoice Date:", 280, 149);
-    doc.setFont("helvetica", "normal");
-    doc.setFontSize(10);
-    doc.text(dateFormate(pdfData.createdAt, 'YYYY-MM-DD') ?? "", 340, 149);
-    doc.setFont("helvetica", "bold");
-    doc.setFontSize(10);
-    doc.text("Due Date:", 280, 161);
-    doc.setFont("helvetica", "normal");
-    doc.setFontSize(10);
-    doc.text(dateFormate(pdfData.dueDate, 'YYYY-MM-DD') ?? '', 340, 161);
-    // table header image
-    doc.addImage(tableHeader, "PNG", 40, 180, 360, 40, '', 'FAST'),
-        doc.autoTable(content)
-    doc.setFontSize(10);
-    doc.setFont("helvetica", "normal");
-    doc.text("SUB TOTAL", 280, 350);
-    doc.text("$" + subTotal, 355, 350);
-    doc.text("ADJUSTMENTS", 265, 370);
-    doc.text("$ 00.00 ", 355, 370);
-    doc.setLineWidth(0.3);
-    doc.line(250, 380, 395, 380);
-    doc.text("TOTAL", 300, 390);
-    doc.text("$" + subTotal, 355, 390);
-    doc.setFont("helvetica", "bold");
-    doc.setFontSize(12);
-    doc.text("Payment Method:", 50, 410);
-    doc.setLineWidth(0.2);
-    doc.line(50, 411, 122, 411);
-    doc.setFont("helvetica", "bold");
-    doc.setFontSize(9);
-    doc.text("Payment (Via Wire Transfer)", 50, 422);
-    doc.setFont("helvetica", "bold");
-    doc.text('Name on account:', 50, 435)
-    doc.setFont("helvetica", "normal");
-    doc.text("Innova Tech Marketplace Services", 110, 435);
-    doc.setFont("helvetica", "bold");
-    doc.text("Bank Institution:", 50, 445);
-    doc.setFont("helvetica", "normal");
-    doc.text("Banco LAFISE Panama", 105, 445);
-    doc.setFont("helvetica", "bold");
-    doc.text("Account Number:", 50, 455);
-    doc.setFont("helvetica", "normal");
-    doc.text("201020008855 - Checkings Account", 110, 455);
-    doc.setFont("helvetica", "bold");
-    doc.text("SWIFT:", 50, 465);
-    doc.setFont("helvetica", "normal");
-    doc.text("BCCEPAPA", 80, 465);
-    doc.setFont("helvetica", "bold");
-    doc.text("Address:", 50, 475);
-    doc.setFont("helvetica", "normal");
-    doc.text(" Paitilla, Calle Italia, Bal Harbour Ofc M41, Ciudad de Panamá, Republica de Panama ", 80, 475);
-    // doc.addImage(phone, "PNG", 50, 480, 18, 18,'','FAST');
-    // doc.text("+123-456-7890", 75, 490);
-    doc.addImage(email, "PNG", 50, 485, 18, 18, '', 'FAST');
-    doc.setFontSize(10);
-    doc.text("info@chargebackprolatam.com", 70, 495);
-
-    // doc.addImage(signature, "PNG", 300, 420, 100, 100,'','FAST');
-
-    var pageSize = doc.internal.pageSize
-    var pageHeight = pageSize.height ? pageSize.height : pageSize.getHeight()
-    // doc.text("str", 0, pageHeight - 10)
-    doc.addImage(invoiceFooter, "PNG", 0, pageHeight - 100, 450, 100, '', 'FAST');
-
+     // doc.text(title, marginLeft, 30);
+     doc.addImage(logo, "PNG", 0, 0, 450, 100, '', 'FAST');
+     // doc.setLineWidth(0.3);
+     // doc.line(55, 75, 395, 75);helvetica
+     doc.setFont("helvetica", 'bold');
+     doc.setFontSize(10);
+     doc.text("COMPANY:", 50, 125);
+     doc.setFont("helvetica", "normal");
+     doc.setFontSize(10);
+     doc.text(pdfData.clientId.company, 105, 125);
+     doc.setFont("helvetica", 'bold');
+     doc.text("ATT:", 50, 145);
+     doc.setFont("helvetica", 'normal');
+     doc.text("", 105, 145);
+     doc.setFont("helvetica", "bold");
+     doc.setFontSize(10);
+     doc.text("Invoice No:", 280, 125);
+     doc.setFont("helvetica", "normal");
+     doc.setFontSize(10);
+     doc.text(`${pdfData.invoiceNumber}`, 340, 125);
+     doc.setFont("helvetica", "bold");
+     doc.setFontSize(10);
+     doc.text("Period:", 280, 137);
+     doc.setFontSize(10);
+     doc.setFont("helvetica", "normal");
+     doc.text(`${moment(pdfData.from).format('MMM DD YYYY')+" "+ '-' +" "+ moment(pdfData.to).format('MMM DD YYYY')}`, 340, 137);
+     doc.setFont("helvetica", "bold");
+     doc.text("Invoice Date:", 280, 149);
+     doc.setFont("helvetica", "normal");
+     doc.setFontSize(10);
+     doc.text(dateFormate(pdfData.createdAt, 'YYYY-MM-DD') ?? "", 340, 149);
+     doc.setFont("helvetica", "bold");
+     doc.text("Due Date:", 280, 161);
+     doc.setFont("helvetica", "normal");
+     doc.setFontSize(10);
+     doc.text(dateFormate(pdfData.dueDate, 'YYYY-MM-DD') ?? '', 340, 161);
+     // table header image
+     doc.addImage(tableHeader, "PNG", 40, 180, 360, 40, '', 'FAST')
+     autoTable(doc, content)
+     doc.setFontSize(10);
+     doc.setFont("helvetica", "normal");
+     doc.text("SUB TOTAL", 280, 350);
+     doc.text("$" + subTotal, 355, 350);
+     doc.text("ADJUSTMENTS", 265, 370);
+     doc.text("$ 00.00 ", 355, 370);
+     doc.setLineWidth(0.3);
+     doc.line(250, 380, 395, 380);
+     doc.text("TOTAL", 300, 390);
+     doc.text("$" + subTotal, 355, 390);
+     doc.setLineWidth(0.4);
+     doc.line(50, 410, 410, 410);
+     doc.setFont("helvetica", "bold");
+     doc.setFontSize(12);
+     doc.text("Payment Method (Wire Transfer)", 150, 430);
+     // doc.setLineWidth(0.2);
+     // doc.line(50, 411, 122, 411);
+     doc.setFontSize(11);
+     doc.setFont("helvetica", "bold");
+     doc.text('Name on account:', 130, 447)
+     doc.setFont("helvetica", "normal");
+     doc.text("Innova Tech Marketplace Services", 205, 447);
+     doc.setFont("helvetica", "bold");
+     doc.text("Bank Institution:", 155, 459);
+     doc.setFont("helvetica", "normal");
+     doc.text("Banco LAFISE Panama", 225, 459);
+     doc.setFont("helvetica", "bold");
+     doc.text("Account Number:", 120, 473);
+     doc.setFont("helvetica", "normal");
+     doc.text("201020008855 - Checkings Account", 195, 473);
+     doc.setFont("helvetica", "bold");
+     doc.text("SWIFT:", 180, 485);
+     doc.setFont("helvetica", "normal");
+     doc.text("BCCEPAPA", 215, 485);
+     doc.setFont("helvetica", "bold");
+     doc.text("Address:", 100, 498);
+     doc.setFont("helvetica", "normal");
+     doc.text("Paitilla, Calle Italia, Bal Harbour Ofc M41, Ciudad de Panamá", 140, 498);
+     doc.text("Republica de Panama", 200, 508);
+     doc.addImage(world, "PNG", 90, 517, 15, 15,'','FAST');
+     doc.setFontSize(12);
+     doc.text("chargebackprolatam.com", 110, 527);
+     doc.addImage(email, "PNG", 250, 517, 15, 15, '', 'FAST');
+     doc.setFontSize(12);
+     doc.text("jp@chargebackprolatam.com", 270, 527);
+     var pageSize = doc.internal.pageSize
+     var pageHeight = pageSize.height ? pageSize.height : pageSize.getHeight()
+     // doc.text("str", 0, pageHeight - 10)
+     doc.addImage(invoiceFooter, "PNG", 0, pageHeight - 100, 450, 100, '', 'FAST');
+    
     // doc.addPage(); // add new page
     var dataurlstring = doc.output('dataurlstring');
     // console.log("url", dataurlstring);
     return dataurlstring
 }
-
-// let data = {
-//     amount: "205",
-//     clientId: {
-//         company: "charg-innova",
-//         createdAt: "2023-09-06T21:51:11.294Z",
-//         email: "google@gmail.com",
-//         ethocaPrice: "42",
-//         invoiceEmail: "ase@gmail.com",
-//         isActive: true,
-//         isDelete: false,
-//         monthlyMinimumFees: "25",
-//         name: "Google",
-//         paymentTerms: "Weekly Net 3",
-//         phoneNumber: "7654433222",
-//         rdrPrice: "23",
-//         rdrTier1Price: "121",
-//         rdrTier2Price: "7",
-//         rdrTier3Price: "1",
-//         rdrTierPrice: "12",
-//         updatedAt: "2023-10-09T18:54:14.745Z",
-//         __v: 0,
-//         _id: "64f8f44f02c986ee7918d880"
-//     },
-//     createdAt: "2023-10-17T19:56:45.798Z",
-//     dueAmount: "0",
-//     dueDate: "2023-10-19T00:00:00.000Z",
-//     ethocaPrice: "42",
-//     id: "652ee6fdcd2e074f17389fba",
-//     isDelete: false,
-//     isEmailSent: false,
-//     numberOfEthoca: "2",
-//     numberOfTier1: "1",
-//     numberOfTier2: "0",
-//     numberOfTier3: "0",
-//     paymentTerms: "Weekly Net 3",
-//     rdrTier1Price: "121",
-//     rdrTier2Price: "7",
-//     rdrTier3Price: "1",
-//     status: "Issued",
-//     updatedAt: "2023-10-17T19:56:45.798Z",
-//     __v: 0,
-//     _id: "652ee6fdcd2e074f17389fba",
-// }
-
-// exportInvoicePDF(data)
