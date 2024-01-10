@@ -39,7 +39,7 @@ export async function verifyScript() {
     await pageOne.waitForTimeout(5000);
     await pageOne.fill('input#orgId', 'chargebackprolatamincpid');
     await pageOne.fill('input#username', 'atiurrahman');
-    await pageOne.fill('input#password', 'Atiur123');
+    await pageOne.fill('input#password', 'Atiur123!');
     await pageOne.click('button[type=submit]');
     await pageOne.click('button#emailButton')
     // get code
