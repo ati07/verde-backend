@@ -9,11 +9,7 @@ export const getRiskReport = tryCatch(async (req, res) => {
   let chargebacks;
   let ethoca;
   let rdr
-  if (req.query.current
-    && req.query.clientIds
-    && req.query.merchantIds
-    && req.query.dbasIds
-  ) {
+  if (req.query.current && req.query.clientIds && req.query.merchantIds && req.query.dbasIds) {
     let currentDate = JSON.parse(req.query.current)
     let clientIds = JSON.parse(req.query.clientIds)
     let merchantIds = JSON.parse(req.query.merchantIds)
@@ -21,36 +17,33 @@ export const getRiskReport = tryCatch(async (req, res) => {
 
     let findDbaData = {
       createdAt: { $gte: new Date(currentDate.start_date), $lte: new Date(currentDate.end_date) },
-      isDelete:false,
-      
+      isDelete: false,
+
     }
 
     if (req.auth.user.role !== 'Admin') {
       findDbaData['clientId'] = req.auth.user.clientId
     }
-   
+
     if (clientIds && clientIds.length > 0 && req.auth.user.role === 'Admin') {
       findDbaData['clientId'] = { $in: clientIds }
     }
     if (merchantIds && merchantIds.length > 0) {
       findDbaData['merchantId'] = { $in: merchantIds }
     }
-    let merchantAccountData={ 
+    let merchantAccountData = {
       ...findDbaData,
       isActive: true
     }
-    if(dbasIds && dbasIds.length > 0){
-      merchantAccountData['_id']= { $in: dbasIds }
+    if (dbasIds && dbasIds.length > 0) {
+      merchantAccountData['_id'] = { $in: dbasIds }
+      findDbaData['merchantAcoountId'] = { $in: dbasIds }
     }
 
     dba = await MerchantAccount.find(merchantAccountData).sort({ _id: -1 });
 
-    if (dbasIds && dbasIds.length > 0) {
-      findDbaData['merchantAcoountId'] = { $in: dbasIds }
-    }
-
     // console.log('rrfd',findDbaData)
-    
+
     chargebacks = await Chargebacks.find(findDbaData).sort({ _id: -1 });
     ethoca = await EthocaAlert.find(findDbaData).sort({ _id: -1 });
     rdr = await RdrAlerts.find(findDbaData).sort({ _id: -1 });
@@ -58,7 +51,7 @@ export const getRiskReport = tryCatch(async (req, res) => {
     // console.log('dba', dba)
     // console.log('ethoca', ethoca)
     // console.log('rdr', rdr)
-    
+
     const dbadata = []
     for (let i = 0; i < dba.length; i++) {
       dbadata.push({
