@@ -1,5 +1,4 @@
 import Invoice from '../models/invoice.js';
-import MerchantAccount from '../models/merchantAccount.js';
 import { getEthocaAmounts, getRdrAmounts } from './utils/calculation.js';
 import tryCatch from './utils/tryCatch.js';
 
@@ -33,7 +32,7 @@ export const createInvoice = tryCatch(async (req, res) => {
   invoicePayload.numberOfTier2 = rdrAmount.rdrTier2
   invoicePayload.numberOfTier3 = rdrAmount.rdrTier3
   invoicePayload.numberOfEthoca = ethocaAlertsAmounts.numberOfEthocaAlerts
-  
+
   invoicePayload.from = new Date(invoicePayload.startDate)
   invoicePayload.to = new Date(invoicePayload.endDate)
 

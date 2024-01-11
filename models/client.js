@@ -6,6 +6,7 @@ const clientSchema = mongoose.Schema({
     email:{ type: String, required: true },
     phoneNumber:{ type: String },
     addedBy: { type: mongoose.Types.ObjectId },
+    partnerId: { type: mongoose.Types.ObjectId },
     invoiceEmail: { type: String },
     rdrTier1Price: { type: Number },
     rdrTier2Price: { type: Number },

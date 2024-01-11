@@ -4,11 +4,11 @@ import { createInvoice, deleteInvoice, getInvoice, getPartialAmounts, mailInvoic
 
 const invoiceRouter = Router();
 
-invoiceRouter.post('/',auth,createInvoice);
-invoiceRouter.get('/',auth,getInvoice);
-invoiceRouter.get('/amount',auth,getPartialAmounts)
-invoiceRouter.get('/email/:invoiceId',auth,mailInvoice);
-invoiceRouter.patch('/:invoiceId',auth, deleteInvoice);
-invoiceRouter.put('/:invoiceId',auth,updateInvoice)
+invoiceRouter.post('/', auth, createInvoice);
+invoiceRouter.get('/', auth, getInvoice);
+invoiceRouter.get('/amount', auth, getPartialAmounts)
+invoiceRouter.get('/email/:invoiceId', auth, mailInvoice);
+invoiceRouter.patch('/:invoiceId', auth, deleteInvoice);
+invoiceRouter.put('/:invoiceId', auth, updateInvoice)
 
 export default invoiceRouter;

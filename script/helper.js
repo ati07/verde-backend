@@ -1,10 +1,10 @@
-export const dateFormate = (date,formate) => {
+export const dateFormate = (date, formate) => {
     const startDate = new Date(date)
     const startdate = startDate.getDate() < 10 ? '0' + startDate.getDate().toString() : startDate.getDate().toString()
     const startMonth = startDate.getMonth() + 1 < 10 ? '0' + (startDate.getMonth() + 1).toString() : (startDate.getMonth() + 1).toString()
     const startYear = startDate.getFullYear()
     let start_date;
-    switch(formate){
+    switch (formate) {
         case 'YYYY-MM-DD':
             start_date = startYear + "-" + startMonth + '-' + startdate
             break;
@@ -21,8 +21,10 @@ export const dateFormate = (date,formate) => {
     return start_date
 }
 
-export const convertFormate =(number)=>{
-    let data = new Intl.NumberFormat('en-IN',{minimumFractionDigits: 2,
-      maximumFractionDigits: 2,}).format(number)
+export const convertFormate = (number) => {
+    let data = new Intl.NumberFormat('en-IN', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+    }).format(number)
     return data
 }

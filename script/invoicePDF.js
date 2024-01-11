@@ -16,12 +16,10 @@ export const exportInvoicePDF = async (pdfData) => {
     const size = "A4"; // Use A1, A2, A3 or A4
     const orientation = "portrait"; // portrait or landscape
 
-    const marginLeft = 170;
     const doc = new jsPDF(orientation, unit, size, true);
 
     doc.setFontSize(20);
 
-    const title = "Chargeback Pro Latam";
     const headers = [["ITEM DESCRIPTION", "QTY", "PRICE", "TOTAL"]];
     const totalRdr1Price = parseInt(pdfData.numberOfTier1) * parseFloat(pdfData.rdrTier1Price)
     const totalRdr2Price = parseInt(pdfData.numberOfTier2) * parseFloat(pdfData.rdrTier2Price)
@@ -30,19 +28,19 @@ export const exportInvoicePDF = async (pdfData) => {
     const subTotal = convertFormate(parseFloat(pdfData.amount))
     const data = []
 
-    if(pdfData.clientId.monthlyMinimumFees){
+    if (pdfData.clientId.monthlyMinimumFees) {
         data.push(['MONTHLY MIN', '', '$' + convertFormate(parseFloat(pdfData.clientId.monthlyMinimumFees)), '$' + convertFormate(parseFloat(pdfData.clientId.monthlyMinimumFees))])
     }
     if (pdfData.numberOfTier1) {
         data.push(['RDR ALERTS TIER 1', pdfData.numberOfTier1, '$' + convertFormate(pdfData.rdrTier1Price), "$" + convertFormate(totalRdr1Price)])
     }
-    if(pdfData.numberOfTier2){
+    if (pdfData.numberOfTier2) {
         data.push(['RDR ALERTS TIER 2', pdfData.numberOfTier2, '$' + convertFormate(pdfData.rdrTier2Price), "$" + convertFormate(totalRdr2Price)])
     }
-    if(pdfData.numberOfTier3){
-        data.push(['RDR ALERTS TIER 3', pdfData.numberOfTier3, '$' + convertFormate(pdfData.rdrTier3Price ?? 0 ), "$" + convertFormate(totalRdr3Price ?? 0)])
+    if (pdfData.numberOfTier3) {
+        data.push(['RDR ALERTS TIER 3', pdfData.numberOfTier3, '$' + convertFormate(pdfData.rdrTier3Price ?? 0), "$" + convertFormate(totalRdr3Price ?? 0)])
     }
-    if(pdfData.numberOfEthoca){
+    if (pdfData.numberOfEthoca) {
         data.push(['ETHOCA ALERTS', pdfData.numberOfEthoca, '$' + convertFormate(pdfData.ethocaPrice ?? 0), "$" + convertFormate(totalEthocaPrice)])
     }
     let content = {

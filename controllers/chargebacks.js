@@ -10,7 +10,7 @@ export const createChargebacks = tryCatch(async (req, res) => {
 });
 
 export const getChargebacks = tryCatch(async (req, res) => {
-  
+
   let findChargebacks = {
     isDelete: false
   }
@@ -27,7 +27,7 @@ export const getChargebacks = tryCatch(async (req, res) => {
 });
 
 export const deleteChargebacks = tryCatch(async (req, res) => {
-  
+
   let updateData = {
     $set: { isDelete: true }
   }
@@ -39,7 +39,7 @@ export const deleteChargebacks = tryCatch(async (req, res) => {
 });
 
 export const updateChargebacks = tryCatch(async (req, res) => {
-  
+
   const updatedChargebacks = await Chargebacks.updateOne(
     { _id: req.params.chargebacksId },
     {
@@ -55,7 +55,7 @@ export const updateChargebacks = tryCatch(async (req, res) => {
 export const filterChargebacks = tryCatch(async (req, res) => {
 
   let filterChargebacksData = {
-    isDelete:false
+    isDelete: false
   }
   // console.log('req.body',req.body)
   if (req.body.clients && req.body.clients.length > 0) {

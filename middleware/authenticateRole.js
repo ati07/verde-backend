@@ -1,8 +1,9 @@
 'use strict';
-const authenticateRoles = function(role){
+
+const authenticateRoles = function(roles){
 
     return function(req, res,next){
-        if(role.includes(req.auth.user.role)){
+        if(roles.includes(req.auth.user.role)){
             next();
         }else{
             return res.status(403).send({

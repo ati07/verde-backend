@@ -104,7 +104,7 @@ export async function verifyScript() {
                 let mappedData = []
                 await mongoose.connect('mongodb+srv://testUser:test123@cluster0.bq15jz4.mongodb.net/?retryWrites=true&w=majority').then(() => console.log("db connected"));
 
-                for(let i = 0;i < data.length;i++){
+                for (let i = 0; i < data.length; i++) {
                     const merchantAccountDetail = await MerchantAccount.find({ dba: data?.[i]?.['Descriptor/SE Number'] })
                     // console.log("mad", merchantAccountDetail)
                     if (merchantAccountDetail.length > 0) {
@@ -120,7 +120,7 @@ export async function verifyScript() {
                             caseAmount: data?.[i]?.['Case Amount'],
                             descriptorContact: data?.[i]?.['Descriptor Contact'],
                             caseAge: data?.[i]?.['Case Age'],
-                            tier:'rdrTier' + merchantAccountDetail?.[0]?.rdrTier,
+                            tier: 'rdrTier' + merchantAccountDetail?.[0]?.rdrTier,
                             createdAt: new Date(data?.[i]?.['Case Received Date'])
                         })
                     }
