@@ -73,31 +73,45 @@ export const getPartialAmounts = tryCatch(async (req, res) => {
   let findInvoice = {
     isDelete: false
   }
+  let findPartialInvoice = { 
+    isDelete: false,
+    partialPaidAmount:{ $gt: 0 }
+  }
+  if (req.auth.user.role !== 'Admin') {
+    findInvoice.clientId = req.auth.user.clientId
+    findPartialInvoice.clientId = req.auth.user.clientId
+  }
   if (status === 'open') {
     findInvoice.status = 'Due'
+    
   }
   if (status === 'overdue') {
     findInvoice.status = 'Overdue'
   }
   if (status === 'paid') {
     findInvoice.status = 'Paid'
-    findInvoice.partialPaidAmount = { $gt: 0 }
 
-    const totalPartialAmounts = await Invoice.find(findInvoice).sort({ _id: -1 });
+    const totalPaidAmounts = await Invoice.find(findInvoice).sort({ _id: -1 });
+    
+    const totalPartialAmounts = await Invoice.find(findPartialInvoice).sort({ _id: -1 });
 
     let sum = 0
-    // console.log('totalPartialAmounts',totalPartialAmounts)
 
-    totalPartialAmounts.map((i, j) => {
-
-      if (i.status === 'Paid') {
-        sum += parseFloat(i.amount)
-      } else {
-        sum += parseFloat(i.partialPaidAmount)
-      }
+    totalPaidAmounts.map((i, j) => {
+      sum += parseFloat(i.amount)
     })
-    console.log('totalPartialAmounts,sum', totalPartialAmounts, sum)
-    return res.status(200).json({ success: true, result: sum });
+
+    let sumOfPartial = 0
+    totalPartialAmounts.map((i, j) => {
+      if(i.status ==='Due'){
+        sumOfPartial += parseFloat(i.partialPaidAmount)
+      }
+    
+    })
+    let totalPaid = sum + sumOfPartial
+    // console.log('totalPartialAmounts,sum',totalPaidAmounts,totalPartialAmounts,sum,sumOfPartial)
+
+    return res.status(200).json({ success: true, result: totalPaid });
 
   }
   const totalPartialAmounts = await Invoice.find(findInvoice).sort({ _id: -1 });
