@@ -62,7 +62,7 @@ export const getMerchantAccount = tryCatch(async (req, res) => {
     findMerchantAccount.merchantId = { $in: JSON.parse(req.query.merchantIds) }
   }
   
-  if (req.auth.user.role !== 'Admin') {
+  if (req.auth.user.role !== 'Admin' && req.auth.user.role !== 'Partner') {
     findMerchantAccount.clientId = req.auth.user.clientId
   }
 
