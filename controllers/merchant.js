@@ -16,6 +16,11 @@ export const createMerchant = tryCatch(async (req, res) => {
     return res.status(400).json({ success: true, message: `Merchant already created : ${verifyM}` });
   }
 
+  if(req.auth.user.role == 'Partner' ){
+    merchantPayload.partnerId = req.auth.user._id
+  }
+  merchantPayload.addedBy = req.auth.user._id
+
   const newMerchant = new Merchant(merchantPayload);
   await newMerchant.save();
 

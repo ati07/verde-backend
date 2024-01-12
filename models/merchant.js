@@ -3,6 +3,8 @@ import mongoose from 'mongoose';
 const merchantSchema = mongoose.Schema({
     clientId: { type:mongoose.Types.ObjectId }, 
     merchant: { type: String}, 
+    addedBy: { type: mongoose.Types.ObjectId },
+    partnerId: { type: mongoose.Types.ObjectId },
     typeOfBusiness:{ type: String},
     email:{ type: String},
     isDelete:{ type: Boolean, default: false},

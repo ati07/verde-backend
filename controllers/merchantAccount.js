@@ -31,6 +31,11 @@ export const createMerchantAccount = tryCatch(async (req, res) => {
     return res.status(400).json({ success: true, message: `Merchant Account created with this Descriptor: ${dba}` });
   }
 
+  if(req.auth.user.role == 'Partner' ){
+    merchantAccountPayload.partnerId = req.auth.user._id
+  }
+  merchantAccountPayload.addedBy = req.auth.user._id
+
   const newMerchantAccount = new MerchantAccount(merchantAccountPayload);
   await newMerchantAccount.save();
   res.status(200).json({ success: true, message: "Merchant Account added successfully" });
@@ -59,6 +64,10 @@ export const getMerchantAccount = tryCatch(async (req, res) => {
   
   if (req.auth.user.role !== 'Admin') {
     findMerchantAccount.clientId = req.auth.user.clientId
+  }
+
+  if(req.auth.user.role == 'Partner' ){
+    findMerchantAccount.partnerId = req.auth.user._id
   }
 
   const merchantAccount = await MerchantAccount.find(findMerchantAccount)
