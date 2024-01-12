@@ -50,6 +50,10 @@ export const getMerchant = tryCatch(async (req, res) => {
     path: 'clientId',
     model: 'clients'
   }
+
+  if(req.auth.user.role == 'Partner' ){
+    findMerchant.partnerId = req.auth.user._id
+  }
   const merchant = await Merchant.find(findMerchant).populate(populateMerchant).sort({ _id: -1 });
 
   res.status(200).json({ success: true, result: merchant, });
