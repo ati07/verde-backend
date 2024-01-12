@@ -4,6 +4,8 @@ const merchantAccountSchema = mongoose.Schema({
 
     clientId: { type: mongoose.Types.ObjectId },
     merchantId: { type: mongoose.Types.ObjectId },
+    addedBy: { type: mongoose.Types.ObjectId },
+    partnerId: { type: mongoose.Types.ObjectId },
     dba: { type: String },
     mid: { type: String },
     mcc: { type: String },
