@@ -68,6 +68,16 @@ export const filterRdrAlerts = tryCatch(async (req, res) => {
   if (req.body.dbas && req.body.dbas.length > 0) {
     filterRdrAlertsData['merchantAccountId'] = { $in: req.body.dbas }
   }
+
+
+  // if (req.auth.user.role !== 'Admin' && req.auth.user.role !== 'Partner') {
+  //   filterMerchantAccountData.clientId = {$in: req.auth.user.clientId}
+  // }
+
+  if(req.auth.user.role == 'Partner' ){
+    filterMerchantAccountData.partnerId = {$in: req.auth.user._id}
+  }
+
   const rdr = await RdrAlerts.find(filterRdrAlertsData)
     .populate([
       { path: 'clientId', model: 'clients' },

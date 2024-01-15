@@ -67,6 +67,14 @@ export const filterChargebacks = tryCatch(async (req, res) => {
   if (req.body.dbas && req.body.dbas.length > 0) {
     filterChargebacksData['merchantAccountId'] = { $in: req.body.dbas }
   }
+
+  // if (req.auth.user.role !== 'Admin' && req.auth.user.role !== 'Partner') {
+  //   filterMerchantAccountData.clientId = {$in: req.auth.user.clientId}
+  // }
+
+  if(req.auth.user.role == 'Partner' ){
+    filterMerchantAccountData.partnerId = {$in: req.auth.user._id}
+  }
   const chargebacks = await Chargebacks.find(filterChargebacksData)
     .populate([
       { path: 'clientId', model: 'clients' },

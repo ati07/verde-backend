@@ -34,8 +34,12 @@ export const getDashboardDataNew = tryCatch(async (req, res) => {
     findData['merchantAccountId'] = { $in: dbasIds }
   }
   // console.log('susus',req.auth.user)
-  if (req.auth.user.role !== 'Admin') {
+  if (req.auth.user.role !== 'Admin' && req.auth.user.role !== 'Partner') {
     findData['clientId'] = req.auth.user.clientId
+  }
+
+  if(req.auth.user.role == 'Partner' ){
+    findData.partnerId = req.auth.user._id
   }
   // Find All data accounding to filtered
   if (req.query.rdrAlerts) {
