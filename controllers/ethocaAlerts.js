@@ -66,6 +66,7 @@ export const filterEthocaAlerts = tryCatch(async(req, res)=>{
   if(req.body.dbas && req.body.dbas.length > 0){
     filterEthocaAlertsData['merchantAccountId'] = {$in:req.body.dbas}
   }
+
   const ethocaAlerts = await EthocaAlerts.find(filterEthocaAlertsData)
                               .populate([
                                 {path:'clientId',model:'clients'},

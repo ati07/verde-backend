@@ -67,6 +67,7 @@ export const filterChargebacks = tryCatch(async (req, res) => {
   if (req.body.dbas && req.body.dbas.length > 0) {
     filterChargebacksData['merchantAccountId'] = { $in: req.body.dbas }
   }
+
   const chargebacks = await Chargebacks.find(filterChargebacksData)
     .populate([
       { path: 'clientId', model: 'clients' },

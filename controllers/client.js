@@ -37,7 +37,7 @@ export const getClient = tryCatch(async (req, res) => {
     findData.partnerId = req.auth.user._id
   }
 
-  const client = await Client.find(findData).sort({ _id: -1 });
+  const client = await Client.find(findData).populate([{ path: 'addedBy', model: 'users' }]).sort({ _id: -1 });
 
   res.status(200).json({ success: true, result: client });
 });

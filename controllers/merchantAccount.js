@@ -62,7 +62,7 @@ export const getMerchantAccount = tryCatch(async (req, res) => {
     findMerchantAccount.merchantId = { $in: JSON.parse(req.query.merchantIds) }
   }
   
-  if (req.auth.user.role !== 'Admin') {
+  if (req.auth.user.role !== 'Admin' && req.auth.user.role !== 'Partner') {
     findMerchantAccount.clientId = req.auth.user.clientId
   }
 
@@ -138,6 +138,14 @@ export const filterMerchantAccount = tryCatch(async (req, res) => {
     filterMerchantAccountData['merchantId'] = { $in: req.body.merchants }
   }
 
+  // if (req.auth.user.role !== 'Admin' && req.auth.user.role !== 'Partner') {
+  //   filterMerchantAccountData.clientId = {$in: req.auth.user.clientId}
+  // }
+
+  if(req.auth.user.role == 'Partner' ){
+    filterMerchantAccountData.partnerId = {$in: req.auth.user._id}
+  }
+  // console.log('me',filterMerchantAccountData)
   let populatedMerchantAccount = [{ path: 'clientId', model: 'clients' }, { path: 'merchantId', model: 'merchants' }]
   const merchantAccount = await MerchantAccount.find(filterMerchantAccountData).populate(populatedMerchantAccount).sort({ _id: -1 });
   res.status(200).json({ success: true, result: merchantAccount });
