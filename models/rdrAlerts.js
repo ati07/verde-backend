@@ -5,6 +5,8 @@ const rdrAlertSchema = mongoose.Schema({
     clientId:{type:mongoose.Types.ObjectId},
     merchantId:{type:mongoose.Types.ObjectId},
     merchantAccountId:{type:mongoose.Types.ObjectId},
+    addedBy: { type: mongoose.Types.ObjectId },
+    partnerId: { type: mongoose.Types.ObjectId },
     caseID: {type:String},
     caseReceivedDate: {type:String},
     status: {type:String},

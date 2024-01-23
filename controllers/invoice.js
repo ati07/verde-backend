@@ -6,6 +6,12 @@ export const createInvoice = tryCatch(async (req, res) => {
   //todo: email to client
   const invoicePayload = req.body;
 
+  if(req.auth.user.role == 'Partner' ){
+    invoicePayload.partnerId = req.auth.user._id
+  }
+  invoicePayload.addedBy = req.auth.user._id
+
+
   let filterData = {
     createdAt: { $gte: new Date(invoicePayload.startDate), $lte: new Date(invoicePayload.endDate) },
     clientId: invoicePayload.clientId,

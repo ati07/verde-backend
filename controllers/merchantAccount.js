@@ -138,9 +138,9 @@ export const filterMerchantAccount = tryCatch(async (req, res) => {
     filterMerchantAccountData['merchantId'] = { $in: req.body.merchants }
   }
 
-  // if (req.auth.user.role !== 'Admin' && req.auth.user.role !== 'Partner') {
-  //   filterMerchantAccountData.clientId = {$in: req.auth.user.clientId}
-  // }
+  if (req.auth.user.role !== 'Admin' && req.auth.user.role !== 'Partner') {
+    filterMerchantAccountData.clientId = {$in: req.auth.user.clientId}
+  }
 
   if(req.auth.user.role == 'Partner' ){
     filterMerchantAccountData.partnerId = {$in: req.auth.user._id}

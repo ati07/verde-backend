@@ -4,6 +4,12 @@ import tryCatch from './utils/tryCatch.js';
 export const createChargebacks = tryCatch(async (req, res) => {
   //todo: error handle
   let chargebacksPayload = req.body
+
+  if(req.auth.user.role == 'Partner' ){
+    chargebacksPayload.partnerId = req.auth.user._id
+  }
+  chargebacksPayload.addedBy = req.auth.user._id
+
   const newChargebacks = new Chargebacks(chargebacksPayload);
   await newChargebacks.save();
   res.status(201).json({ success: true, result: 'Chargeback added successfully' });
@@ -67,7 +73,13 @@ export const filterChargebacks = tryCatch(async (req, res) => {
   if (req.body.dbas && req.body.dbas.length > 0) {
     filterChargebacksData['merchantAccountId'] = { $in: req.body.dbas }
   }
+  if (req.auth.user.role !== 'Admin' && req.auth.user.role !== 'Partner') {
+    filterChargebacksData.clientId = {$in: req.auth.user.clientId}
+  }
 
+  if(req.auth.user.role == 'Partner' ){
+    filterChargebacksData.partnerId = {$in: req.auth.user._id}
+  }
   const chargebacks = await Chargebacks.find(filterChargebacksData)
     .populate([
       { path: 'clientId', model: 'clients' },

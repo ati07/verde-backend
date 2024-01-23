@@ -4,6 +4,13 @@ import tryCatch from './utils/tryCatch.js';
 export const createRdrAlerts = tryCatch(async (req, res) => {
   //todo: error handle
   const rdrAlertsPayload = req.body;
+
+  if(req.auth.user.role == 'Partner' ){
+    rdrAlertsPayload.partnerId = req.auth.user._id
+  }
+  rdrAlertsPayload.addedBy = req.auth.user._id
+
+
   if(req.body.caseReceivedDate !==''){
     rdrAlertsPayload.createdAt = new Date(req.body.caseReceivedDate)
   }
@@ -70,7 +77,13 @@ export const filterRdrAlerts = tryCatch(async (req, res) => {
     filterRdrAlertsData['merchantAccountId'] = { $in: req.body.dbas }
   }
 
+  if (req.auth.user.role !== 'Admin' && req.auth.user.role !== 'Partner') {
+    filterRdrAlertsData.clientId = {$in: req.auth.user.clientId}
+  }
 
+  if(req.auth.user.role == 'Partner' ){
+    filterRdrAlertsData.partnerId = {$in: req.auth.user._id}
+  }
 
   const rdr = await RdrAlerts.find(filterRdrAlertsData)
     .populate([
