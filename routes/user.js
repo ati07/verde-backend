@@ -3,7 +3,7 @@ import { deleteUser, getUsers, editUserDetails, addUser } from '../controllers/u
 import auth from '../middleware/auth.js';
 import authenticateRoles from '../middleware/authenticateRole.js';
 
-const allowedRoles = ["Admin"]
+const allowedRoles = ["Admin", "Client", "Partner"]
 
 const userRouter = Router();
 
