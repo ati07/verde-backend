@@ -5,6 +5,8 @@ const chargebackSchema = mongoose.Schema(
         clientId:{type:mongoose.Types.ObjectId},
         merchantId:{type:mongoose.Types.ObjectId},
         merchantAccountId:{type:mongoose.Types.ObjectId},
+        addedBy: { type: mongoose.Types.ObjectId },
+        partnerId: { type: mongoose.Types.ObjectId },
         cardHolder: { type: String },
         fileDate: { type: Date },
         mid: { type: String },
