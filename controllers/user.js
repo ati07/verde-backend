@@ -5,6 +5,12 @@ import bcrypt from 'bcryptjs';
 export const addUser= tryCatch(async (req, res) => {
   let userClient = req.body
 
+
+  if(req.auth.user.role == 'Partner' ){
+    userClient.partnerId = req.auth.user._id
+  }
+  userClient.addedBy = req.auth.user._id
+
   const existingEmail = await User.find({ email: req.body.email });
   // console.log('existingMerchant',existingMerchant)
   if (existingEmail.length) {
@@ -25,8 +31,12 @@ export const getUsers = tryCatch(async (req, res) => {
   }
   
 
-  if(req.auth.user.role !=='Admin'){
+  if(req.auth.user.role !=='Admin' && req.auth.user.role !== 'Partner'){
     findUsers.clientId = req.auth.user.clientId
+  }
+
+  if(req.auth.user.role == 'Partner' ){
+    findUsers.partnerId = req.auth.user._id
   }
 
   const users = await User.find(findUsers).populate({path:'clientId',model:'clients'}).sort({ _id: -1 });

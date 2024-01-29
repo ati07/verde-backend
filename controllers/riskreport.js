@@ -21,11 +21,11 @@ export const getRiskReport = tryCatch(async (req, res) => {
 
     }
 
-    if (req.auth.user.role !== 'Admin') {
+    if (req.auth.user.role !== 'Admin' && req.auth.user.role !== 'Partner') {
       findDbaData['clientId'] = req.auth.user.clientId
     }
 
-    if (clientIds && clientIds.length > 0 && req.auth.user.role === 'Admin') {
+    if (clientIds && clientIds.length > 0 && (req.auth.user.role === 'Admin' || req.auth.user.role == 'Partner')) {
       findDbaData['clientId'] = { $in: clientIds }
     }
     if (merchantIds && merchantIds.length > 0) {
@@ -65,7 +65,7 @@ export const getRiskReport = tryCatch(async (req, res) => {
         chargebacks: chargebacks.filter((obj) => String(obj.merchantAccountId) === String(dba[i]._id)).length
       })
     }
-
+   
     res.status(200).json({
       success: true,
       result: {

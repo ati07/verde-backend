@@ -5,6 +5,8 @@ const invoiceSchema = mongoose.Schema(
         clientId: { type: mongoose.Types.ObjectId },
         merchantId: { type: mongoose.Types.ObjectId },
         merchantAccountId: { type: mongoose.Types.ObjectId },
+        addedBy: { type: mongoose.Types.ObjectId },
+        partnerId: { type: mongoose.Types.ObjectId },
         invoiceNumber: { type: Number },
         amount: { type: Number },
         adjustedAmount: { type: String },

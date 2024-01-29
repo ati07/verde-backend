@@ -2,6 +2,8 @@ import mongoose from 'mongoose';
 
 const userSchema = mongoose.Schema({
     clientId: {type: mongoose.Types.ObjectId},
+    addedBy: { type: mongoose.Types.ObjectId },
+    partnerId: { type: mongoose.Types.ObjectId },
     name: {type: String},
     email: {type: String,required: true,unique: true},
     role: {type: String},

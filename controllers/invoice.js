@@ -57,7 +57,7 @@ export const getInvoice = tryCatch(async (req, res) => {
     isDelete: false
   }
 
-  if (req.auth.user.role !== 'Admin') {
+  if (req.auth.user.role !== 'Admin' && req.auth.user.role !== 'Partner') {
     findInvoice.clientId = req.auth.user.clientId
   }
 
@@ -68,7 +68,12 @@ export const getInvoice = tryCatch(async (req, res) => {
   ]
 
   const invoice = await Invoice.find(findInvoice).populate(populateQuery).sort({ _id: -1 });
+  if(req.auth.user.role == 'Partner'){
+    const filterData = invoice.filter((i)=> String(i.clientId.partnerId) === String(req.auth.user._id))
+    // console.log('filterData',invoice,filterData)
+     return  res.status(200).json({ success: true, result: filterData });
 
+  }
   res.status(200).json({ success: true, result: invoice });
 })
 
@@ -83,10 +88,16 @@ export const getPartialAmounts = tryCatch(async (req, res) => {
     isDelete: false,
     partialPaidAmount:{ $gt: 0 }
   }
-  if (req.auth.user.role !== 'Admin') {
+  if (req.auth.user.role !== 'Admin' && req.auth.user.role !== 'Partner') {
     findInvoice.clientId = req.auth.user.clientId
     findPartialInvoice.clientId = req.auth.user.clientId
   }
+  
+  // if(req.auth.user.role == 'Partner' ){
+  //   findInvoice.partnerId = req.auth.user._id
+  //   findPartialInvoice.partnerId = req.auth.user._id
+  // }
+
   if (status === 'open') {
     findInvoice.status = 'Due'
     

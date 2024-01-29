@@ -16,8 +16,10 @@ export const createMerchantAccount = tryCatch(async (req, res) => {
       merchantAccountPayload['rdrARN'] = req.body.rdrARN
     }
     merchantAccountPayload['visaBin'] = req.body.visaBin
-    merchantAccountPayload['rdrTier'] = req.body.rdrTier
+    
   }
+  
+  merchantAccountPayload['rdrTier'] = req.body.rdrTier
 
   if (ethocaActivation === 'Yes') {
     merchantAccountPayload['masterCardBin'] = req.body.masterCardBin
