@@ -23,15 +23,23 @@ export const getEthocaAlerts = tryCatch(async (req, res) => {
   let findEthocaAlerts = {
     isDelete: false
   }
-  if(req.auth.user.role !=='Admin'){
+  if(req.auth.user.role !=='Admin' && req.auth.user.role !== 'Partner'){
     findEthocaAlerts.clientId = req.auth.user.clientId
   }
+  
   const ethocaAlerts = await EthocaAlerts.find(findEthocaAlerts)
                                         .populate([
                                           {path:'clientId',model:'clients'},
                                           { path:'merchantId',model:'merchants'},
                                           { path:'merchantAccountId',model:'merchantAccounts'}
                                         ]).sort({ _id: -1 });
+  
+  if(req.auth.user.role == 'Partner'){
+    const filterData = ethocaAlerts.filter((i)=> String(i.clientId.partnerId) === String(req.auth.user._id))
+    // console.log('filterData',ethocaAlerts,filterData)
+      return  res.status(200).json({ success: true, result: filterData });
+
+  }
   res.status(200).json({ success: true, result: ethocaAlerts });
 }); 
 

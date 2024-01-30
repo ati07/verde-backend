@@ -20,15 +20,23 @@ export const getChargebacks = tryCatch(async (req, res) => {
   let findChargebacks = {
     isDelete: false
   }
-  if (req.auth.user.role !== 'Admin') {
+  if (req.auth.user.role !== 'Admin' && req.auth.user.role !== 'Partner') {
     findChargebacks.clientId = req.auth.user.clientId
   }
+
   const chargebacks = await Chargebacks.find(findChargebacks)
     .populate([
       { path: 'clientId', model: 'clients' },
       { path: 'merchantId', model: 'merchants' },
       { path: 'merchantAccountId', model: 'merchantAccounts' }
     ]).sort({ _id: -1 });
+
+    if(req.auth.user.role == 'Partner'){
+      const filterData = chargebacks.filter((i)=> String(i.clientId.partnerId) === String(req.auth.user._id))
+      // console.log('filterData',chargebacks,filterData)
+        return  res.status(200).json({ success: true, result: filterData });
+  
+    }
   res.status(200).json({ success: true, result: chargebacks });
 });
 

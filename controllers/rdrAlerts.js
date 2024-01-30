@@ -25,16 +25,27 @@ export const getRdrAlerts = tryCatch(async (req, res) => {
   let findRdrAlerts = {
     isDelete: false
   }
-  if (req.auth.user.role !== 'Admin') {
+  if (req.auth.user.role !== 'Admin' && req.auth.user.role !== 'Partner') {
     findRdrAlerts.clientId = req.auth.user.clientId
   }
+  // if(req.auth.user.role == 'Partner' ){
+  //   findRdrAlerts.partnerId = req.auth.user._id
+  // }
   let populateRdrAlerts = [
     { path: 'clientId', model: 'clients' },
     { path: 'merchantId', model: 'merchants' },
     { path: 'merchantAccountId', model: 'merchantAccounts' }
   ]
-  const rdrAlerts = await RdrAlerts.find(findRdrAlerts).populate(populateRdrAlerts).sort({ _id: -1 });;
+  console.log("findRdrAlerts",findRdrAlerts);
 
+  const rdrAlerts = await RdrAlerts.find(findRdrAlerts).populate(populateRdrAlerts).sort({ _id: -1 });
+
+  if(req.auth.user.role == 'Partner'){
+    const filterData = rdrAlerts.filter((i)=> String(i.clientId.partnerId) === String(req.auth.user._id))
+    // console.log('filterData',rdrAlerts,filterData)
+     return  res.status(200).json({ success: true, result: filterData });
+
+  }
   res.status(200).json({ success: true, result: rdrAlerts });
 });
 
