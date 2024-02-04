@@ -67,14 +67,14 @@ export async function verifyScript() {
     await pageOne.goto('https://verifi-one.visa.com/vdm/app/vdmCaseActivity');
     try {
         console.log("Try Starting.....");
-        await pageOne.waitForSelector('//*[@id="main"]/div[2]/div[1]/div[1]/div/div/div/div[2]/div[1]/div/div[3]/div/div[1]/div/div/div/button');
-        await pageOne.click('#main > div:nth-child(3) > div:nth-child(1) > div.css-6x9632-CSS-CSS > div > div > div > div.css-xa13nd-CSS-CSS-structPadding-dark > div.css-1f6bywb-CSS-CSS > div > div:nth-child(3) > div > div:nth-child(1) > div > div > div > button')
+        await pageOne.waitForSelector('//*[@id="main"]/div[2]/div[1]/div[1]/div/div/div/div[2]/div[1]/div/div[4]/div/div[1]/div/div/div/button');
+        await pageOne.click('//*[@id="main"]/div[2]/div[1]/div[1]/div/div/div/div[2]/div[1]/div/div[4]/div/div[1]/div/div/div/button')
         await pageOne.waitForSelector('#custom-list-item-0-5');
 
         await pageOne.click('#custom-list-item-0-5');
-        await pageOne.waitForSelector("//html/body/div[1]/div[2]/div/div[2]/main/div[2]/div[1]/div[1]/div/div/div/div[2]/div[3]/div/fieldset/div/div[2]/div/div/div[1]/div/div[1]/div/div/div/div/input");
+        await pageOne.waitForSelector("//html/body/div[1]/div[2]/div/main/div[2]/div[1]/div[1]/div/div/div/div[2]/div[3]/div/fieldset/div/div[2]/div/div/div[1]/div/div[1]/div/div/div/div/input");
 
-        await pageOne.fill('//html/body/div[1]/div[2]/div/div[2]/main/div[2]/div[1]/div[1]/div/div/div/div[2]/div[3]/div/fieldset/div/div[2]/div/div/div[1]/div/div[1]/div/div/div/div/input', dateFormate(new Date(), 'MM/DD/YYYY'))
+        await pageOne.fill('//html/body/div[1]/div[2]/div/main/div[2]/div[1]/div[1]/div/div/div/div[2]/div[3]/div/fieldset/div/div[2]/div/div/div[1]/div/div[1]/div/div/div/div/input', dateFormate(new Date(), 'MM/DD/YYYY'))
         await pageOne.dblclick('#main > div:nth-child(3) > div:nth-child(1) > div.css-6x9632-CSS-CSS > div > div > div > div.css-zn1cdn-structPadding-structPadding-structPadding > div > div > button.vds-btn-text--primary.css-118k6bc-smallViewportStyles-highContrastStyles-highContrastStyles-structMargin-structMargin')
 
         await pageOne.waitForSelector('//*[@id="template-main"]/div/div[1]/div[2]/div/button');
