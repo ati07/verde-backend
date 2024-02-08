@@ -14,6 +14,7 @@ import riskReportRouter from './routes/riskreport.js';
 import apiRouter from './routes/api.js';
 import invoiceRouter from './routes/invoice.js';
 import morgan from 'morgan';
+import crmRouter from './routes/crm.js';
 
 dotenv.config();
 
@@ -48,6 +49,8 @@ app.use('/auth', authRouter);
 app.use('/user', userRouter);
 app.use('/api', apiRouter);
 app.use('/invoice',invoiceRouter)
+app.use('/crm',crmRouter)
+
 
 
 
