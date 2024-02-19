@@ -61,6 +61,7 @@ export const pickHighest = (obj, num = 1) => {
 };
 
 export const getDisputesPerBrand = (rdrAlerts, ethocaAlerts) => {
+    let rdrAlertsYearWise = {}
     let rdrAlertsPerMonth = {}
     let rdrAlertsAmountPerMonth = {}
     rdrAlerts.map((i, j) => {
@@ -68,7 +69,7 @@ export const getDisputesPerBrand = (rdrAlerts, ethocaAlerts) => {
         let d = createdAt.getMonth() + 1 < 10
             ? '0' + (createdAt.getMonth() + 1).toString()
             : (createdAt.getMonth() + 1).toString()
-
+        console.log('yesr',createdAt.getFullYear())
         if (rdrAlertsPerMonth[month[d]]) {
             rdrAlertsPerMonth[month[d]] += 1
             rdrAlertsAmountPerMonth[month[d]] += parseFloat(i.caseAmount ===''? 0 : i.caseAmount)
@@ -100,6 +101,7 @@ export const getDisputesPerBrand = (rdrAlerts, ethocaAlerts) => {
     let monthlyData = []
     let monthlyAmountsData = []
     // let inverseMonth = inverse(month)
+    console.log('rdr,ethoca',rdrAlertsPerMonth,ethocaAlertsPerMonth,rdrAlertsAmountPerMonth,ethocaAlertsAmountPerMonth)
     for (let key in monthInverse) {
         // console.log(key)
         monthlyData.push({
