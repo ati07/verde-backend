@@ -15,6 +15,7 @@ const crmSchema = mongoose.Schema({
     dueDate: { type: String },
     contacts:[{}],
     history:[{}],
+    contractFile:[{}],
     isDelete:{ type: Boolean, default: false },
     isActive:{ type: Boolean, default: true }, 
 },

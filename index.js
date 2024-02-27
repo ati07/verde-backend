@@ -15,12 +15,16 @@ import apiRouter from './routes/api.js';
 import invoiceRouter from './routes/invoice.js';
 import morgan from 'morgan';
 import crmRouter from './routes/crm.js';
+import uploadFileRouter from './routes/uploadFile.js';
+import multer from 'multer';
 
 dotenv.config();
 
 const port = process.env.PORT || 5000;
 
 const app = express();
+
+app.use("/files", express.static("files"));
 
 app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Origin', process.env.CLIENT_URL);
@@ -50,6 +54,8 @@ app.use('/user', userRouter);
 app.use('/api', apiRouter);
 app.use('/invoice',invoiceRouter)
 app.use('/crm',crmRouter)
+
+app.use('/upload-file',uploadFileRouter)
 
 
 
