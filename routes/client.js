@@ -4,7 +4,7 @@ import { createClient, deleteClient, getClient, updateClient } from '../controll
 import auth from '../middleware/auth.js';
 import authenticateRoles from '../middleware/authenticateRole.js';
 
-const allowedRoles = ["Admin", "Partner"]
+const allowedRoles = ["Admin", "Partner", "CRM_Admin"]
 
 const clientRouter = Router();
 
