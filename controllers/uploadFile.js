@@ -7,7 +7,7 @@ export const uploadFile = tryCatch(async (req, res) => {
 
     if (req.body.oldFileName !== '') {
         const fileName = req.body.oldFileName;
-        const directoryPath = "files/";
+        const directoryPath = "./files/";
 
         fs.unlink(directoryPath + fileName, (err) => {
             if (err) {
@@ -23,7 +23,7 @@ export const uploadFile = tryCatch(async (req, res) => {
 
 export const deleteFile = tryCatch(async (req, res) => {
     const fileName = req.body.file;
-    const directoryPath = "files/";
+    const directoryPath = "./files/";
 
     if (fileName && fileName !== '') {
         fs.unlink(directoryPath + fileName, (err) => {

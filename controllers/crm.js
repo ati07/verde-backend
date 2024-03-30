@@ -38,7 +38,7 @@ export const deleteCrm = tryCatch(async (req, res) => {
   const crm = await Crm.find(findCrm).sort({ _id: -1 });
   // console.log(crm);
   const fileName = crm?.[0]?.contractFile?.[0].file;
-  const directoryPath = "files/";
+  const directoryPath = "./files/";
 
   if(fileName && fileName !==''){
     fs.unlink(directoryPath + fileName, (err) => {

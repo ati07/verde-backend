@@ -3,6 +3,8 @@ import mongoose from 'mongoose';
 const crmSchema = mongoose.Schema({
     company:{ type: String },
     website: { type: String },
+    mcc:{ type: String },
+    rdrTier:{ type: String },
     addedBy:{ type: String },
     rdrTier1Price: { type: Number },
     rdrTier2Price: { type: Number },
@@ -13,8 +15,8 @@ const crmSchema = mongoose.Schema({
     integrationFee:{ type: Number },
     status: { type: String },
     dueDate: { type: String },
+    observation:[{}],
     contacts:[{}],
-    history:[{}],
     contractFile:[{}],
     isDelete:{ type: Boolean, default: false },
     isActive:{ type: Boolean, default: true }, 
