@@ -18,7 +18,8 @@ export const createCrmObservation = tryCatch(async (req, res) => {
         isDelete: false,
         leadId: req.params.leadId
       }
-      const crmObservation = await CrmObservation.find(findData).sort({ _id: -1 });
+      const crmObservation = await CrmObservation.find(findData)
+      .populate([{ path: 'addedBy', model: 'users' }]).sort({ _id: -1 });
     
       res.status(200).json({ success: true, result: crmObservation });
   })
