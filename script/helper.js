@@ -28,3 +28,11 @@ export const convertFormate = (number) => {
     }).format(number)
     return data
 }
+
+export function formatString(str) {
+    return str.toLowerCase()
+    return str
+      .replace(/(\B)[^ ]*/g, (match) => (match.toLowerCase()))
+      .replace(/^[^ ]/g, (match) => (match.toUpperCase()));
+    
+  }

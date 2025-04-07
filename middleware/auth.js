@@ -11,7 +11,9 @@ export const validateUser = async (data) => {
       email: data.email
     }
     let populate = data.populate ? { path: 'clientId', model: 'clients' } : ""
-    const userDetails = await User.findOne(findUser).populate(populate);
+    // const userDetails = await User.findOne(findUser).populate(populate);
+    const userDetails = await User.findOne(findUser);
+
 
     if (!userDetails) {
       return { ...sendRes, message: 'User not found' }

@@ -7,8 +7,8 @@ import authenticateRoles from '../middleware/authenticateRole.js';
 const allowedRoles = ["Admin", "Partner", "CRM_Admin"]
 
 const clientRouter = Router();
-
-clientRouter.post('/', auth, authenticateRoles(allowedRoles), createClient);
+// auth, authenticateRoles(allowedRoles),
+clientRouter.post('/',  createClient);
 clientRouter.get('/', auth, authenticateRoles(allowedRoles), getClient);
 clientRouter.patch('/:clientId', auth, authenticateRoles(allowedRoles), deleteClient);
 clientRouter.put('/:clientId', auth, authenticateRoles(allowedRoles), updateClient);

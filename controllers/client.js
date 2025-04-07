@@ -1,11 +1,11 @@
 import Client from '../models/client.js';
-import Merchant from '../models/merchant.js';
-import MerchantAccount from '../models/merchantAccount.js';
-import RdrAlerts from '../models/rdrAlerts.js';
-import EthocaAlerts from '../models/ethocaAlerts.js';
+// import Merchant from '../models/merchant.js';
+// import MerchantAccount from '../models/merchantAccount.js';
+// import RdrAlerts from '../models/rdrAlerts.js';
+// import EthocaAlerts from '../models/ethocaAlerts.js';
 import Users from '../models/user.js';
 import tryCatch from './utils/tryCatch.js';
-import Chargebacks from '../models/chargebacks.js';
+// import Chargebacks from '../models/chargebacks.js';
 
 // create Client
 export const createClient = tryCatch(async (req, res) => {
@@ -14,10 +14,10 @@ export const createClient = tryCatch(async (req, res) => {
 
   let clientPayload = req.body
   
-  if(req.auth.user.role == 'Partner' ){
-    clientPayload.partnerId = req.auth.user._id
-  }
-  clientPayload.addedBy = req.auth.user._id
+  // if(req.auth.user.role == 'Partner' ){
+  //   clientPayload.partnerId = req.auth.user._id
+  // }
+  // clientPayload.addedBy = req.auth.user._id
 
   const newClient = new Client(clientPayload);
 
@@ -56,18 +56,18 @@ export const deleteClient = tryCatch(async (req, res) => {
     clientId: req.params.clientId
   }
   // console.log('fu',findData,updateData);
-  const M = await Merchant.updateMany(findData,updateData);
-  // console.log('uM',M);
-  const mA = await MerchantAccount.updateMany(findData,updateData);
-  // console.log('mA',mA);
+  // const M = await Merchant.updateMany(findData,updateData);
+  // // console.log('uM',M);
+  // const mA = await MerchantAccount.updateMany(findData,updateData);
+  // // console.log('mA',mA);
 
-  const rdr= await RdrAlerts.updateMany(findData,updateData);
-  // console.log('rdr',rdr);
+  // const rdr= await RdrAlerts.updateMany(findData,updateData);
+  // // console.log('rdr',rdr);
 
-  const e = await EthocaAlerts.updateMany(findData,updateData);
-  // console.log('e',e);
+  // const e = await EthocaAlerts.updateMany(findData,updateData);
+  // // console.log('e',e);
   
-  const ch = await Chargebacks.updateMany(findData,updateData);
+  // const ch = await Chargebacks.updateMany(findData,updateData);
   // console.log('ch',ch);
 
   const u = await Users.updateMany(findData,updateData);
@@ -93,8 +93,8 @@ export const updateClient = tryCatch(async (req, res) => {
     let findData = {
       clientId : req.params.clientId
     }
-    const updatedMerchant = await Merchant.updateMany(findData,updateData)
-    const updatedMerchantAccount = await MerchantAccount.updateMany(findData,updateData)
+    // const updatedMerchant = await Merchant.updateMany(findData,updateData)
+    // const updatedMerchantAccount = await MerchantAccount.updateMany(findData,updateData)
     console.log('req.body.isActive',req.body.isActive)
     message = "Client status updated successfully and all its data are updated"
   }

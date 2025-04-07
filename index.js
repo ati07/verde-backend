@@ -1,22 +1,26 @@
 import express from 'express';
 import dotenv from 'dotenv';
 import mongoose from 'mongoose';
-import clientRouter from './routes/client.js';
 import authRouter from './routes/auth.js';
-import merchantRouter from './routes/merchant.js';
-import chargebacksRouter from './routes/chargebacks.js';
-import merchantAccountRouter from './routes/merchantAccount.js';
-import ethocaAlertsRouter from './routes/ethocaAlerts.js';
-import rdrAlertsRouter from './routes/rdrAlerts.js';
 import userRouter from './routes/user.js';
-import dashboardRouter from './routes/dashboard.js';
-import riskReportRouter from './routes/riskreport.js';
 import apiRouter from './routes/api.js';
-import invoiceRouter from './routes/invoice.js';
 import morgan from 'morgan';
-import crmRouter from './routes/crm.js';
 import uploadFileRouter from './routes/uploadFile.js';
 import multer from 'multer';
+import AdministratorRouter from './routes/administrator.js';
+import ProviderRouter from './routes/provider.js';
+import inventoryRouter from './routes/inventory.js';
+import PaymentReportRouter from './routes/paymentReport.js';
+import CollectionReportRouter from './routes/collectionReport.js';
+import BankRouter from './routes/bank.js';
+import CategoryInTheFlowRouter from './routes/categoryInTheFlow.js';
+import CategoryProjectRouter from './routes/categoryProject.js';
+import CodeRouter from './routes/code.js';
+import ProjectRouter from './routes/project.js';
+import clientRouter from './routes/client.js';
+import StatusRouter from './routes/status.js';
+import SubPhaseRouter from './routes/subPhase.js';
+import TypeRouter from './routes/type.js';
 
 dotenv.config();
 
@@ -41,19 +45,26 @@ app.use((req, res, next) => {
 app.use(morgan('dev'));
 
 app.use(express.json({ limit: '10mb' }));
-app.use('/dashboard',dashboardRouter)
+// app.use('/dashboard',dashboardRouter)
 app.use('/client', clientRouter);
-app.use('/merchant', merchantRouter);
-app.use('/merchant-account',merchantAccountRouter)
-app.use('/rdr-alerts',rdrAlertsRouter)
-app.use('/ethoca-alerts',ethocaAlertsRouter)
-app.use('/chargebacks', chargebacksRouter);
-app.use('/risk-report',riskReportRouter)
+app.use('/administrator', AdministratorRouter);
+app.use('/bank', BankRouter);
+app.use('/category_in_flow', CategoryInTheFlowRouter);
+app.use('/category_project', CategoryProjectRouter);
+app.use('/code', CodeRouter);
+app.use('/project', ProjectRouter);
+app.use('/status', StatusRouter);
+app.use('/type', TypeRouter);
+app.use('/sub_phase', SubPhaseRouter);
+app.use('/provider', ProviderRouter);
+app.use('/inventory',inventoryRouter)
+app.use('/payment_report',PaymentReportRouter)
+app.use('/collection_report',CollectionReportRouter)
 app.use('/auth', authRouter);
 app.use('/user', userRouter);
 app.use('/api', apiRouter);
-app.use('/invoice',invoiceRouter)
-app.use('/crm',crmRouter)
+// app.use('/invoice',invoiceRouter)
+// app.use('/crm',crmRouter)
 
 app.use('/upload-file',uploadFileRouter)
 
