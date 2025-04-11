@@ -22,7 +22,7 @@ export const getType= tryCatch(async (req, res) => {
     isDelete: false
   }
 
-  const Types = await Type.find(findData).populate([{ path: 'addedBy', model: 'users' }]).sort({ _id: -1 });
+  const Types = await Type.find(findData).populate([{ path: 'addedBy', model: 'users' }]).sort({ name: 1 });
 
   res.status(200).json({ success: true, result: Types});
 });

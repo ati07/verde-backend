@@ -22,7 +22,7 @@ export const getSubPhase= tryCatch(async (req, res) => {
     isDelete: false
   }
 
-  const SubPhases = await SubPhase.find(findData).populate([{ path: 'addedBy', model: 'users' }]).sort({ _id: -1 });
+  const SubPhases = await SubPhase.find(findData).populate([{ path: 'addedBy', model: 'users' }]).sort({ name: 1 });
 
   res.status(200).json({ success: true, result: SubPhases});
 });

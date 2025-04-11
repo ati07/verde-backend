@@ -22,7 +22,7 @@ export const getStatus= tryCatch(async (req, res) => {
     isDelete: false
   }
 
-  const Statuss = await Status.find(findData).populate([{ path: 'addedBy', model: 'users' }]).sort({ _id: -1 });
+  const Statuss = await Status.find(findData).populate([{ path: 'addedBy', model: 'users' }]).sort({ name: 1 });
 
   res.status(200).json({ success: true, result: Statuss});
 });

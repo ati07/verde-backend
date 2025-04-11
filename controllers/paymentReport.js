@@ -22,6 +22,14 @@ export const getPaymentReport= tryCatch(async (req, res) => {
     isDelete: false
   }
 
+  // if (req.query.projectId) {
+  //   findData['clientId'] = req.query.clientId
+  // }
+
+  // if (req.query.projectId) {
+  //   findData['statusId'] = req.query.statusId
+  // }
+
   const PaymentReports = await PaymentReport.find(findData).populate([{ path: 'addedBy', model: 'users' }]).sort({ _id: -1 });
 
   res.status(200).json({ success: true, result: PaymentReports});

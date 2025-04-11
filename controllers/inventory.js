@@ -22,13 +22,21 @@ export const getInventory= tryCatch(async (req, res) => {
     isDelete: false
   }
 
+  if (req.query.projectId) {
+    findData['projectId'] = req.query.projectId
+  }
+
+  if (req.query.statusId) {
+    findData['statusId'] = req.query.statusId
+  }
+
   const Inventorys = await Inventory.find(findData).populate([
     { path: 'addedBy', model: 'users' },
     { path: 'clientId', model: 'clients' },
     { path: 'projectId', model: 'projects' },
     { path: 'statusId', model: 'status' },
     { path: 'userId', model: 'users' },
-    { path: 'typeId', model: 'types' }]).sort({ _id: -1 });
+    { path: 'typeId', model: 'types' }]).sort({ name: 1 });
 
   res.status(200).json({ success: true, result: Inventorys});
 });

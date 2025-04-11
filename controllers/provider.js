@@ -21,8 +21,13 @@ export const getProvider= tryCatch(async (req, res) => {
   let findData = {
     isDelete: false
   }
+  if (req.query.snName) {
+    findData['snName'] = req.query.snName
+  }
 
-  const Providers = await Provider.find(findData).populate([{ path: 'addedBy', model: 'users' }]).sort({ _id: -1 });
+  
+  const Providers = await Provider.find(findData).populate([{ path: 'addedBy', model: 'users' }]).sort({ snName: 1 });
+
 
   res.status(200).json({ success: true, result: Providers});
 });

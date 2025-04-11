@@ -22,7 +22,20 @@ export const getAdministrator= tryCatch(async (req, res) => {
     isDelete: false
   }
 
-  const Administrators = await Administrator.find(findData).populate([{ path: 'addedBy', model: 'users' }]).sort({ _id: -1 });
+  // if (req.query.projectId) {
+  //   findData['clientId'] = req.query.clientId
+  // }
+
+  // if (req.query.projectId) {
+  //   findData['statusId'] = req.query.statusId
+  // }
+
+  const Administrators = await Administrator.find(findData).populate([
+    { path: 'addedBy', model: 'users' },
+    { path: 'projectId', model: 'projects' },
+    { path: 'userId', model: 'users' },
+    { path: 'categoryInTheFlowId', model: 'categoryInTheFlows' },
+    { path:'providerId',model: 'providers' }]).sort({ _id: -1 });
 
   res.status(200).json({ success: true, result: Administrators});
 });
