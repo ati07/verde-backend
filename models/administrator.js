@@ -11,9 +11,9 @@ const AdministratorSchema = new mongoose.Schema({
     date: { type: Date },
     bin: { type: String },
     total: { type: Number },
-    invoiceDescription: { type: Number },
+    invoiceDescription: { type: String },
     commentDate: { type: Date },
-    observation: { type: Date },
+    observation: { type: String },
     isDelete:{ type: Boolean, default: false },
     isActive:{ type: Boolean, default: true }, 
 });

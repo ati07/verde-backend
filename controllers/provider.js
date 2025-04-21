@@ -7,6 +7,7 @@ export const createProvider= tryCatch(async (req, res) => {
   //Todo:  error handling
 
   let ProviderPayload = req.body
+  ProviderPayload.addedBy = req.auth.user._id
   
   const newProvider= new Provider(ProviderPayload);
 
@@ -21,10 +22,15 @@ export const getProvider= tryCatch(async (req, res) => {
   let findData = {
     isDelete: false
   }
-  if (req.query.snName) {
-    findData['snName'] = req.query.snName
+  // if (req.query.snName) {
+  //   findData['snName'] = req.query.snName
+  // }
+  
+  const { snName } = req.query;
+  // Add regex for partial matching if snName is provided
+  if (snName) {
+    findData['snName'] = { $regex: snName, $options: 'i' }; // 'i' = case-insensitive
   }
-
   
   const Providers = await Provider.find(findData).populate([{ path: 'addedBy', model: 'users' }]).sort({ snName: 1 });
 

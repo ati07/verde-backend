@@ -7,6 +7,7 @@ export const createStatus= tryCatch(async (req, res) => {
   //Todo:  error handling
 
   let StatusPayload = req.body
+  StatusPayload.addedBy = req.auth.user._id
   
   const newStatus= new Status(StatusPayload);
 

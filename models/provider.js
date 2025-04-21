@@ -9,7 +9,7 @@ const providerSchema = mongoose.Schema(
     email: { type: String },
     serviceType: { type: String },
     contactPerson: { type: String },
-    project: { type: String },
+    projectId: { type: mongoose.Types.ObjectId },
     snCode: { type: String },
     snName: { type: String },
     isDelete:{ type: Boolean, default: false },

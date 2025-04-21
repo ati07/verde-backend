@@ -4,7 +4,7 @@ import { createProvider, deleteProvider, getProvider, updateProvider } from "../
 
 const ProviderRouter = Router();
 // auth,
-ProviderRouter.post('/',  createProvider);
+ProviderRouter.post('/', auth, createProvider);
 ProviderRouter.get('/', auth, getProvider);
 ProviderRouter.patch('/:providerId', auth,deleteProvider);
 ProviderRouter.put('/:providerId', auth, updateProvider);

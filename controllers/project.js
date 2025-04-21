@@ -7,6 +7,7 @@ export const createProject= tryCatch(async (req, res) => {
   //Todo:  error handling
 
   let ProjectPayload = req.body
+  ProjectPayload.addedBy = req.auth.user._id
   
   const newProject= new Project(ProjectPayload);
 

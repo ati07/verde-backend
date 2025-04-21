@@ -7,6 +7,7 @@ export const createPaymentReport= tryCatch(async (req, res) => {
   //Todo:  error handling
 
   let PaymentReportPayload = req.body
+  PaymentReportPayload.addedBy = req.auth.user._id
   
   const newPaymentReport= new PaymentReport(PaymentReportPayload);
 

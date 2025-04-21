@@ -17,7 +17,7 @@ export const createClient = tryCatch(async (req, res) => {
   // if(req.auth.user.role == 'Partner' ){
   //   clientPayload.partnerId = req.auth.user._id
   // }
-  // clientPayload.addedBy = req.auth.user._id
+  clientPayload.addedBy = req.auth.user._id
 
   const newClient = new Client(clientPayload);
 
@@ -33,8 +33,13 @@ export const getClient = tryCatch(async (req, res) => {
     isDelete: false
   }
 
-  if(req.auth.user.role == 'Partner' ){
-    findData.partnerId = req.auth.user._id
+  // if(req.auth.user.role == 'Partner' ){
+  //   findData.partnerId = req.auth.user._id
+  // }
+  const { name } = req.query;
+  // Add regex for partial matching if snName is provided
+  if (name) {
+    findData['name'] = { $regex: name, $options: 'i' }; // 'i' = case-insensitive
   }
 
   const client = await Client.find(findData).populate([{ path: 'addedBy', model: 'users' }]).sort({ name: 1 });

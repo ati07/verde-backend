@@ -7,6 +7,7 @@ export const createCode= tryCatch(async (req, res) => {
   //Todo:  error handling
 
   let CodePayload = req.body
+  CodePayload.addedBy = req.auth.user._id
   
   const newCode= new Code(CodePayload);
 

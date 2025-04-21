@@ -4,7 +4,7 @@ import { createStatus, deleteStatus, getStatus, updateStatus } from "../controll
 
 const StatusRouter = Router();
 // auth,
-StatusRouter.post('/',  createStatus);
+StatusRouter.post('/', auth, createStatus);
 StatusRouter.get('/', auth, getStatus);
 StatusRouter.patch('/:statusId', auth,deleteStatus);
 StatusRouter.put('/:statusId', auth, updateStatus);

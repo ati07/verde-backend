@@ -7,7 +7,9 @@ export const createCategoryInTheFlow = tryCatch(async (req, res) => {
   //Todo:  error handling
 
   let CategoryInTheFlowPayload = req.body
+  CategoryInTheFlowPayload.addedBy = req.auth.user._id
   
+
   const newCategoryInTheFlow= new CategoryInTheFlow(CategoryInTheFlowPayload);
 
   await newCategoryInTheFlow.save()

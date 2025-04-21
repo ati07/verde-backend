@@ -7,6 +7,7 @@ export const createAdministrator= tryCatch(async (req, res) => {
   //Todo:  error handling
 
   let administratorPayload = req.body
+  administratorPayload.addedBy = req.auth.user._id
   
   const newAdministrator= new Administrator(administratorPayload);
 

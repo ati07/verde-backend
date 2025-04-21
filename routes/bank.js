@@ -4,7 +4,7 @@ import { createBank, deleteBank, getBank, updateBank } from "../controllers/bank
 
 const BankRouter = Router();
 // auth,
-BankRouter.post('/',  createBank);
+BankRouter.post('/', auth, createBank);
 BankRouter.get('/', auth, getBank);
 BankRouter.patch('/:bankId', auth,deleteBank);
 BankRouter.put('/:bankId', auth, updateBank);

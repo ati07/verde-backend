@@ -7,7 +7,9 @@ export const createBank= tryCatch(async (req, res) => {
   //Todo:  error handling
 
   let BankPayload = req.body
-  
+  BankPayload.addedBy = req.auth.user._id
+
+
   const newBank= new Bank(BankPayload);
 
   await newBank.save()

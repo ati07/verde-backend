@@ -4,7 +4,7 @@ import { createProject, deleteProject, getProject, updateProject } from "../cont
 
 const ProjectRouter = Router();
 // auth,
-ProjectRouter.post('/',  createProject);
+ProjectRouter.post('/', auth, createProject);
 ProjectRouter.get('/', auth, getProject);
 ProjectRouter.patch('/:projectId', auth,deleteProject);
 ProjectRouter.put('/:projectId', auth, updateProject);

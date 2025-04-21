@@ -5,6 +5,7 @@ const clientSchema = mongoose.Schema({
     name: { type: String },
     email:{ type: String },
     phoneNumber:{ type: String },
+    description: { type: String },
     addedBy: { type: mongoose.Types.ObjectId },
     isDelete:{ type: Boolean, default: false },
     isActive:{ type: Boolean, default: true }, 

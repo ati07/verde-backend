@@ -4,9 +4,9 @@ import { createInventory, deleteInventory, getInventory, updateInventory } from 
 
 const inventoryRouter = Router();
 // auth,
-inventoryRouter.post('/',  createInventory);
+inventoryRouter.post('/', auth, createInventory);
 inventoryRouter.get('/', auth, getInventory);
-inventoryRouter.patch('/:crmId', auth,deleteInventory);
-inventoryRouter.put('/:crmId', auth, updateInventory);
+inventoryRouter.patch('/:inventoryId', auth,deleteInventory);
+inventoryRouter.put('/:inventoryId', auth, updateInventory);
 
 export default inventoryRouter;

@@ -7,6 +7,7 @@ export const createSubPhase= tryCatch(async (req, res) => {
   //Todo:  error handling
 
   let SubPhasePayload = req.body
+  SubPhasePayload.addedBy = req.auth.user._id
   
   const newSubPhase= new SubPhase(SubPhasePayload);
 

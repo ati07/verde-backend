@@ -4,7 +4,7 @@ import { createType, deleteType, getType, updateType } from "../controllers/type
 
 const TypeRouter = Router();
 // auth,
-TypeRouter.post('/',  createType);
+TypeRouter.post('/', auth, createType);
 TypeRouter.get('/', auth, getType);
 TypeRouter.patch('/:TypeId', auth,deleteType);
 TypeRouter.put('/:TypeId', auth, updateType);

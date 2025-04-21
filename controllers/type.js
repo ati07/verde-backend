@@ -7,6 +7,7 @@ export const createType= tryCatch(async (req, res) => {
   //Todo:  error handling
 
   let TypePayload = req.body
+  TypePayload.addedBy = req.auth.user._id
   
   const newType= new Type(TypePayload);
 

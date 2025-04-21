@@ -7,6 +7,7 @@ export const createInventory= tryCatch(async (req, res) => {
   //Todo:  error handling
 
   let InventoryPayload = req.body
+  InventoryPayload.addedBy = req.auth.user._id
   
   const newInventory= new Inventory(InventoryPayload);
 
@@ -30,15 +31,33 @@ export const getInventory= tryCatch(async (req, res) => {
     findData['statusId'] = req.query.statusId
   }
 
+
+  // Pagination parameters
+  const page = parseInt(req.query.page) || 1; // Default to page 1
+  const pageSize = parseInt(req.query.pageSize) || 50; // Default to 10 items per page
+  const skip = (page - 1) * pageSize;
+
+  // Fetch total count of documents
+  const totalCount = await Inventory.countDocuments(findData);
+
   const Inventorys = await Inventory.find(findData).populate([
-    { path: 'addedBy', model: 'users' },
+    // { path: 'addedBy', model: 'users' },
     { path: 'clientId', model: 'clients' },
     { path: 'projectId', model: 'projects' },
     { path: 'statusId', model: 'status' },
     { path: 'userId', model: 'users' },
-    { path: 'typeId', model: 'types' }]).sort({ name: 1 });
+    { path: 'typeId', model: 'types' }])
+    .sort({ _id: -1 })
+    .skip(skip)
+    .limit(pageSize);
 
-  res.status(200).json({ success: true, result: Inventorys});
+  res.status(200).json({ 
+    success: true, 
+    result: Inventorys,
+    totalCount, // Total number of documents
+    currentPage: page, // Current page
+    totalPages: Math.ceil(totalCount / pageSize), // Total pages
+  });
 });
 
 //  delete Client

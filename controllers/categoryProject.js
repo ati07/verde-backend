@@ -7,7 +7,9 @@ export const createCategoryProject= tryCatch(async (req, res) => {
   //Todo:  error handling
 
   let CategoryProjectPayload = req.body
+  CategoryProjectPayload.addedBy = req.auth.user._id
   
+
   const newCategoryProject= new CategoryProject(CategoryProjectPayload);
 
   await newCategoryProject.save()
@@ -22,7 +24,14 @@ export const getCategoryProject= tryCatch(async (req, res) => {
     isDelete: false
   }
 
-  const CategoryProjects = await CategoryProject.find(findData).populate([{ path: 'addedBy', model: 'users' }]).sort({ name: 1 });
+  if (req.query.clientId) {
+    findData['clientId'] = req.query.clientId
+  }
+
+  const CategoryProjects = await CategoryProject.find(findData).populate([
+    { path: 'addedBy', model: 'users' },
+    
+  ]).sort({ name: 1 });
 
   res.status(200).json({ success: true, result: CategoryProjects});
 });

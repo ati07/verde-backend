@@ -18,7 +18,7 @@ const CollectionReportSchema = new mongoose.Schema({
     disbursements: { type: Number },
     arrangements: { type: Date },
     paymentDate: { type: Date },
-    observation: { type: Number },
+    observation: { type: String },
     isDelete:{ type: Boolean, default: false },
     isActive:{ type: Boolean, default: true }, 
 });

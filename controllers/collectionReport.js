@@ -7,6 +7,7 @@ export const createCollectionReport= tryCatch(async (req, res) => {
   //Todo:  error handling
 
   let CollectionReportPayload = req.body
+  CollectionReportPayload.addedBy = req.auth.user._id
   
   const newCollectionReport= new CollectionReport(CollectionReportPayload);
 
@@ -22,7 +23,14 @@ export const getCollectionReport= tryCatch(async (req, res) => {
     isDelete: false
   }
 
-  const CollectionReports = await CollectionReport.find(findData).populate([{ path: 'addedBy', model: 'users' }]).sort({ _id: -1 });
+  const CollectionReports = await CollectionReport.find(findData).populate([
+    // { path: 'addedBy', model: 'users' },
+    { path: 'projectId', model: 'projects'},
+    { path: 'bankId', model: 'banks' },
+    { path:'clientId',model:'clients'},
+    { path: 'userId', model: 'users' },
+
+  ]).sort({ _id: -1 });
 
   res.status(200).json({ success: true, result: CollectionReports});
 });

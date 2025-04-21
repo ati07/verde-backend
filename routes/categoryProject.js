@@ -4,7 +4,7 @@ import { createCategoryProject, deleteCategoryProject, getCategoryProject, updat
 
 const CategoryProjectRouter = Router();
 // auth,
-CategoryProjectRouter.post('/',  createCategoryProject);
+CategoryProjectRouter.post('/',auth, createCategoryProject);
 CategoryProjectRouter.get('/', auth, getCategoryProject);
 CategoryProjectRouter.patch('/:categoryProjectId', auth,deleteCategoryProject);
 CategoryProjectRouter.put('/:categoryProjectId', auth, updateCategoryProject);

@@ -1,8 +1,8 @@
 import axios from 'axios'
 import xlsx from 'xlsx'
-import { formatString } from './helper.js';
+import { formatString } from '../helper.js';
 import fs from 'fs';
-import Inventory from '../models/inventory.js';
+import Inventory from '../../models/inventory.js';
 import mongoose from 'mongoose';
 
 let clients = [
@@ -2700,27 +2700,14 @@ const readExcelData = (filePath) => {
 };
 
 // Function to upload data
-const uploadData = async (filePath) => {
+const uploadInventoryData = async (filePath) => {
     try {
-        const providers = readExcelData(filePath);
-        console.log('providers',providers)
+        const inventory = readExcelData(filePath);
+        console.log('inventory',inventory)
         
-        // let client = []
-        // let res = providers.map((item)=>{
-        //     item.clientId && client.push(item.clientId?.trim()?.toLowerCase())
-        //     })
-        // console.log('client',client)
-        // fs.writeFile('dataclientclient.json', JSON.stringify(client, null, 2), (err) => {
-        //     if (err) {
-        //       console.error('Error saving JSON:', err);
-        //     } else {
-        //       console.log('Data saved to data.json');
-        //     }
-        //   });
-
         let c = []
         // let red = [...new Set(client)]
-        let res = providers.map((item)=>{
+        let res = inventory.map((item)=>{
             // console.log('item',item.name.includes('Miguel Triana'))
             // if(item.clientId ==='Miguel Triana') console.log('item',item)
             let clientId = clients.filter((cl)=>{
@@ -2741,31 +2728,7 @@ const uploadData = async (filePath) => {
 
             return item
         })
-        // fs.writeFile('dataClient.json', JSON.stringify(c, null, 2), (err) => {
-        //     if (err) {
-        //       console.error('Error saving JSON:', err);
-        //     } else {
-        //       console.log('Data saved to data.json');
-        //     }
-        //   });
-
-
-        // console.log('providers',res)
-        // fs.writeFile('data1.json', JSON.stringify(res, null, 2), (err) => {
-        //     if (err) {
-        //       console.error('Error saving JSON:', err);
-        //     } else {
-        //       console.log('Data saved to data.json');
-        //     }
-        //   });
-        // const providersss = red.map(category => {
-        //     if(category){
-        //     console.log('category',category)
-
-        //         return { name: formatString(category) }
-        //     }
-            
-        // });
+        
         await mongoose.connect('mongodb+srv://testUser:test123@cluster0.bq15jz4.mongodb.net/?retryWrites=true&w=majority').then(() => console.log("db connected"));
         console.log("res",res)
         if(res.length){
@@ -2790,7 +2753,7 @@ const uploadData = async (filePath) => {
 };
 
 // Execute the function with the Excel file path
-uploadData('FINAL INVENTARIO (1).xlsx');
+uploadInventoryData('FINAL INVENTARIO (1).xlsx');
 
 // ["RESERVADO",
 //     "DISPONIBLE",
