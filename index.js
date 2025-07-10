@@ -21,6 +21,9 @@ import clientRouter from './routes/client.js';
 import StatusRouter from './routes/status.js';
 import SubPhaseRouter from './routes/subPhase.js';
 import TypeRouter from './routes/type.js';
+import logRouter from './routes/log.js';
+import RequestedByRouter from './routes/requestedBy.js';
+import SellRouter from './routes/sell.js';
 
 dotenv.config();
 
@@ -60,9 +63,12 @@ app.use('/provider', ProviderRouter);
 app.use('/inventory',inventoryRouter)
 app.use('/payment_report',PaymentReportRouter)
 app.use('/collection_report',CollectionReportRouter)
+app.use('/requestedBy',RequestedByRouter)
+app.use('/sell',SellRouter)
 app.use('/auth', authRouter);
 app.use('/user', userRouter);
 app.use('/api', apiRouter);
+app.use('/api/logs', logRouter);
 // app.use('/invoice',invoiceRouter)
 // app.use('/crm',crmRouter)
 

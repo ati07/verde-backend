@@ -31,7 +31,14 @@ export const getPaymentReport= tryCatch(async (req, res) => {
   //   findData['statusId'] = req.query.statusId
   // }
 
-  const PaymentReports = await PaymentReport.find(findData).populate([{ path: 'addedBy', model: 'users' }]).sort({ _id: -1 });
+  const PaymentReports = await PaymentReport.find(findData).populate([
+    { path: 'addedBy', model: 'users' },
+    { path: 'userId', model: 'users' },
+    { path: 'projectCategoryId', model: 'categoryProjects' },
+    { path: 'requestedById', model:'requesteds'},
+    { path:'providerId',model: 'providers' },
+    { path:'codeId',model: 'codes'}
+  ]).sort({ _id: -1 });
 
   res.status(200).json({ success: true, result: PaymentReports});
 });

@@ -10,7 +10,7 @@ const AdministratorSchema = new mongoose.Schema({
     week: { type: String },
     date: { type: Date },
     bin: { type: String },
-    total: { type: Number },
+    total: { type: String },
     invoiceDescription: { type: String },
     commentDate: { type: Date },
     observation: { type: String },

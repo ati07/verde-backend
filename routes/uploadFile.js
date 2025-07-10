@@ -2,6 +2,7 @@ import { Router } from "express";
 import { deleteFile, uploadFile } from "../controllers/uploadFile.js";
 import multer from "multer";
 import auth from '../middleware/auth.js';
+import logUserAction from "../middleware/logUserAction.js";
 
 
 const uploadFileRouter = Router();
@@ -21,7 +22,7 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage });
 
-uploadFileRouter.post("/",auth,upload.single("file"),uploadFile)
+uploadFileRouter.post("/",auth,logUserAction('uploaded a File'),upload.single("file"),uploadFile)
 uploadFileRouter.post("/delete-file",auth,deleteFile)
 
 

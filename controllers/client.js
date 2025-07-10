@@ -3,7 +3,6 @@ import Client from '../models/client.js';
 // import MerchantAccount from '../models/merchantAccount.js';
 // import RdrAlerts from '../models/rdrAlerts.js';
 // import EthocaAlerts from '../models/ethocaAlerts.js';
-import Users from '../models/user.js';
 import tryCatch from './utils/tryCatch.js';
 // import Chargebacks from '../models/chargebacks.js';
 
@@ -75,7 +74,7 @@ export const deleteClient = tryCatch(async (req, res) => {
   // const ch = await Chargebacks.updateMany(findData,updateData);
   // console.log('ch',ch);
 
-  const u = await Users.updateMany(findData,updateData);
+  // const u = await Users.updateMany(findData,updateData);
   // console.log('u ',u );
 
   res.status(200).json({ success: true, message: 'Client and all the related data deleted successfully' });
