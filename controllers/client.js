@@ -1,10 +1,5 @@
 import Client from '../models/client.js';
-// import Merchant from '../models/merchant.js';
-// import MerchantAccount from '../models/merchantAccount.js';
-// import RdrAlerts from '../models/rdrAlerts.js';
-// import EthocaAlerts from '../models/ethocaAlerts.js';
 import tryCatch from './utils/tryCatch.js';
-// import Chargebacks from '../models/chargebacks.js';
 
 // create Client
 export const createClient = tryCatch(async (req, res) => {
@@ -59,24 +54,7 @@ export const deleteClient = tryCatch(async (req, res) => {
   let findData={
     clientId: req.params.clientId
   }
-  // console.log('fu',findData,updateData);
-  // const M = await Merchant.updateMany(findData,updateData);
-  // // console.log('uM',M);
-  // const mA = await MerchantAccount.updateMany(findData,updateData);
-  // // console.log('mA',mA);
-
-  // const rdr= await RdrAlerts.updateMany(findData,updateData);
-  // // console.log('rdr',rdr);
-
-  // const e = await EthocaAlerts.updateMany(findData,updateData);
-  // // console.log('e',e);
   
-  // const ch = await Chargebacks.updateMany(findData,updateData);
-  // console.log('ch',ch);
-
-  // const u = await Users.updateMany(findData,updateData);
-  // console.log('u ',u );
-
   res.status(200).json({ success: true, message: 'Client and all the related data deleted successfully' });
 });
 

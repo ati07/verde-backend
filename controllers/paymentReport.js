@@ -36,6 +36,7 @@ export const getPaymentReport= tryCatch(async (req, res) => {
     { path: 'userId', model: 'users' },
     { path: 'projectCategoryId', model: 'categoryProjects' },
     { path: 'requestedById', model:'requesteds'},
+    { path: 'projectId', model: 'projects' },
     { path:'providerId',model: 'providers' },
     { path:'codeId',model: 'codes'}
   ]).sort({ _id: -1 });

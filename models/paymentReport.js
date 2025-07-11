@@ -3,6 +3,7 @@ import mongoose from 'mongoose';
 
 const PaymentReportSchema = new mongoose.Schema({
     addedBy: { type: mongoose.Types.ObjectId },
+    projectId : { type: mongoose.Types.ObjectId },
     providerId : { type: mongoose.Types.ObjectId },
     projectCategoryId: { type: mongoose.Types.ObjectId },
     codeId: { type: mongoose.Types.ObjectId },
