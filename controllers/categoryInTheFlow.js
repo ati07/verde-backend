@@ -39,12 +39,6 @@ export const deleteCategoryInTheFlow= tryCatch(async (req, res) => {
     _id: req.params.categoryInTheFlowId
   }
   const c = await CategoryInTheFlow.updateOne(findCategoryInTheFlow,updateData);
-//   let findData={
-//     clientId: req.params.clientId
-//   }
-  
-//   const u = await Users.updateMany(findData,updateData);
-  // console.log('u ',u );
 
   res.status(200).json({ success: true, message: 'CategoryInTheFlow and all the related data deleted successfully' });
 });
