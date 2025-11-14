@@ -12,11 +12,11 @@ const PaymentReportSchema = new mongoose.Schema({
     requestedById: { type: mongoose.Types.ObjectId},
     week: { type: String },
     date: { type: Date },
-    contractor: { type: String },
     total: { type: String },
     invoiceDescription: { type: String },
     comment: {type: String},
     orderNo: { type: String },
+    isComplete:{ type: Boolean },
     isDelete:{ type: Boolean, default: false },
     isActive:{ type: Boolean, default: true }, 
 });

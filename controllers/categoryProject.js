@@ -1,4 +1,5 @@
 import CategoryProject from '../models/categoryProject.js';
+import computeIsComplete from './utils/checkComplete.js';
 import tryCatch from './utils/tryCatch.js';
 
 // create Client

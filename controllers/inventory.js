@@ -1,5 +1,25 @@
 import Inventory from '../models/inventory.js';
+import computeIsComplete from './utils/checkComplete.js';
 import tryCatch from './utils/tryCatch.js';
+
+
+const REQUIRED_FIELDS = [
+      "clientId",
+      "projectId",
+      "statusId",
+      "userId",
+      "typeId",
+      "code",
+      "unitName",
+      "met2",
+      "unitArea",
+      "priceUnit",
+      "priceList",
+      "rooms",
+      "view",
+      "comment",
+];
+
 
 // create Client
 export const createInventory= tryCatch(async (req, res) => {
@@ -9,6 +29,11 @@ export const createInventory= tryCatch(async (req, res) => {
   let InventoryPayload = req.body
   InventoryPayload.addedBy = req.auth.user._id
   
+
+  // compute completeness before saving
+  InventoryPayload.isComplete = computeIsComplete(InventoryPayload,REQUIRED_FIELDS);
+  
+
   const newInventory= new Inventory(InventoryPayload);
 
   await newInventory.save()
@@ -84,9 +109,20 @@ export const deleteInventory= tryCatch(async (req, res) => {
 
 export const updateInventory = tryCatch(async (req, res) => {
   
+  // fetch existing document to compute final completeness
+  const existing = await Inventory.findById(req.params.inventoryId).lean() || {};
+  const merged = { ...existing, ...req.body };
+
+  // compute isComplete based on merged values
+  merged.isComplete = computeIsComplete(merged,REQUIRED_FIELDS);
+
   let updateData = {
-    $set: req.body
+    $set: { ...req.body, isComplete: merged.isComplete }
   }
+
+  // let updateData = {
+  //   $set: req.body
+  // }
   let findInventory={
     _id: req.params.inventoryId
   }

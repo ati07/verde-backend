@@ -24,10 +24,28 @@ import TypeRouter from './routes/type.js';
 import logRouter from './routes/log.js';
 import RequestedByRouter from './routes/requestedBy.js';
 import SellRouter from './routes/sell.js';
+import repaymentAndDisbursementsRouter from './routes/repaymentAndDisbursements.js';
+import profitabilityRouter from './routes/profitability.js';
+import dashboardRouter from './routes/dashboard.js';
 
 dotenv.config();
 
-const port = process.env.PORT || 5000;
+const port = process.env.PORT || 3000;
+
+
+// Catch unexpected errors so you can see them in logs
+process.on("uncaughtException", (err) => {
+  console.error("Uncaught exception:", err);
+  process.exit(1); // Let PM2 restart the process
+});
+
+process.on("unhandledRejection", (reason, p) => {
+  console.error("Unhandled rejection at:", promise, "reason:", reason);
+});
+
+
+
+
 
 const app = express();
 
@@ -69,14 +87,12 @@ app.use('/auth', authRouter);
 app.use('/user', userRouter);
 app.use('/api', apiRouter);
 app.use('/api/logs', logRouter);
-// app.use('/invoice',invoiceRouter)
+app.use('/repayment',repaymentAndDisbursementsRouter)
+app.use("/profit",profitabilityRouter)
+app.use('/api/dashboard', dashboardRouter);
 // app.use('/crm',crmRouter)
 
 app.use('/upload-file',uploadFileRouter)
-
-
-
-
 app.get('/live', (req, res) => res.json({ message: 'Message from server' }));
 
 app.use((req, res) =>

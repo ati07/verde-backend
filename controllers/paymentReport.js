@@ -1,5 +1,22 @@
 import PaymentReport from '../models/paymentReport.js';
+import computeIsComplete from './utils/checkComplete.js';
 import tryCatch from './utils/tryCatch.js';
+
+const REQUIRED_FIELDS = [
+          "projectId" ,
+          "providerId" ,
+          "projectCategoryId",
+          "codeId",
+          "subFase",
+          "userId",
+          "requestedById",
+          "week",
+          "date",
+          "total",
+          "invoiceDescription",
+          "comment",
+          "orderNo"
+];
 
 // create Client
 export const createPaymentReport= tryCatch(async (req, res) => {
@@ -9,6 +26,8 @@ export const createPaymentReport= tryCatch(async (req, res) => {
   let PaymentReportPayload = req.body
   PaymentReportPayload.addedBy = req.auth.user._id
   
+  PaymentReportPayload.isComplete = computeIsComplete(PaymentReportPayload,REQUIRED_FIELDS);
+
   const newPaymentReport= new PaymentReport(PaymentReportPayload);
 
   await newPaymentReport.save()
@@ -67,10 +86,22 @@ export const deletePaymentReport= tryCatch(async (req, res) => {
 
 
 export const updatePaymentReport= tryCatch(async (req, res) => {
-  
+  // fetch existing document to compute final completeness
+  const existing = await PaymentReport.findById(req.params.paymentReportId).lean() || {};
+  const merged = { ...existing, ...req.body };
+
+  // compute isComplete based on merged values
+  merged.isComplete = computeIsComplete(merged,REQUIRED_FIELDS);
+
   let updateData = {
-    $set: req.body
+    $set: { ...req.body, isComplete: merged.isComplete }
   }
+  
+  
+  
+  // let updateData = {
+  //   $set: req.body
+  // }
   let findPaymentReport={
     _id: req.params.paymentReportId
   }

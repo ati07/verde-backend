@@ -1,5 +1,22 @@
 import CollectionReport from '../models/collectionReport.js';
+import computeIsComplete from './utils/checkComplete.js';
 import tryCatch from './utils/tryCatch.js';
+
+const REQUIRED_FIELDS = [
+  'projectId',
+  'bankId',
+  'clientId',
+  'userId',
+  'reportDate',
+  'unitName',
+  'collectionReportDate',
+  'entryDate',
+  'totalCollection',
+  'typeOfPayment',
+  'paymentDate',
+  'observation'
+];
+
 
 // create Client
 export const createCollectionReport= tryCatch(async (req, res) => {
@@ -9,6 +26,10 @@ export const createCollectionReport= tryCatch(async (req, res) => {
   let CollectionReportPayload = req.body
   CollectionReportPayload.addedBy = req.auth.user._id
   
+
+  // compute completeness before saving
+  CollectionReportPayload.isComplete = computeIsComplete(CollectionReportPayload,REQUIRED_FIELDS);
+
   const newCollectionReport= new CollectionReport(CollectionReportPayload);
 
   await newCollectionReport.save()
@@ -21,6 +42,10 @@ export const getCollectionReport= tryCatch(async (req, res) => {
 
   let findData = {
     isDelete: false
+  }
+
+  if (req.query.projectId) {
+    findData['projectId'] = req.query.projectId
   }
 
   const CollectionReports = await CollectionReport.find(findData).populate([
@@ -59,9 +84,20 @@ export const deleteCollectionReport= tryCatch(async (req, res) => {
 
 export const updateCollectionReport= tryCatch(async (req, res) => {
   
+  // fetch existing document to compute final completeness
+  const existing = await CollectionReport.findById(req.params.collectionReportId).lean() || {};
+  const merged = { ...existing, ...req.body };
+
+  // compute isComplete based on merged values
+  merged.isComplete = computeIsComplete(merged,REQUIRED_FIELDS);
+
   let updateData = {
-    $set: req.body
+    $set: { ...req.body, isComplete: merged.isComplete }
   }
+
+  // let updateData = {
+  //   $set: req.body
+  // }
   let findCollectionReport={
     _id: req.params.collectionReportId
   }

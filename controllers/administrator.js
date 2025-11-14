@@ -1,5 +1,21 @@
 import Administrator from '../models/administrator.js';
+import computeIsComplete from './utils/checkComplete.js';
 import tryCatch from './utils/tryCatch.js';
+
+const REQUIRED_FIELDS = [
+  'providerId',
+  'userId',
+  'projectId',
+  'categoryInTheFlowId',
+  'week',
+  'date',
+  'bin',
+  'total',
+  'invoiceDescription',
+  'comment',
+  'observation'
+];
+
 
 // create Client
 export const createAdministrator= tryCatch(async (req, res) => {
@@ -8,6 +24,10 @@ export const createAdministrator= tryCatch(async (req, res) => {
 
   let administratorPayload = req.body
   administratorPayload.addedBy = req.auth.user._id
+
+
+  // compute completeness before saving
+  administratorPayload.isComplete = computeIsComplete(administratorPayload,REQUIRED_FIELDS);
   
   const newAdministrator= new Administrator(administratorPayload);
 
@@ -23,13 +43,9 @@ export const getAdministrator= tryCatch(async (req, res) => {
     isDelete: false
   }
 
-  // if (req.query.projectId) {
-  //   findData['clientId'] = req.query.clientId
-  // }
-
-  // if (req.query.projectId) {
-  //   findData['statusId'] = req.query.statusId
-  // }
+  if (req.query.projectId) {
+    findData['projectId'] = req.query.projectId
+  }
 
   const Administrators = await Administrator.find(findData).populate([
     { path: 'addedBy', model: 'users' },
@@ -65,9 +81,19 @@ export const deleteAdministrator= tryCatch(async (req, res) => {
 
 export const updateAdministrator= tryCatch(async (req, res) => {
   
+  // fetch existing document to compute final completeness
+  const existing = await Administrator.findById(req.params.administratorId).lean() || {};
+  const merged = { ...existing, ...req.body };
+
+  // compute isComplete based on merged values
+  merged.isComplete = computeIsComplete(merged,REQUIRED_FIELDS);
+
   let updateData = {
-    $set: req.body
+    $set: { ...req.body, isComplete: merged.isComplete }
   }
+  // let updateData = {
+  //   $set: req.body
+  // }
   let findAdministrator={
     _id: req.params.administratorId
   }

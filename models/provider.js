@@ -12,6 +12,7 @@ const providerSchema = mongoose.Schema(
     projectId: { type: mongoose.Types.ObjectId },
     snCode: { type: String },
     snName: { type: String },
+    isComplete:{ type: Boolean },
     isDelete:{ type: Boolean, default: false },
     isActive:{ type: Boolean, default: true }, 
   },
