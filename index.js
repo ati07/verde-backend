@@ -27,6 +27,7 @@ import SellRouter from './routes/sell.js';
 import repaymentAndDisbursementsRouter from './routes/repaymentAndDisbursements.js';
 import profitabilityRouter from './routes/profitability.js';
 import dashboardRouter from './routes/dashboard.js';
+import ChatRouter from './routes/chat.js';
 
 dotenv.config();
 
@@ -90,7 +91,7 @@ app.use('/api/logs', logRouter);
 app.use('/repayment',repaymentAndDisbursementsRouter)
 app.use("/profit",profitabilityRouter)
 app.use('/api/dashboard', dashboardRouter);
-// app.use('/crm',crmRouter)
+app.use('/api/chats',ChatRouter)
 
 app.use('/upload-file',uploadFileRouter)
 app.get('/live', (req, res) => res.json({ message: 'Message from server' }));
