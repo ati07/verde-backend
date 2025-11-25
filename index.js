@@ -28,6 +28,8 @@ import repaymentAndDisbursementsRouter from './routes/repaymentAndDisbursements.
 import profitabilityRouter from './routes/profitability.js';
 import dashboardRouter from './routes/dashboard.js';
 import ChatRouter from './routes/chat.js';
+import AiReportRouter from './routes/aiReport.js';
+import AiRouter from './routes/ai.js';
 
 dotenv.config();
 
@@ -92,6 +94,9 @@ app.use('/repayment',repaymentAndDisbursementsRouter)
 app.use("/profit",profitabilityRouter)
 app.use('/api/dashboard', dashboardRouter);
 app.use('/api/chats',ChatRouter)
+app.use('/ai-data', AiReportRouter);
+app.use("/ai", AiRouter);
+
 
 app.use('/upload-file',uploadFileRouter)
 app.get('/live', (req, res) => res.json({ message: 'Message from server' }));

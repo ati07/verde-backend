@@ -46,9 +46,9 @@ export const getPaymentReport= tryCatch(async (req, res) => {
   //   findData['clientId'] = req.query.clientId
   // }
 
-  // if (req.query.projectId) {
-  //   findData['statusId'] = req.query.statusId
-  // }
+  if (req.query.providerId) {
+    findData['providerId'] = req.query.providerId
+  }
 
   const PaymentReports = await PaymentReport.find(findData).populate([
     { path: 'addedBy', model: 'users' },
